@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+/*using Microsoft.AspNetCore.Mvc;
 
 namespace scada_back.Controllers
 {
@@ -30,4 +30,4 @@ namespace scada_back.Controllers
             .ToArray();
         }
     }
-}
+}*/
