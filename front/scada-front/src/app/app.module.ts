@@ -11,7 +11,7 @@ import { NavbarComponent } from './navbar/navbar.component';
   declarations: [
     AppComponent,
     TrendingComponent,
-    LoginComponent
+    LoginComponent,
     NavbarComponent
   ],
   imports: [
