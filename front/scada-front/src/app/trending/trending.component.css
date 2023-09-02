@@ -1,0 +1,61 @@
+div {
+    display: flex;
+    margin: 0.5em;
+}
+p{
+    margin: 0em
+}
+.row{
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
+    width: 50%;
+}
+h3{
+    padding: 0em;
+    margin: 0em;
+}
+h2{
+    padding: 0em;
+    margin: 0em;
+}
+h1{
+    padding: 0em;
+    margin: 0em;
+    font-size: 3em;
+}
+
+.analog{
+    outline-style: auto;
+    outline-color: black;
+    width: 100%;
+    height: fit-content;
+}
+
+.normal{
+    background-color: rgb(167, 201, 235);
+    color: black;
+}
+
+.low{
+    background-color: yellow;
+    color: black;
+}
+.high{
+    background-color: orange;
+    color: black;
+}
+.critical{
+    background-color: red;
+    color: white;
+}
+
+.unit_label{
+    margin-top: 30%;
+}
+
+.end{
+    align-self: flex-end;
+}

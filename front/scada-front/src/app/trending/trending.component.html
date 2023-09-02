@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="column half">
+        <h1>Analog inputs</h1>
+        <div *ngFor="let x of analog_input" class="row">
+            <div class="analog" [ngClass]="{'normal': x.priority === 'normal', 'low': x.priority === 'low', 'high': x.priority === 'high', 'critical': x.priority === 'critical'}">
+                <div class="column">
+                    <h2>{{x.title}}</h2>
+                    <p>{{x.timestamp}}</p>
+                </div>
+                <div class="row">
+                    <h1>{{x.value}}</h1>
+                    <h3 class="unit_label">{{x.unit}}</h3>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="column half">
+        <h1>Digital inputs</h1>
+        <div *ngFor="let x of digital_input" class="row">
+            <div class="analog">
+                <div class="column">
+                    <h2>{{x.title}}</h2>
+                    <p>{{x.timestamp}}</p>
+                </div>
+                <div class="row end">
+                    <h1>{{x.value}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
