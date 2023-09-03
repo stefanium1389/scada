@@ -29,7 +29,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-size: 16px;
     border-radius: 4px;
     border: none;
-    background-color: #af209a;
+    background-color: #000000;
     color: #fff;
     cursor: pointer;
   }
@@ -46,7 +46,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 
   a {
-    color: rgb(255, 0, 230);
+    color: black;
     text-decoration: none;
   }
   

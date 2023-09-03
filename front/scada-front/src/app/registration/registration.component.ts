@@ -10,11 +10,11 @@ import {NewUserDTO, createNewUserDTO} from '../DTOs/NewUserDTO';
 // import { CognitoService } from '../backend_services/cognito.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-registration',
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.css']
 })
-export class LoginComponent implements OnInit {
+export class RegistrationComponent implements OnInit {
 
   isLoading: boolean = false;
   username: string = "";
@@ -34,18 +34,17 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  onLogin() {
+  onRegister() {
     this.username = this.loginForm.get('username')?.value;
     this.password = this.loginForm.get('password')?.value
     let newUser = createNewUserDTO(this.username, this.password);
     // console.log(this.username);
     // console.log(this.password);
     // this.router.navigate(['trending']) //.then(()=>{location.reload();});
-    this.UserService.login(newUser).subscribe({
+    this.UserService.register(newUser).subscribe({
       next: result => {
-        // alert(result.message);
+        alert(result.message);
         // console.log(result.message);
-        this.router.navigate(['trending']) //.then(()=>{location.reload();});
       },
       error: err => {
         console.log(err);

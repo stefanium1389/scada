@@ -1,9 +1,9 @@
 <div class="div">
-    <h1>SCADA Tim 6</h1>
+    <h1>Registration</h1>
     <form
       method="POST"
       [formGroup]="loginForm" 
-      (ngSubmit)="onLogin()"
+      (ngSubmit)="onRegister()"
     >
         <input class="element" type="text"  formControlName="username" placeholder="Enter Username" name="username" id="username" required>
         <br>
@@ -11,6 +11,6 @@
         <input class="element" type="password" name="password" formControlName="password" placeholder="Enter Password" id="password" required>
         <br>
 
-        <button class="loginbtn" (keydown.enter)="onLogin()" type="submit">Login</button>
+        <button (keydown.enter)="onRegister()" type="submit">Register</button>
     </form>
 </div>
