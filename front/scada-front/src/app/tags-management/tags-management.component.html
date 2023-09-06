@@ -6,37 +6,36 @@
                     <div class="container">
                         <div class="item item-left">
                             <h3>Current analog inputs:</h3>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+                            <!-- <div class="analog-meta-data">
+                                <input class="small" placeholder="From" type="number" [(ngModel)]="unitsFrom"/>
+                                <input class="small" placeholder="To" type="number" [(ngModel)]="unitsTo"/>
+                                <input class="small" placeholder="Units" [(ngModel)]="unit"/>
+                            </div> -->
+                            <app-analog-input-list></app-analog-input-list>
                         </div>
                         <div class="item item-right">
                             <h3>Add new analog input</h3>
-                          <p>Dolor sit amet consectetur adipisicing elit.</p>
+                            <app-analog-input-form></app-analog-input-form>
                         </div>
-                    </div> 
+                    </div>
                 </mat-tab>
-
-
                 <mat-tab label="Digital">
                     <div class="container">
                         <div class="item item-left">
                             <h3>Current digital inputs:</h3>
+                            <app-digital-input-list></app-digital-input-list>
+                          <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p> -->
                         </div>
                         <div class="item item-right">
                             <h3>Add new digital input</h3>
-                          <p>Dolor sit amet consectetur adipisicing elit.</p>
+                            <app-digital-input-form></app-digital-input-form>
+                          <!-- <p>Dolor sit amet consectetur adipisicing elit.</p> -->
                         </div>
                     </div>
                 </mat-tab>
@@ -48,17 +47,19 @@
                     <div class="container">
                         <div class="item item-left">
                             <h3>Current analog outputs:</h3>
+                            <app-analog-output-list></app-analog-output-list>
+                          <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p> -->
                         </div>
                         <div class="item item-right">
                             <h3>Add new analog output</h3>
-                          <p>Dolor sit amet consectetur adipisicing elit.</p>
+                            <app-analog-output-form></app-analog-output-form>
+                          <!-- <p>Dolor sit amet consectetur adipisicing elit.</p> -->
                         </div>
                     </div>
                 </mat-tab>
@@ -66,17 +67,19 @@
                     <div class="container">
                         <div class="item item-left">
                             <h3>Current digital outputs:</h3>
+                            <app-digital-output-list></app-digital-output-list>
+                          <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p> -->
                         </div>
                         <div class="item item-right">
                             <h3>Add new digital output</h3>
-                          <p>Dolor sit amet consectetur adipisicing elit.</p>
+                            <app-digital-output-form></app-digital-output-form>
+                          <!-- <p>Dolor sit amet consectetur adipisicing elit.</p> -->
                         </div>
                     </div>
                 </mat-tab>

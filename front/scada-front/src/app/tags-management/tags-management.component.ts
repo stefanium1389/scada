@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TagsManagementComponent implements OnInit {
 
+  unitsFrom: string = ""
+    unitsTo: string = ""
+    unit: string = ""
+
   constructor() { }
 
   ngOnInit(): void {
