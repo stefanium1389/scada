@@ -15,6 +15,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
 import { TagsManagementComponent } from './tags-management/tags-management.component';
+import { AnalogInputFormComponent } from './tags-management/analog-input-form/analog-input-form.component';
+import { AnalogInputListComponent } from './tags-management/analog-input-list/analog-input-list.component';
+import { DigitalInputFormComponent } from './tags-management/digital-input-form/digital-input-form.component';
+import { DigitalInputListComponent } from './tags-management/digital-input-list/digital-input-list.component';
+import { AnalogOutputFormComponent } from './tags-management/analog-output-form/analog-output-form.component';
+import { AnalogOutputListComponent } from './tags-management/analog-output-list/analog-output-list.component';
+import { DigitalOutputListComponent } from './tags-management/digital-output-list/digital-output-list.component';
+import { DigitalOutputFormComponent } from './tags-management/digital-output-form/digital-output-form.component';
+import { AlarmsComponent } from './tags-management/alarms/alarms.component';
+import { RtuComponent } from './tags-management/rtu/rtu.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +33,17 @@ import { TagsManagementComponent } from './tags-management/tags-management.compo
     LoginComponent,
     NavbarComponent,
     RegistrationComponent,
-    TagsManagementComponent
+    TagsManagementComponent,
+    AnalogInputFormComponent,
+    AnalogInputListComponent,
+    DigitalInputFormComponent,
+    DigitalInputListComponent,
+    AnalogOutputFormComponent,
+    AnalogOutputListComponent,
+    DigitalOutputListComponent,
+    DigitalOutputFormComponent,
+    AlarmsComponent,
+    RtuComponent
   ],
   imports: [
     BrowserModule,
