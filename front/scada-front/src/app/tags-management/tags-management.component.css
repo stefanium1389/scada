@@ -42,7 +42,7 @@
     height: fit-content;
   }
 .container .item {
-    flex-basis: 48%;
+    flex-basis: 35%;
     /* background-color: #ffdcd9; */
     padding: 10px;
 }
@@ -54,7 +54,7 @@
     margin-top: 10px;
     top: 0;
     bottom: 0;
-    left: 50%;
+    left: 65%;
 }
 
 .item-left {
@@ -63,6 +63,7 @@
 
 .item-right, h3 {
     text-align: center;
+    margin-bottom: 0px;
 }
 
 .analog-meta-data {

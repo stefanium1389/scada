@@ -1,1 +1,25 @@
-<p>analog-output-form works!</p>
+<!-- <p>analog-output-form works!</p> -->
+<div class="div">
+    <form
+        method="POST"
+        [formGroup]="analogOutputForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <input class="element" type="text" formControlName="name" placeholder="Enter Name" name="name" id="name" required>
+        <textarea formControlName="description" name="description" id="description" required class="element ta" placeholder="Enter Description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        <select style="width: 55%;" #typeOption class="element" name="address" formControlName="address">
+            <option value="" disabled selected>Select an address</option> 
+            <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
+        </select>
+
+        <input class="element" type="number" formControlName="initial_value" placeholder="Enter Initial Value" name="initial_value" id="initial_value" required>
+
+        <div class="analog-meta-data">
+            <input class="small element" placeholder="Low Limit" type="number" formControlName="low_limit" name="low_limit" id="low_limit" required/>
+            <input class="small element" placeholder="High Limit" type="number" formControlName="high_limit" name="high_limit" id="high_limit" required/>
+            <input class="small element" placeholder="Units" formControlName="unit" name="unit" id="unit" required/>
+        </div>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Create new analog output tag</button>
+    </form>
+</div>

@@ -23,8 +23,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   
   
   button {
-    display: block;
-    width: 100%;
+    /* display: block; */
+    width: 60%;
     padding: 12px 16px;
     font-size: 16px;
     border-radius: 4px;
@@ -55,7 +55,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 
   
-  
+  .element {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    background-color: #f5f5f5;
+  }
   
   
   

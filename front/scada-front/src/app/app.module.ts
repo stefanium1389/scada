@@ -14,6 +14,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
+import {TextFieldModule} from '@angular/cdk/text-field';
+
 import { TagsManagementComponent } from './tags-management/tags-management.component';
 import { AnalogInputFormComponent } from './tags-management/analog-input-form/analog-input-form.component';
 import { AnalogInputListComponent } from './tags-management/analog-input-list/analog-input-list.component';
@@ -54,6 +56,7 @@ import { RtuComponent } from './tags-management/rtu/rtu.component';
     BrowserAnimationsModule,
     MatSlideToggleModule,
     MatTabsModule,
+    TextFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
