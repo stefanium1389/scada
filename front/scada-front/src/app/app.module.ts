@@ -13,6 +13,8 @@ import { RegistrationComponent } from './registration/registration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {MatTabsModule} from '@angular/material/tabs';
+import { TagsManagementComponent } from './tags-management/tags-management.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     TrendingComponent,
     LoginComponent,
     NavbarComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    TagsManagementComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +33,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     HttpClientModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
