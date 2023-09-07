@@ -3,85 +3,20 @@
         <mat-tab label="Inputs"> 
             <mat-tab-group animationDuration="0ms" class="lower-tabs">
                 <mat-tab label="Analog">
-                    <div class="container">
-                        <div class="item item-left">
-                            <h3>Current analog inputs:</h3>
-                            <!-- <div class="analog-meta-data">
-                                <input class="small" placeholder="From" type="number" [(ngModel)]="unitsFrom"/>
-                                <input class="small" placeholder="To" type="number" [(ngModel)]="unitsTo"/>
-                                <input class="small" placeholder="Units" [(ngModel)]="unit"/>
-                            </div> -->
-                            <app-analog-input-list></app-analog-input-list>
-                        </div>
-                        <div class="item item-right">
-                            <h3>Add new analog input</h3>
-                            <app-analog-input-form></app-analog-input-form>
-                        </div>
-                    </div>
+                    <app-analog-input></app-analog-input>
                 </mat-tab>
                 <mat-tab label="Digital">
-                    <div class="container">
-                        <div class="item item-left">
-                            <h3>Current digital inputs:</h3>
-                            <app-digital-input-list></app-digital-input-list>
-                          <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p> -->
-                        </div>
-                        <div class="item item-right">
-                            <h3>Add new digital input</h3>
-                            <app-digital-input-form></app-digital-input-form>
-                          <!-- <p>Dolor sit amet consectetur adipisicing elit.</p> -->
-                        </div>
-                    </div>
+                    <app-digital-input></app-digital-input>
                 </mat-tab>
             </mat-tab-group>
         </mat-tab>
         <mat-tab label="Outputs">
             <mat-tab-group animationDuration="0ms" class="lower-tabs">
                 <mat-tab label="Analog">
-                    <div class="container">
-                        <div class="item item-left">
-                            <h3>Current analog outputs:</h3>
-                            <app-analog-output-list></app-analog-output-list>
-                          <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p> -->
-                        </div>
-                        <div class="item item-right">
-                            <h3>Add new analog output</h3>
-                            <app-analog-output-form></app-analog-output-form>
-                          <!-- <p>Dolor sit amet consectetur adipisicing elit.</p> -->
-                        </div>
-                    </div>
+                    <app-analog-output></app-analog-output>
                 </mat-tab>
                 <mat-tab label="Digital">
-                    <div class="container">
-                        <div class="item item-left">
-                            <h3>Current digital outputs:</h3>
-                            <app-digital-output-list></app-digital-output-list>
-                          <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p> -->
-                        </div>
-                        <div class="item item-right">
-                            <h3>Add new digital output</h3>
-                            <app-digital-output-form></app-digital-output-form>
-                          <!-- <p>Dolor sit amet consectetur adipisicing elit.</p> -->
-                        </div>
-                    </div>
+                    <app-digital-output></app-digital-output>
                 </mat-tab>
             </mat-tab-group>
         </mat-tab>

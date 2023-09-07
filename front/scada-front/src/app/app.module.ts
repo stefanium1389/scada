@@ -16,17 +16,19 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
 import {TextFieldModule} from '@angular/cdk/text-field';
 
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+
 import { TagsManagementComponent } from './tags-management/tags-management.component';
-import { AnalogInputFormComponent } from './tags-management/analog-input-form/analog-input-form.component';
-import { AnalogInputListComponent } from './tags-management/analog-input-list/analog-input-list.component';
-import { DigitalInputFormComponent } from './tags-management/digital-input-form/digital-input-form.component';
-import { DigitalInputListComponent } from './tags-management/digital-input-list/digital-input-list.component';
-import { AnalogOutputFormComponent } from './tags-management/analog-output-form/analog-output-form.component';
-import { AnalogOutputListComponent } from './tags-management/analog-output-list/analog-output-list.component';
-import { DigitalOutputListComponent } from './tags-management/digital-output-list/digital-output-list.component';
-import { DigitalOutputFormComponent } from './tags-management/digital-output-form/digital-output-form.component';
 import { AlarmsComponent } from './tags-management/alarms/alarms.component';
 import { RtuComponent } from './tags-management/rtu/rtu.component';
+import { AnalogInputComponent } from './tags-management/analog-input/analog-input.component';
+import { AnalogOutputComponent } from './tags-management/analog-output/analog-output.component';
+import { DigitalInputComponent } from './tags-management/digital-input/digital-input.component';
+import { DigitalOutputComponent } from './tags-management/digital-output/digital-output.component';
 
 @NgModule({
   declarations: [
@@ -36,16 +38,12 @@ import { RtuComponent } from './tags-management/rtu/rtu.component';
     NavbarComponent,
     RegistrationComponent,
     TagsManagementComponent,
-    AnalogInputFormComponent,
-    AnalogInputListComponent,
-    DigitalInputFormComponent,
-    DigitalInputListComponent,
-    AnalogOutputFormComponent,
-    AnalogOutputListComponent,
-    DigitalOutputListComponent,
-    DigitalOutputFormComponent,
     AlarmsComponent,
-    RtuComponent
+    RtuComponent,
+    AnalogInputComponent,
+    AnalogOutputComponent,
+    DigitalInputComponent,
+    DigitalOutputComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +55,11 @@ import { RtuComponent } from './tags-management/rtu/rtu.component';
     MatSlideToggleModule,
     MatTabsModule,
     TextFieldModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatIconModule,
+    MatTooltipModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
