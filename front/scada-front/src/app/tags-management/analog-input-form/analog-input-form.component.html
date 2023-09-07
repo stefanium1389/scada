@@ -5,19 +5,19 @@
         [formGroup]="analogInputForm" 
         (ngSubmit)="onSubmit()"
         >
-        <input class="element" type="text" formControlName="name" placeholder="Enter Name" name="name" id="name" required>
-        <textarea formControlName="description" name="description" id="description" required class="element ta" placeholder="Enter Description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        <input class="element" type="text" formControlName="name" placeholder="Name" name="name" id="name" required>
+        <textarea formControlName="description" name="description" id="description" required class="element ta" placeholder="Description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
         <select style="width: 55%;" #typeOption class="element" name="address" formControlName="address">
-            <option value="" disabled selected>Select an address</option> 
+            <option value="" disabled selected>Address</option> 
             <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
         </select>
 
         <select style="width: 55%;" #typeOption class="element" name="function" formControlName="function">
-            <option value="" disabled selected>Select a function</option> 
+            <option value="" disabled selected>Function</option> 
             <option *ngFor="let function of functions;let i = 'index';" [value]="function">{{function}}</option>
         </select>
 
-        <input class="element" type="number" formControlName="scan_time" placeholder="Enter Scan Time [s]" name="scan_time" id="scan_time" required>
+        <input class="element" type="number" formControlName="scan_time" placeholder="Scan Time [s]" name="scan_time" id="scan_time" required>
 
         <div class="analog-meta-data">
             <input class="small element" placeholder="Low Limit" type="number" formControlName="low_limit" name="low_limit" id="low_limit" required/>

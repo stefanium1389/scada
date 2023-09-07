@@ -5,14 +5,14 @@
         [formGroup]="analogOutputForm" 
         (ngSubmit)="onSubmit()"
         >
-        <input class="element" type="text" formControlName="name" placeholder="Enter Name" name="name" id="name" required>
-        <textarea formControlName="description" name="description" id="description" required class="element ta" placeholder="Enter Description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        <input class="element" type="text" formControlName="name" placeholder="Name" name="name" id="name" required>
+        <textarea formControlName="description" name="description" id="description" required class="element ta" placeholder="Description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
         <select style="width: 55%;" #typeOption class="element" name="address" formControlName="address">
-            <option value="" disabled selected>Select an address</option> 
+            <option value="" disabled selected>Address</option> 
             <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
         </select>
 
-        <input class="element" type="number" formControlName="initial_value" placeholder="Enter Initial Value" name="initial_value" id="initial_value" required>
+        <input class="element" type="number" formControlName="initial_value" placeholder="Initial Value" name="initial_value" id="initial_value" required>
 
         <div class="analog-meta-data">
             <input class="small element" placeholder="Low Limit" type="number" formControlName="low_limit" name="low_limit" id="low_limit" required/>
