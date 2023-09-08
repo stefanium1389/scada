@@ -20,6 +20,7 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 import { TagsManagementComponent } from './tags-management/tags-management.component';
@@ -29,6 +30,7 @@ import { AnalogInputComponent } from './tags-management/analog-input/analog-inpu
 import { AnalogOutputComponent } from './tags-management/analog-output/analog-output.component';
 import { DigitalInputComponent } from './tags-management/digital-input/digital-input.component';
 import { DigitalOutputComponent } from './tags-management/digital-output/digital-output.component';
+import { EditComponent } from './tags-management/edit/edit.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { DigitalOutputComponent } from './tags-management/digital-output/digital
     AnalogInputComponent,
     AnalogOutputComponent,
     DigitalInputComponent,
-    DigitalOutputComponent
+    DigitalOutputComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +62,7 @@ import { DigitalOutputComponent } from './tags-management/digital-output/digital
     MatTableModule,
     MatIconModule,
     MatTooltipModule,
+    MatDialogModule,
     
   ],
   providers: [],

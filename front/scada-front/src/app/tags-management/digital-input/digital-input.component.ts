@@ -5,6 +5,8 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EditComponent } from '../edit/edit.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-digital-input',
@@ -34,19 +36,22 @@ export class DigitalInputComponent implements OnInit {
   scan_time: number = 0;
   digitalInputForm!: FormGroup;
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'cos', low: 5, high: 10, unit: 'C'});
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'ramp', low: 5, high: 10, unit: 'C'});
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
-    this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Of", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
+    for (let i = 1; i <= 10; i++) {
+      this.dataSource.data.push( {name: "kris " + i, scan_time: "" + i, state: "On", address: "Address " + i, function: 'sin', low: 5 + i, high: 10 + i, unit: 'C', description: 'string'});
+    }
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'cos', low: 5, high: 10, unit: 'C'});
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'ramp', low: 5, high: 10, unit: 'C'});
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
+    // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Of", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     for (let i = 1; i <= 20; i++) {
       this.addresses.push("Address " + i)
     }
@@ -68,7 +73,7 @@ export class DigitalInputComponent implements OnInit {
     console.log(this.description);
     console.log(this.address);
     console.log(this.scan_time);
-    this.dataSource.data.push( {name: "krisNovi", scan_time: "krisA", state: "Of", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
+    this.dataSource.data.push( {name: "krisNovi", scan_time: "krisA", state: "Of", address: "Address 20", function: 'Sinus', low: 5, high: 10, unit: 'C', description: 'string'});
     // this.changeDetectorRef.detectChanges();
     this.dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
@@ -79,7 +84,35 @@ export class DigitalInputComponent implements OnInit {
     console.log('kris');
   }
 
-  remove_access(userAccess: UserAccess) {}
+  edit_tag(obj: UserAccess) {
+    const dialogRef = this.dialog.open(EditComponent, {
+      data: {obj: obj, type:'di' /*date:this.someDate*/},
+      panelClass: 'my-dialog-container-class',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result!=undefined) {
+        if (result.date!=undefined) {
+          // ride = {
+          //   "locations": obj.locations,
+          //   "passengers": obj.passengers,
+          //   "vehicleType": obj.vehicleType,
+          //   "babyTransport": obj.babyTransport,
+          //   "petTransport": obj.petTransport,
+          //   "scheduledTime": result.scheduledTime + ":00.000Z"
+          // };
+        } else {
+          // ride = {
+          //   "locations": obj.locations,
+          //   "passengers": obj.passengers,
+          //   "vehicleType": obj.vehicleType,
+          //   "babyTransport": obj.babyTransport,
+          //   "petTransport": obj.petTransport
+          // };
+        };
+    } ;
+  });
+}
 
 }
 
@@ -94,4 +127,5 @@ interface UserAccess {
   low: number;
   high: number;
   unit: string;
+  description: string;
 }
