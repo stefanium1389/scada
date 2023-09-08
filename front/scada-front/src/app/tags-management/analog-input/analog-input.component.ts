@@ -6,6 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {CdkTextareaAutosize, TextFieldModule} from '@angular/cdk/text-field';
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { EditComponent } from '../edit/edit.component';
+import { DescriptionComponent } from '../description/description.component';
 import { MatDialog } from '@angular/material/dialog';
 
 
@@ -106,6 +107,36 @@ export class AnalogInputComponent implements OnInit {
           //   "petTransport": obj.petTransport
           // };
         };
+    } ;
+  });
+}
+
+desc_tag(obj: UserAccess) {
+  const dialogRef = this.dialog.open(DescriptionComponent, {
+    data: {obj: obj.description, /*date:this.someDate*/},
+    panelClass: 'my-dialog-container-class',
+  });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log(result);
+    if (result!=undefined) {
+      if (result.date!=undefined) {
+        // ride = {
+        //   "locations": obj.locations,
+        //   "passengers": obj.passengers,
+        //   "vehicleType": obj.vehicleType,
+        //   "babyTransport": obj.babyTransport,
+        //   "petTransport": obj.petTransport,
+        //   "scheduledTime": result.scheduledTime + ":00.000Z"
+        // };
+      } else {
+        // ride = {
+        //   "locations": obj.locations,
+        //   "passengers": obj.passengers,
+        //   "vehicleType": obj.vehicleType,
+        //   "babyTransport": obj.babyTransport,
+        //   "petTransport": obj.petTransport
+        // };
+      };
     } ;
   });
 }
