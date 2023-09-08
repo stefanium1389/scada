@@ -157,4 +157,32 @@
     </form>
 </div>
 
+<div *ngIf="type=='rtu'" class="div">
+    <form
+        method="POST"
+        [formGroup]="editRtuForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <label for="address">Address:</label><br/>
+        <select style="width: 55%;" #typeOption class="element" name="address" formControlName="address">
+            <option value="" disabled selected>Address</option> 
+            <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
+        </select>
+        <br/>
+
+        <div class="rtu">
+            <div>
+                <label>Low Limit:</label><br/>
+                <input class="small element" placeholder="Low Limit" type="number" formControlName="low_limit" name="low_limit" id="low_limit" required/>
+            </div>
+            <div>
+                <label>High Limit:</label><br/>
+                <input class="small element" placeholder="High Limit" type="number" formControlName="high_limit" name="high_limit" id="high_limit" required/>
+            </div>
+        </div>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Edit RTU</button>
+    </form>
+</div>
+
 

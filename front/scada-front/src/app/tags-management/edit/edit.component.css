@@ -4,6 +4,12 @@
     gap: 5px;
 }
 
+.rtu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
 .small {
     width: 80%;
 }

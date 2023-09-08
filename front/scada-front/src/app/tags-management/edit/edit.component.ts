@@ -33,6 +33,7 @@ export class EditComponent implements OnInit {
   EditAnalogOutputForm!: FormGroup;
   EditDigitalInputForm!: FormGroup;
   EditDigitalOutputForm!: FormGroup;
+  editRtuForm!: FormGroup;
 
 
   getData: boolean=false;
@@ -83,13 +84,20 @@ export class EditComponent implements OnInit {
         unit: new FormControl(this.data.obj.unit, Validators.required),
         btn: new FormControl("")},
       );
-    } else { //do
+    } else if (this.type == 'do'){
       this.initial_value_form = this.data.obj.initial_value;
       this.EditDigitalOutputForm = new FormGroup({
         name: new FormControl(this.data.obj.name, Validators.required),
         description: new FormControl(this.data.obj.description, Validators.required),
         address: new FormControl(this.data.obj.address, Validators.required),
         // initial_value: new FormControl('', Validators.required),
+        btn: new FormControl("")},
+      );
+    } else {
+      this.editRtuForm = new FormGroup({
+        address: new FormControl(this.data.obj.address, Validators.required),
+        low_limit: new FormControl(this.data.obj.low, Validators.required),
+        high_limit: new FormControl(this.data.obj.high, Validators.required),
         btn: new FormControl("")},
       );
     }
@@ -118,11 +126,15 @@ export class EditComponent implements OnInit {
       this.data.obj.low = this.EditAnalogOutputForm.get('low_limit')?.value
       this.data.obj.high = this.EditAnalogOutputForm.get('high_limit')?.value
       this.data.obj.unit = this.EditAnalogOutputForm.get('unit')?.value
-    } else { //do
+    } else if (this.type == 'do'){
       this.data.obj.name = this.EditDigitalOutputForm.get('name')?.value;
       this.data.obj.description = this.EditDigitalOutputForm.get('description')?.value
       this.data.obj.address = this.EditDigitalOutputForm.get('address')?.value
       this.data.obj.initial_value = this.initial_value_form;
+    } else {
+      this.data.obj.address = this.editRtuForm.get('address')?.value
+      this.data.obj.low = this.editRtuForm.get('low_limit')?.value
+      this.data.obj.high = this.editRtuForm.get('high_limit')?.value
     }
 
 
