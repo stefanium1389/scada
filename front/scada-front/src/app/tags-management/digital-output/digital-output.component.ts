@@ -83,8 +83,13 @@ export class DigitalOutputComponent implements OnInit {
     console.log(this.dataSource.data);
   }
 
-  give_access(userAccess: UserAccess) {
-    console.log('kris');
+  delete_tag(item: UserAccess) {
+    const index = this.dataSource.data.indexOf(item);
+      if (index !== -1) {
+        this.dataSource.data.splice(index, 1);
+        this.dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+        this.dataSource.paginator = this.paginator;
+      }
   }
 
   edit_tag(obj: UserAccess) {

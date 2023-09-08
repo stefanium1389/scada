@@ -77,8 +77,17 @@ export class AnalogInputComponent implements OnInit {
     });
   }
 
-  give_access(userAccess: UserAccess) {
-    console.log('kris');
+  alarms(item: UserAccess) {
+    this.router.navigate(['alarms'], { queryParams: { name: item.name, unit:item.unit}} );
+  }
+
+  delete_tag(item: UserAccess) {
+    const index = this.dataSource.data.indexOf(item);
+      if (index !== -1) {
+        this.dataSource.data.splice(index, 1);
+        this.dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+        this.dataSource.paginator = this.paginator;
+      }
   }
 
   edit_tag(obj: UserAccess) {

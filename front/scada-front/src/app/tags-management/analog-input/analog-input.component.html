@@ -43,9 +43,9 @@
                 <th style="text-align: right;" mat-header-cell *matHeaderCellDef> Actions </th>
                 <td style="text-align: right;" mat-cell *matCellDef="let element">
                     <span matTooltip="View description" (click)="desc_tag(element)" class="material-symbols-outlined">info</span>
-                    <span matTooltip="Manage tag's alarms" (click)="give_access(element)" class="material-symbols-outlined">alarm</span>
+                    <span matTooltip="Manage tag's alarms" (click)="alarms(element)" class="material-symbols-outlined">alarm</span>
                     <span matTooltip="Edit tag" (click)="edit_tag(element)" class="material-symbols-outlined">edit</span>
-                    <span matTooltip="Delete tag" (click)="give_access(element)" class="material-symbols-outlined">delete</span>
+                    <span matTooltip="Delete tag" (click)="delete_tag(element)" class="material-symbols-outlined">delete</span>
                 </td>
               </ng-container>
           
