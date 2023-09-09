@@ -19,7 +19,7 @@ namespace scada_back.Models
         public string Address { get; set; }
 
         [Column("initial_value")]
-        public int InitialValue { get; set; }
+        public double InitialValue { get; set; }
 
         [Column("low_limit")]
         public double LowLimit { get; set; }

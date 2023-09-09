@@ -41,7 +41,7 @@ namespace scada_back.Migrations
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    initial_value = table.Column<int>(type: "int", nullable: false),
+                    initial_value = table.Column<double>(type: "float", nullable: false),
                     low_limit = table.Column<double>(type: "float", nullable: false),
                     high_limit = table.Column<double>(type: "float", nullable: false),
                     unit = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -79,7 +79,7 @@ namespace scada_back.Migrations
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    initial_value = table.Column<int>(type: "int", nullable: false)
+                    initial_value = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {

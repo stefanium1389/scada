@@ -51,7 +51,7 @@ export class EditComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // console.log(this.data);
+    console.log(this.data);
     this.type = this.data.type;
     // console.log(this.type);
     for (let i = 1; i <= 20; i++) {
@@ -93,7 +93,7 @@ export class EditComponent implements OnInit {
         this.toggle_label = 'Off';
       }
     } else if (this.type == 'ao') {
-      this.initial_value_form = this.data.obj.initial_value;
+      this.initial_value_form = this.data.obj.initialValue;
       this.EditAnalogOutputForm = new FormGroup({
         name: new FormControl(this.data.obj.name, Validators.required),
         description: new FormControl(this.data.obj.description, Validators.required),
@@ -105,7 +105,7 @@ export class EditComponent implements OnInit {
         btn: new FormControl("")},
       );
     } else if (this.type == 'do'){
-      this.initial_value_form = this.data.obj.initial_value;
+      this.initial_value_form = this.data.obj.initialValue;
       this.EditDigitalOutputForm = new FormGroup({
         name: new FormControl(this.data.obj.name, Validators.required),
         description: new FormControl(this.data.obj.description, Validators.required),
@@ -129,31 +129,31 @@ export class EditComponent implements OnInit {
       this.data.obj.description = this.EditAnalogInputForm.get('description')?.value
       this.data.obj.address = this.EditAnalogInputForm.get('address')?.value
       this.data.obj.function = this.EditAnalogInputForm.get('function')?.value
-      this.data.obj.scan_time = this.EditAnalogInputForm.get('scan_time')?.value
+      this.data.obj.scanTime = this.EditAnalogInputForm.get('scan_time')?.value
       this.data.obj.isScanning = this.EditAnalogInputForm.get('isScanning')?.value
-      this.data.obj.low = this.EditAnalogInputForm.get('low_limit')?.value
-      this.data.obj.high = this.EditAnalogInputForm.get('high_limit')?.value
+      this.data.obj.lowLimit = this.EditAnalogInputForm.get('low_limit')?.value
+      this.data.obj.highLimit = this.EditAnalogInputForm.get('high_limit')?.value
       this.data.obj.unit = this.EditAnalogInputForm.get('unit')?.value
     } else if (this.type == 'di') {
       this.data.obj.name = this.EditDigitalInputForm.get('name')?.value;
       this.data.obj.description = this.EditDigitalInputForm.get('description')?.value
       this.data.obj.address = this.EditDigitalInputForm.get('address')?.value
       this.data.obj.function = this.EditDigitalInputForm.get('function')?.value
-      this.data.obj.scan_time = this.EditDigitalInputForm.get('scan_time')?.value
+      this.data.obj.scanTime = this.EditDigitalInputForm.get('scan_time')?.value
       this.data.obj.isScanning = this.EditDigitalInputForm.get('isScanning')?.value
     } else if (this.type == 'ao') {
       this.data.obj.name = this.EditAnalogOutputForm.get('name')?.value;
       this.data.obj.description = this.EditAnalogOutputForm.get('description')?.value
       this.data.obj.address = this.EditAnalogOutputForm.get('address')?.value
-      this.data.obj.initial_value = this.initial_value_form;
-      this.data.obj.low = this.EditAnalogOutputForm.get('low_limit')?.value
-      this.data.obj.high = this.EditAnalogOutputForm.get('high_limit')?.value
+      this.data.obj.initialValue = this.initial_value_form;
+      this.data.obj.lowLimit = this.EditAnalogOutputForm.get('low_limit')?.value
+      this.data.obj.highLimit = this.EditAnalogOutputForm.get('high_limit')?.value
       this.data.obj.unit = this.EditAnalogOutputForm.get('unit')?.value
     } else if (this.type == 'do'){
       this.data.obj.name = this.EditDigitalOutputForm.get('name')?.value;
       this.data.obj.description = this.EditDigitalOutputForm.get('description')?.value
       this.data.obj.address = this.EditDigitalOutputForm.get('address')?.value
-      this.data.obj.initial_value = this.initial_value_form;
+      this.data.obj.initialValue = this.initial_value_form;
     } else {
       this.data.obj.address = this.editRtuForm.get('address')?.value
       this.data.obj.low = this.editRtuForm.get('low_limit')?.value

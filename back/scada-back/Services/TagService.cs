@@ -5,6 +5,7 @@ using scada_back.DTOs;
 using System;
 using System.Linq;
 using AppContext = scada_back.Context.ScadaDbContext;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace scada_back.Services
 {
@@ -12,8 +13,23 @@ namespace scada_back.Services
     {
         List<AnalogInput> GetAllAnalogInputs();
         AnalogInput AddAnalogInput(AnalogInputDTO dto);
-        AnalogInput EditAnalogInputs(AnalogInputDTO dto, int id);
+        AnalogInput EditAnalogInput(AnalogInputDTO dto, int id);
         bool DeleteAnalogInput(int id);
+
+        List<AnalogOutput> GetAllAnalogOutputs();
+        AnalogOutput AddAnalogOutput(AnalogOutputDTO dto);
+        AnalogOutput EditAnalogOutput(AnalogOutputDTO dto, int id);
+        bool DeleteAnalogOutput(int id);
+
+        List<DigitalInput> GetAllDigitalInputs();
+        DigitalInput AddDigitalInput(DigitalInputDTO dto);
+        DigitalInput EditDigitalInput(DigitalInputDTO dto, int id);
+        bool DeleteDigitalInput(int id);
+
+        List<DigitalOutput> GetAllDigitalOutputs();
+        DigitalOutput AddDigitalOutput(DigitalOutputDTO dto);
+        DigitalOutput EditDigitalOutput(DigitalOutputDTO dto, int id);
+        bool DeleteDigitalOutput(int id);
     }
 
     public class TagService : ITagService
@@ -22,6 +38,7 @@ namespace scada_back.Services
         public TagService(ScadaDbContext scadaContext) { Context = scadaContext; }
 
 
+        // ANALOG INPUT
         public List<AnalogInput> GetAllAnalogInputs()
         {
             List<AnalogInput> analogInputs = Context.AnalogInputs.ToList();
@@ -50,7 +67,7 @@ namespace scada_back.Services
             return newAI;
         }
 
-        public AnalogInput EditAnalogInputs(AnalogInputDTO dto, int id)
+        public AnalogInput EditAnalogInput(AnalogInputDTO dto, int id)
         {
             AnalogInput ai = Context.AnalogInputs.FirstOrDefault(p => p.Id == id);
             ai.Name = dto.Name;
@@ -79,6 +96,162 @@ namespace scada_back.Services
                 return true;
             }
             return false;   
+        }
+
+        // ANALOG OUTPUT
+        public List<AnalogOutput> GetAllAnalogOutputs()
+        {
+            List<AnalogOutput> analogOutputs = Context.AnalogOutputs.ToList();
+            return analogOutputs;
+        }
+
+        public AnalogOutput AddAnalogOutput(AnalogOutputDTO dto)
+        {
+            AnalogOutput newAO = new AnalogOutput()
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                Address = dto.Address,
+                InitialValue = dto.InitialValue,
+                LowLimit = dto.LowLimit,
+                HighLimit = dto.HighLimit,
+                Unit = dto.Unit,
+            };
+            //using (var context = new AppContext())
+            //{
+            Context.AnalogOutputs.Add(newAO);
+            Context.SaveChanges();
+            return newAO;
+        }
+
+        public AnalogOutput EditAnalogOutput(AnalogOutputDTO dto, int id)
+        {
+            AnalogOutput ao = Context.AnalogOutputs.FirstOrDefault(p => p.Id == id);
+            ao.Name = dto.Name;
+            ao.Description = dto.Description;
+            ao.Address = dto.Address;
+            ao.InitialValue = dto.InitialValue;
+            ao.LowLimit = dto.LowLimit;
+            ao.HighLimit = dto.HighLimit;
+            ao.Unit = dto.Unit;
+            Context.AnalogOutputs.Update(ao);
+            Context.SaveChanges();
+            return ao;
+        }
+
+        public bool DeleteAnalogOutput(int id)
+        {
+            Console.WriteLine(id);
+            AnalogOutput ao = Context.AnalogOutputs.First(x => x.Id == id);
+            if (ao != null)
+            {
+                Context.AnalogOutputs.Remove(ao);
+                Context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        // DIGITAL INPUT
+        public List<DigitalInput> GetAllDigitalInputs()
+        {
+            List<DigitalInput> digitalInput = Context.DigitalInputs.ToList();
+            return digitalInput;
+        }
+
+        public DigitalInput AddDigitalInput(DigitalInputDTO dto)
+        {
+            Enum.TryParse(dto.Function, out Function function);
+            DigitalInput newDI = new DigitalInput()
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                Function = function,
+                Address = dto.Address,
+                ScanTime = dto.ScanTime,
+                IsScanning = dto.IsScanning
+            };
+            //using (var context = new AppContext())
+            //{
+            Context.DigitalInputs.Add(newDI);
+            Context.SaveChanges();
+            return newDI;
+        }
+
+        public DigitalInput EditDigitalInput(DigitalInputDTO dto, int id)
+        {
+            DigitalInput di = Context.DigitalInputs.FirstOrDefault(p => p.Id == id);
+            di.Name = dto.Name;
+            di.Description = dto.Description;
+            Enum.TryParse(dto.Function, out Function function);
+            di.Function = function;
+            di.Address = dto.Address;
+            di.ScanTime = dto.ScanTime;
+            di.IsScanning = dto.IsScanning;
+            Context.DigitalInputs.Update(di);
+            Context.SaveChanges();
+            return di;
+        }
+
+        public bool DeleteDigitalInput(int id)
+        {
+            Console.WriteLine(id);
+            DigitalInput di = Context.DigitalInputs.First(x => x.Id == id);
+            if (di != null)
+            {
+                Context.DigitalInputs.Remove(di);
+                Context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        // DIGITAL OUTPUT
+        public List<DigitalOutput> GetAllDigitalOutputs()
+        {
+            List<DigitalOutput> digitalOutputs = Context.DigitalOutputs.ToList();
+            return digitalOutputs;
+        }
+
+        public DigitalOutput AddDigitalOutput(DigitalOutputDTO dto)
+        {
+            DigitalOutput newDO = new DigitalOutput()
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                Address = dto.Address,
+                InitialValue = dto.InitialValue
+            };
+            //using (var context = new AppContext())
+            //{
+            Context.DigitalOutputs.Add(newDO);
+            Context.SaveChanges();
+            return newDO;
+        }
+
+        public DigitalOutput EditDigitalOutput(DigitalOutputDTO dto, int id)
+        {
+            DigitalOutput doo = Context.DigitalOutputs.FirstOrDefault(p => p.Id == id);
+            doo.Name = dto.Name;
+            doo.Description = dto.Description;
+            doo.Address = dto.Address;
+            doo.InitialValue = dto.InitialValue;
+            Context.DigitalOutputs.Update(doo);
+            Context.SaveChanges();
+            return doo;
+        }
+
+        public bool DeleteDigitalOutput(int id)
+        {
+            Console.WriteLine(id);
+            DigitalOutput doo = Context.DigitalOutputs.First(x => x.Id == id);
+            if (doo != null)
+            {
+                Context.DigitalOutputs.Remove(doo);
+                Context.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }

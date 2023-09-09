@@ -17,34 +17,34 @@ namespace scada_back.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        [Route("slay")]
-        public async Task<ActionResult<bool>> Slay()
-        {
-            try { 
-                bool result = true;
-                return Ok(result);
-            }
-            catch (Exception exception)
-            {
-                return Ok(exception.Message);
-            }
-        }
+        //[HttpGet]
+        //[Route("slay")]
+        //public async Task<ActionResult<bool>> Slay()
+        //{
+        //    try { 
+        //        bool result = true;
+        //        return Ok(result);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        return Ok(exception.Message);
+        //    }
+        //}
 
-        [HttpPost]
-        [Route("slayPost")]
-        public async Task<ActionResult<bool>> SlayPost([FromBody] NewUserDTO newUserDTO)
-        {
-            try
-            {
-                Console.WriteLine(newUserDTO.ToString);
-                return Ok();
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
-        }
+        //[HttpPost]
+        //[Route("slayPost")]
+        //public async Task<ActionResult<bool>> SlayPost([FromBody] NewUserDTO newUserDTO)
+        //{
+        //    try
+        //    {
+        //        Console.WriteLine(newUserDTO.ToString);
+        //        return Ok();
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        return BadRequest(exception.Message);
+        //    }
+        //}
 
         [HttpPost]
         [Route("login")]

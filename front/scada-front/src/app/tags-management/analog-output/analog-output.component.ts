@@ -8,6 +8,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditComponent } from '../edit/edit.component';
 import { DescriptionComponent } from '../description/description.component';
 import { MatDialog } from '@angular/material/dialog';
+import { TagService } from 'src/app/services/tag.service';
+import { AnalogOutputDTO, createAnalogOutputDTO, AnalogOutputIdDTO, createAnalogOutputIdDTO } from 'src/app/DTOs/AnalogOutputDTO';
 
 @Component({
   selector: 'app-analog-output',
@@ -21,7 +23,7 @@ export class AnalogOutputComponent implements OnInit {
   file_key: string="";
   album_name: string="";
   displayedColumns: string[] = ['name', 'address', 'units', 'actions'];
-  dataSource = new MatTableDataSource<AnalogOutput>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<AnalogOutputIdDTO>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
@@ -30,23 +32,24 @@ export class AnalogOutputComponent implements OnInit {
 
   /*------------------------------------------------------------------*/
 
-  name: string = "";
-  description: string= "";
-  address: string = "";
+  // name: string = "";
+  // description: string= "";
+  // address: string = "";
   addresses: string[] = [];
-  initial_value: number = 0;
-  low_limit: string = ""
-  high_limit: string = ""
-  unit: string = ""
+  // initial_value: number = 0;
+  // low_limit: string = ""
+  // high_limit: string = ""
+  // unit: string = ""
   analogOutputForm!: FormGroup;
+  aos: AnalogOutputIdDTO[] = [];
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private tagService: TagService) { }
 
   ngOnInit(): void {
-
-    for (let i = 1; i <= 10; i++) {
-      this.dataSource.data.push( {name: "kris " + i, address: "Address " + i, low: 5 + i, high: 10 + i, unit: 'C', description: 'string', initial_value: i});
-    }
+    this.getAll();
+    // for (let i = 1; i <= 10; i++) {
+    //   this.dataSource.data.push( {name: "kris " + i, address: "Address " + i, low: 5 + i, high: 10 + i, unit: 'C', description: 'string', initial_value: i});
+    // }
 
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'cos', low: 5, high: 10, unit: 'C'});
@@ -74,41 +77,93 @@ export class AnalogOutputComponent implements OnInit {
     );
   }
 
-  onSubmit() {
-    this.name = this.analogOutputForm.get('name')?.value;
-    this.description = this.analogOutputForm.get('description')?.value
-    this.address = this.analogOutputForm.get('address')?.value
-    this.initial_value = this.analogOutputForm.get('initial_value')?.value
-    this.low_limit = this.analogOutputForm.get('low_limit')?.value
-    this.high_limit = this.analogOutputForm.get('high_limit')?.value
-    this.unit = this.analogOutputForm.get('unit')?.value
-    console.log(this.name);
-    console.log(this.description);
-    console.log(this.address);
-    console.log(this.initial_value);
-    console.log(this.low_limit);
-    console.log(this.high_limit);
-    console.log(this.unit);
+  getAll() {
+    this.tagService.getAllAnalogOutputs().subscribe({
+      next: result => {
+        console.log(result);
+        this.aos = result.results;
+        this.dataSource = new MatTableDataSource<AnalogOutputIdDTO>(this.aos);
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
+      }
 
-    this.dataSource.data.push( {name: "krisNovi", address: "Address 20",  low: 5, high: 10, unit: 'C', description: 'string', initial_value: 4});
-    // this.changeDetectorRef.detectChanges();
-    this.dataSource = new MatTableDataSource<AnalogOutput>(ELEMENT_DATA);
-    this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource.data);
+    })
+  }
+
+  onSubmit() {
+    let name = this.analogOutputForm.get('name')?.value;
+    let description = this.analogOutputForm.get('description')?.value
+    let address = this.analogOutputForm.get('address')?.value
+    let initial_value = this.analogOutputForm.get('initial_value')?.value
+    let low_limit = this.analogOutputForm.get('low_limit')?.value
+    let high_limit = this.analogOutputForm.get('high_limit')?.value
+    let unit = this.analogOutputForm.get('unit')?.value
+    // console.log(this.name);
+    // console.log(this.description);
+    // console.log(this.address);
+    // console.log(this.initial_value);
+    // console.log(this.low_limit);
+    // console.log(this.high_limit);
+    // console.log(this.unit);
+
+    // this.dataSource.data.push( {name: "krisNovi", address: "Address 20",  low: 5, high: 10, unit: 'C', description: 'string', initial_value: 4});
+    // // this.changeDetectorRef.detectChanges();
+    // this.dataSource = new MatTableDataSource<AnalogOutput>(ELEMENT_DATA);
+    // this.dataSource.paginator = this.paginator;
+    // console.log(this.dataSource.data);
+
+    let dto = createAnalogOutputDTO(name, description, address, initial_value, low_limit, high_limit, unit);
+    console.log(dto);
+    this.tagService.addAnalogOutput(dto).subscribe({
+      next: result => {
+        console.log(result);
+        this.getAll();
+        this.analogOutputForm.reset();
+    //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+    // // this.changeDetectorRef.detectChanges();
+    // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+    // this.dataSource.paginator = this.paginator;
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
+      }
+
+    })
   }
 
   
 
-  delete_tag(item: AnalogOutput) {
-    const index = this.dataSource.data.indexOf(item);
-      if (index !== -1) {
-        this.dataSource.data.splice(index, 1);
-        this.dataSource = new MatTableDataSource<AnalogOutput>(ELEMENT_DATA);
-        this.dataSource.paginator = this.paginator;
+  delete_tag(item: any) {
+    console.log(item.id);
+    this.tagService.deleteAnalogOutput(item.id).subscribe({
+      next: result => {
+        console.log(result);
+        this.getAll();
+        // const index = this.dataSource.data.indexOf(item);
+        // if (index !== -1) {
+        //   this.dataSource.data.splice(index, 1);
+        //   this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+        //   this.dataSource.paginator = this.paginator;
+        // }
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
       }
+
+    })
+    // const index = this.dataSource.data.indexOf(item);
+    //   if (index !== -1) {
+    //     this.dataSource.data.splice(index, 1);
+    //     this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+    //     this.dataSource.paginator = this.paginator;
+    //   }
   }
 
-  edit_tag(obj: AnalogOutput) {
+  edit_tag(obj: any) {
     const dialogRef = this.dialog.open(EditComponent, {
       data: {obj: obj, type:'ao' /*date:this.someDate*/},
       panelClass: 'my-dialog-container-class',
@@ -116,14 +171,23 @@ export class AnalogOutputComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if (result!=undefined) {
-        if (result.date!=undefined) {
-          // ride = {
-          //   "locations": obj.locations,
-          //   "passengers": obj.passengers,
-          //   "vehicleType": obj.vehicleType,
-          //   "babyTransport": obj.babyTransport,
-          //   "petTransport": obj.petTransport,
-          //   "scheduledTime": result.scheduledTime + ":00.000Z"
+        if (result.obj!=undefined) {
+          console.log(result.obj);
+          let p = result.obj;
+          let a = createAnalogOutputDTO(p.name, p.description, p.address, p.initialValue, p.lowLimit, p.highLimit, p.unit);
+          console.log('a');
+          console.log(a);
+          this.tagService.editAnalogOutput(a, p.id).subscribe({
+            next: result => {
+              console.log(result);
+              this.getAll();
+            },
+            error: err => {
+              console.log(err);
+              alert(err?.error?.message || JSON.stringify(err));
+            }
+      
+          })
           // };
         } else {
           // ride = {
@@ -170,7 +234,7 @@ desc_tag(obj: AnalogOutput) {
 
 }
 
-const ELEMENT_DATA: AnalogOutput[] = [];
+const ELEMENT_DATA: AnalogOutputIdDTO[] = [];
 
 interface AnalogOutput {
   name: string;

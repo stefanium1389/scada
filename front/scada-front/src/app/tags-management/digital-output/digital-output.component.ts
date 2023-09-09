@@ -8,6 +8,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditComponent } from '../edit/edit.component';
 import { DescriptionComponent } from '../description/description.component';
 import { MatDialog } from '@angular/material/dialog';
+import { TagService } from 'src/app/services/tag.service';
+import { DigitalOutputDTO, createDigitalOutputDTO, DigitalOutputIdDTO, createDigitalOutputIdDTO } from 'src/app/DTOs/DigitalOutputDTO';
 
 @Component({
   selector: 'app-digital-output',
@@ -21,7 +23,7 @@ export class DigitalOutputComponent implements OnInit {
   file_key: string="";
   album_name: string="";
   displayedColumns: string[] = ['name', 'address', 'actions'];
-  dataSource = new MatTableDataSource<DigitalOutput>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<DigitalOutputIdDTO>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
@@ -30,19 +32,21 @@ export class DigitalOutputComponent implements OnInit {
 
   /********************************************************************************* */
 
-  name: string = "";
-  description: string= "";
-  address: string = "";
+  // name: string = "";
+  // description: string= "";
+  // address: string = "";
   addresses: string[] = [];
-  initial_value: number = 0;
+  // initial_value: number = 0;
   digitalOutputForm!: FormGroup;
+  dos: DigitalOutputIdDTO[] = []
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private tagService: TagService) { }
 
   ngOnInit(): void {
-    for (let i = 1; i <= 10; i++) {
-      this.dataSource.data.push( {name: "kris " + i, address: "Address " + i,  description: 'string', initial_value: i});
-    }
+    this.getAll();
+    // for (let i = 1; i <= 10; i++) {
+    //   this.dataSource.data.push( {name: "kris " + i, address: "Address " + i,  description: 'string', initial_value: i});
+    // }
     
     for (let i = 1; i <= 20; i++) {
       this.addresses.push("Address " + i)
@@ -67,32 +71,83 @@ export class DigitalOutputComponent implements OnInit {
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Of", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
   }
 
-  onSubmit() {
-    this.name = this.digitalOutputForm.get('name')?.value;
-    this.description = this.digitalOutputForm.get('description')?.value
-    this.address = this.digitalOutputForm.get('address')?.value
-    this.initial_value = this.digitalOutputForm.get('initial_value')?.value
-    console.log(this.name);
-    console.log(this.description);
-    console.log(this.address);
-    console.log(this.initial_value);
-    this.dataSource.data.push( {name: "krisNovi", address: "Address 20", description: 'string', initial_value: 4});
-    // this.changeDetectorRef.detectChanges();
-    this.dataSource = new MatTableDataSource<DigitalOutput>(ELEMENT_DATA);
-    this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource.data);
-  }
-
-  delete_tag(item: DigitalOutput) {
-    const index = this.dataSource.data.indexOf(item);
-      if (index !== -1) {
-        this.dataSource.data.splice(index, 1);
-        this.dataSource = new MatTableDataSource<DigitalOutput>(ELEMENT_DATA);
-        this.dataSource.paginator = this.paginator;
+  getAll() {
+    this.tagService.getAllDigitalOutputs().subscribe({
+      next: result => {
+        console.log(result);
+        this.dos = result.results;
+        this.dataSource = new MatTableDataSource<DigitalOutputIdDTO>(this.dos);
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
       }
+
+    })
   }
 
-  edit_tag(obj: DigitalOutput) {
+  onSubmit() {
+    let name = this.digitalOutputForm.get('name')?.value;
+    let description = this.digitalOutputForm.get('description')?.value
+    let address = this.digitalOutputForm.get('address')?.value
+    let initial_value = this.digitalOutputForm.get('initial_value')?.value
+    // console.log(this.name);
+    // console.log(this.description);
+    // console.log(this.address);
+    // console.log(this.initial_value);
+    // this.dataSource.data.push( {name: "krisNovi", address: "Address 20", description: 'string', initial_value: 4});
+    // // this.changeDetectorRef.detectChanges();
+    // this.dataSource = new MatTableDataSource<DigitalOutput>(ELEMENT_DATA);
+    // this.dataSource.paginator = this.paginator;
+    // console.log(this.dataSource.data);
+    let dto = createDigitalOutputDTO(name, description, address, initial_value);
+    console.log(dto);
+    this.tagService.addDigitalOutput(dto).subscribe({
+      next: result => {
+        console.log(result);
+        this.getAll();
+        this.digitalOutputForm.reset();
+    //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+    // // this.changeDetectorRef.detectChanges();
+    // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+    // this.dataSource.paginator = this.paginator;
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
+      }
+
+    })
+  }
+
+  delete_tag(item: any) {
+    console.log(item.id);
+    this.tagService.deleteDigitalOutput(item.id).subscribe({
+      next: result => {
+        console.log(result);
+        this.getAll();
+        // const index = this.dataSource.data.indexOf(item);
+        // if (index !== -1) {
+        //   this.dataSource.data.splice(index, 1);
+        //   this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+        //   this.dataSource.paginator = this.paginator;
+        // }
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
+      }
+
+    })
+    // const index = this.dataSource.data.indexOf(item);
+    //   if (index !== -1) {
+    //     this.dataSource.data.splice(index, 1);
+    //     this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+    //     this.dataSource.paginator = this.paginator;
+    //   }
+  }
+
+  edit_tag(obj: any) {
     const dialogRef = this.dialog.open(EditComponent, {
       data: {obj: obj, type:'do' /*date:this.someDate*/},
       panelClass: 'my-dialog-container-class',
@@ -100,14 +155,23 @@ export class DigitalOutputComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if (result!=undefined) {
-        if (result.date!=undefined) {
-          // ride = {
-          //   "locations": obj.locations,
-          //   "passengers": obj.passengers,
-          //   "vehicleType": obj.vehicleType,
-          //   "babyTransport": obj.babyTransport,
-          //   "petTransport": obj.petTransport,
-          //   "scheduledTime": result.scheduledTime + ":00.000Z"
+        if (result.obj!=undefined) {
+          console.log(result.obj);
+          let p = result.obj;
+          let a = createDigitalOutputDTO(p.name, p.description, p.address, p.initialValue);
+          console.log('a');
+          console.log(a);
+          this.tagService.editDigitalOutput(a, p.id).subscribe({
+            next: result => {
+              console.log(result);
+              this.getAll();
+            },
+            error: err => {
+              console.log(err);
+              alert(err?.error?.message || JSON.stringify(err));
+            }
+      
+          })
           // };
         } else {
           // ride = {
@@ -155,7 +219,7 @@ desc_tag(obj: DigitalOutput) {
 
 }
 
-const ELEMENT_DATA: DigitalOutput[] = [];
+const ELEMENT_DATA: DigitalOutputIdDTO[] = [];
 
 interface DigitalOutput {
   name: string;

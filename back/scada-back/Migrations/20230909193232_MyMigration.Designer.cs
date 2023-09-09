@@ -12,7 +12,7 @@ using scada_back.Context;
 namespace scada_back.Migrations
 {
     [DbContext(typeof(ScadaDbContext))]
-    [Migration("20230909105358_MyMigration")]
+    [Migration("20230909193232_MyMigration")]
     partial class MyMigration
     {
         /// <inheritdoc />
@@ -137,8 +137,8 @@ namespace scada_back.Migrations
                         .HasColumnType("float")
                         .HasColumnName("high_limit");
 
-                    b.Property<int>("InitialValue")
-                        .HasColumnType("int")
+                    b.Property<double>("InitialValue")
+                        .HasColumnType("float")
                         .HasColumnName("initial_value");
 
                     b.Property<double>("LowLimit")
@@ -224,8 +224,8 @@ namespace scada_back.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
-                    b.Property<int>("InitialValue")
-                        .HasColumnType("int")
+                    b.Property<double>("InitialValue")
+                        .HasColumnType("float")
                         .HasColumnName("initial_value");
 
                     b.Property<string>("Name")
