@@ -21,7 +21,7 @@ export class DigitalInputComponent implements OnInit {
   file_key: string="";
   album_name: string="";
   displayedColumns: string[] = ['name', 'scan_time', 'state', 'address', 'actions'];
-  dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<DigitalInput>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
@@ -41,7 +41,7 @@ export class DigitalInputComponent implements OnInit {
 
   ngOnInit(): void {
     for (let i = 1; i <= 10; i++) {
-      this.dataSource.data.push( {name: "kris " + i, scan_time: "" + i, state: "On", address: "Address " + i, function: 'sin', low: 5 + i, high: 10 + i, unit: 'C', description: 'string'});
+      this.dataSource.data.push( {name: "kris " + i, scan_time: "" + i, isScanning: true, address: "Address " + i,  description: 'string'});
     }
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'cos', low: 5, high: 10, unit: 'C'});
@@ -74,23 +74,23 @@ export class DigitalInputComponent implements OnInit {
     console.log(this.description);
     console.log(this.address);
     console.log(this.scan_time);
-    this.dataSource.data.push( {name: "krisNovi", scan_time: "krisA", state: "Of", address: "Address 20", function: 'Sinus', low: 5, high: 10, unit: 'C', description: 'string'});
+    this.dataSource.data.push( {name: "krisNovi", scan_time: "krisA", isScanning: false, address: "Address 20", description: 'string'});
     // this.changeDetectorRef.detectChanges();
-    this.dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+    this.dataSource = new MatTableDataSource<DigitalInput>(ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
     console.log(this.dataSource.data);
   }
 
-  delete_tag(item: UserAccess) {
+  delete_tag(item: DigitalInput) {
     const index = this.dataSource.data.indexOf(item);
       if (index !== -1) {
         this.dataSource.data.splice(index, 1);
-        this.dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+        this.dataSource = new MatTableDataSource<DigitalInput>(ELEMENT_DATA);
         this.dataSource.paginator = this.paginator;
       }
   }
 
-  edit_tag(obj: UserAccess) {
+  edit_tag(obj: DigitalInput) {
     const dialogRef = this.dialog.open(EditComponent, {
       data: {obj: obj, type:'di' /*date:this.someDate*/},
       panelClass: 'my-dialog-container-class',
@@ -120,7 +120,7 @@ export class DigitalInputComponent implements OnInit {
   });
 }
 
-desc_tag(obj: UserAccess) {
+desc_tag(obj: DigitalInput) {
   const dialogRef = this.dialog.open(DescriptionComponent, {
     data: {obj: obj.description, /*date:this.someDate*/},
     panelClass: 'my-dialog-container-class',
@@ -152,16 +152,12 @@ desc_tag(obj: UserAccess) {
 
 }
 
-const ELEMENT_DATA: UserAccess[] = [];
+const ELEMENT_DATA: DigitalInput[] = [];
 
-interface UserAccess {
+interface DigitalInput {
   name: string;
   scan_time: string;
-  state: string;
+  isScanning: boolean;
   address: string;
-  function: string;
-  low: number;
-  high: number;
-  unit: string;
   description: string;
 }

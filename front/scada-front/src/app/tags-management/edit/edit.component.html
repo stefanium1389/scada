@@ -27,9 +27,16 @@
         </select>
         <br/>
 
-        <label for="scan_time">Scan Time:</label><br/>
-        <input class="element" type="number" formControlName="scan_time" placeholder="Scan Time [s]" name="scan_time" id="scan_time" required>
-        <br/>
+        <div class="rtu">
+            <div>
+                <label for="scan_time">Scan Time [s]:</label><br/>
+                <input class="element" type="number" formControlName="scan_time" placeholder="Scan Time [s]" name="scan_time" id="scan_time" required>
+            </div>
+            <div>
+                <label for="scan_time">Scanning</label><br/>
+                <mat-slide-toggle formControlName="isScanning" (change)="onToggleClick($event)">{{toggle_label}}</mat-slide-toggle>
+            </div>
+        </div>
 
         <div class="analog-meta-data">
             <div>
@@ -73,9 +80,16 @@
         </select>
         <br/>
 
-        <label for="scan_time">Scan Time:</label><br/>
-        <input class="element" type="number" formControlName="scan_time" placeholder="Scan Time [s]" name="scan_time" id="scan_time" required>
-        <br/>
+        <div class="rtu">
+            <div>
+                <label for="scan_time">Scan Time [s]:</label><br/>
+                <input class="element" type="number" formControlName="scan_time" placeholder="Scan Time [s]" name="scan_time" id="scan_time" required>
+            </div>
+            <div>
+                <label for="scan_time">Scanning</label><br/>
+                <mat-slide-toggle formControlName="isScanning" (change)="onToggleClick($event)">{{toggle_label}}</mat-slide-toggle>
+            </div>
+        </div>
 
         <button (keydown.enter)="onSubmit()" type="submit">Edit digital input tag</button>
     </form>

@@ -21,7 +21,7 @@ export class AnalogOutputComponent implements OnInit {
   file_key: string="";
   album_name: string="";
   displayedColumns: string[] = ['name', 'address', 'units', 'actions'];
-  dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<AnalogOutput>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
@@ -45,7 +45,7 @@ export class AnalogOutputComponent implements OnInit {
   ngOnInit(): void {
 
     for (let i = 1; i <= 10; i++) {
-      this.dataSource.data.push( {name: "kris " + i, scan_time: "" + i, state: "On", address: "Address " + i, function: 'Cosinus', low: 5 + i, high: 10 + i, unit: 'C', description: 'string', initial_value: i});
+      this.dataSource.data.push( {name: "kris " + i, address: "Address " + i, low: 5 + i, high: 10 + i, unit: 'C', description: 'string', initial_value: i});
     }
 
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
@@ -90,25 +90,25 @@ export class AnalogOutputComponent implements OnInit {
     console.log(this.high_limit);
     console.log(this.unit);
 
-    this.dataSource.data.push( {name: "krisNovi", scan_time: "krisA", state: "Of", address: "Address 20", function: 'Sinus', low: 5, high: 10, unit: 'C', description: 'string', initial_value: 4});
+    this.dataSource.data.push( {name: "krisNovi", address: "Address 20",  low: 5, high: 10, unit: 'C', description: 'string', initial_value: 4});
     // this.changeDetectorRef.detectChanges();
-    this.dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+    this.dataSource = new MatTableDataSource<AnalogOutput>(ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
     console.log(this.dataSource.data);
   }
 
   
 
-  delete_tag(item: UserAccess) {
+  delete_tag(item: AnalogOutput) {
     const index = this.dataSource.data.indexOf(item);
       if (index !== -1) {
         this.dataSource.data.splice(index, 1);
-        this.dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+        this.dataSource = new MatTableDataSource<AnalogOutput>(ELEMENT_DATA);
         this.dataSource.paginator = this.paginator;
       }
   }
 
-  edit_tag(obj: UserAccess) {
+  edit_tag(obj: AnalogOutput) {
     const dialogRef = this.dialog.open(EditComponent, {
       data: {obj: obj, type:'ao' /*date:this.someDate*/},
       panelClass: 'my-dialog-container-class',
@@ -138,7 +138,7 @@ export class AnalogOutputComponent implements OnInit {
   });
 }
 
-desc_tag(obj: UserAccess) {
+desc_tag(obj: AnalogOutput) {
   const dialogRef = this.dialog.open(DescriptionComponent, {
     data: {obj: obj.description, /*date:this.someDate*/},
     panelClass: 'my-dialog-container-class',
@@ -170,14 +170,11 @@ desc_tag(obj: UserAccess) {
 
 }
 
-const ELEMENT_DATA: UserAccess[] = [];
+const ELEMENT_DATA: AnalogOutput[] = [];
 
-interface UserAccess {
+interface AnalogOutput {
   name: string;
-  scan_time: string;
-  state: string;
   address: string;
-  function: string;
   low: number;
   high: number;
   unit: string;

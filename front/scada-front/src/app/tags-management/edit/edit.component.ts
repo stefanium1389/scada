@@ -6,6 +6,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-edit',
@@ -38,6 +39,10 @@ export class EditComponent implements OnInit {
 
   getData: boolean=false;
 
+
+  isScanning: boolean = false;
+  toggle_label: string = 'Off'
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private  _formBuilder: FormBuilder, public matDialogRef: MatDialogRef<EditComponent>) {
   }
 
@@ -62,16 +67,30 @@ export class EditComponent implements OnInit {
         low_limit: new FormControl(this.data.obj.low, Validators.required), // Set a default numeric value here
         high_limit: new FormControl(this.data.obj.high, Validators.required), // Set a default numeric value here
         unit: new FormControl(this.data.obj.unit, Validators.required),
+        isScanning: new FormControl(this.data.obj.isScanning, Validators.required),
         btn: new FormControl("")
       });
+      this.isScanning = this.data.obj.isScanning;
+      if (this.isScanning) {
+        this.toggle_label = 'On';
+      } else {
+        this.toggle_label = 'Off';
+      }
     } else if (this.type == 'di') {
       this.EditDigitalInputForm = new FormGroup({
         name: new FormControl(this.data.obj.name, Validators.required),
         description: new FormControl(this.data.obj.description, Validators.required),
         address: new FormControl(this.data.obj.address, Validators.required),
         scan_time: new FormControl(this.data.obj.scan_time, Validators.required),
+        isScanning: new FormControl(this.data.obj.isScanning, Validators.required),
         btn: new FormControl("")},
       );
+      this.isScanning = this.data.obj.isScanning;
+      if (this.isScanning) {
+        this.toggle_label = 'On';
+      } else {
+        this.toggle_label = 'Off';
+      }
     } else if (this.type == 'ao') {
       this.initial_value_form = this.data.obj.initial_value;
       this.EditAnalogOutputForm = new FormGroup({
@@ -110,6 +129,7 @@ export class EditComponent implements OnInit {
       this.data.obj.address = this.EditAnalogInputForm.get('address')?.value
       this.data.obj.function = this.EditAnalogInputForm.get('function')?.value
       this.data.obj.scan_time = this.EditAnalogInputForm.get('scan_time')?.value
+      this.data.obj.isScanning = this.EditAnalogInputForm.get('isScanning')?.value
       this.data.obj.low = this.EditAnalogInputForm.get('low_limit')?.value
       this.data.obj.high = this.EditAnalogInputForm.get('high_limit')?.value
       this.data.obj.unit = this.EditAnalogInputForm.get('unit')?.value
@@ -118,6 +138,7 @@ export class EditComponent implements OnInit {
       this.data.obj.description = this.EditDigitalInputForm.get('description')?.value
       this.data.obj.address = this.EditDigitalInputForm.get('address')?.value
       this.data.obj.scan_time = this.EditDigitalInputForm.get('scan_time')?.value
+      this.data.obj.isScanning = this.EditDigitalInputForm.get('isScanning')?.value
     } else if (this.type == 'ao') {
       this.data.obj.name = this.EditAnalogOutputForm.get('name')?.value;
       this.data.obj.description = this.EditAnalogOutputForm.get('description')?.value
@@ -162,6 +183,18 @@ export class EditComponent implements OnInit {
     this.getData=true;
     // this.data.date = this.firstFormGroup.value.date;
     this.matDialogRef.close(this.data);
+  }
+
+  onToggleClick(event: MatSlideToggleChange) {
+    // Update the toggleState variable to reflect the new state
+    this.isScanning = event.checked;
+    console.log('Toggle state:', this.isScanning);
+    if (this.isScanning) {
+      this.toggle_label = 'On';
+    } else {
+      this.toggle_label = 'Off';
+    }
+    // Add your logic here
   }
 
 }

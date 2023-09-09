@@ -21,7 +21,7 @@ export class DigitalOutputComponent implements OnInit {
   file_key: string="";
   album_name: string="";
   displayedColumns: string[] = ['name', 'address', 'actions'];
-  dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<DigitalOutput>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
@@ -41,7 +41,7 @@ export class DigitalOutputComponent implements OnInit {
 
   ngOnInit(): void {
     for (let i = 1; i <= 10; i++) {
-      this.dataSource.data.push( {name: "kris " + i, scan_time: "" + i, state: "On", address: "Address " + i, function: 'Cosinus', low: 5 + i, high: 10 + i, unit: 'C', description: 'string', initial_value: i});
+      this.dataSource.data.push( {name: "kris " + i, address: "Address " + i,  description: 'string', initial_value: i});
     }
     
     for (let i = 1; i <= 20; i++) {
@@ -76,23 +76,23 @@ export class DigitalOutputComponent implements OnInit {
     console.log(this.description);
     console.log(this.address);
     console.log(this.initial_value);
-    this.dataSource.data.push( {name: "krisNovi", scan_time: "krisA", state: "Of", address: "Address 20", function: 'Sinus', low: 5, high: 10, unit: 'C', description: 'string', initial_value: 4});
+    this.dataSource.data.push( {name: "krisNovi", address: "Address 20", description: 'string', initial_value: 4});
     // this.changeDetectorRef.detectChanges();
-    this.dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+    this.dataSource = new MatTableDataSource<DigitalOutput>(ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
     console.log(this.dataSource.data);
   }
 
-  delete_tag(item: UserAccess) {
+  delete_tag(item: DigitalOutput) {
     const index = this.dataSource.data.indexOf(item);
       if (index !== -1) {
         this.dataSource.data.splice(index, 1);
-        this.dataSource = new MatTableDataSource<UserAccess>(ELEMENT_DATA);
+        this.dataSource = new MatTableDataSource<DigitalOutput>(ELEMENT_DATA);
         this.dataSource.paginator = this.paginator;
       }
   }
 
-  edit_tag(obj: UserAccess) {
+  edit_tag(obj: DigitalOutput) {
     const dialogRef = this.dialog.open(EditComponent, {
       data: {obj: obj, type:'do' /*date:this.someDate*/},
       panelClass: 'my-dialog-container-class',
@@ -122,7 +122,7 @@ export class DigitalOutputComponent implements OnInit {
   });
 }
 
-desc_tag(obj: UserAccess) {
+desc_tag(obj: DigitalOutput) {
   const dialogRef = this.dialog.open(DescriptionComponent, {
     data: {obj: obj.description, /*date:this.someDate*/},
     panelClass: 'my-dialog-container-class',
@@ -155,17 +155,11 @@ desc_tag(obj: UserAccess) {
 
 }
 
-const ELEMENT_DATA: UserAccess[] = [];
+const ELEMENT_DATA: DigitalOutput[] = [];
 
-interface UserAccess {
+interface DigitalOutput {
   name: string;
-  scan_time: string;
-  state: string;
   address: string;
-  function: string;
-  low: number;
-  high: number;
-  unit: string;
   description: string;
   initial_value: number;
 }
