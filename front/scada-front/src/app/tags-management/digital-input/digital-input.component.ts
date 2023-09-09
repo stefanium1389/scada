@@ -35,7 +35,7 @@ export class DigitalInputComponent implements OnInit {
   address: string = "";
   addresses: string[] = [];
   function: string="";
-  functions: string [] = ["Sinus","Cosinus", "Ramp"];
+  functions: string [] = ["SINUS","COSINUS", "RAMP"];
   scan_time: number = 0;
   digitalInputForm!: FormGroup;
 
@@ -43,7 +43,7 @@ export class DigitalInputComponent implements OnInit {
 
   ngOnInit(): void {
     for (let i = 1; i <= 10; i++) {
-      this.dataSource.data.push( {name: "kris " + i, scan_time: i, isScanning: true, address: "Address " + i, function: 'Sinus',  description: 'string'});
+      this.dataSource.data.push( {name: "kris " + i, scan_time: i, isScanning: true, address: "Address " + i, function: 'SINUS',  description: 'string'});
     }
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'cos', low: 5, high: 10, unit: 'C'});
@@ -78,7 +78,7 @@ export class DigitalInputComponent implements OnInit {
     console.log(this.description);
     console.log(this.address);
     console.log(this.scan_time);
-    this.dataSource.data.push( {name: "krisNovi", scan_time: 20, isScanning: false, address: "Address 20", function: 'Sinus', description: 'string'});
+    this.dataSource.data.push( {name: "krisNovi", scan_time: 20, isScanning: false, address: "Address 20", function: 'COSINUS', description: 'string'});
     // this.changeDetectorRef.detectChanges();
     this.dataSource = new MatTableDataSource<DigitalInput>(ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;

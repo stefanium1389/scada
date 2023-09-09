@@ -20,7 +20,7 @@ export class EditComponent implements OnInit {
   address: string = "";
   addresses: string[] = [];
   function: string="";
-  functions: string [] = ["Sinus","Cosinus", "Ramp"];
+  functions: string [] = ["SINUS","COSINUS", "RAMP"];
   scan_time: number = 0;
   initial_value: number = 0;
   initial_value_form: number = 0;
@@ -63,9 +63,9 @@ export class EditComponent implements OnInit {
         description: new FormControl(this.data.obj.description, Validators.required),
         address: new FormControl(this.data.obj.address, Validators.required),
         function: new FormControl(this.data.obj.function, Validators.required),
-        scan_time: new FormControl(this.data.obj.scan_time, Validators.required), // Set a default numeric value here
-        low_limit: new FormControl(this.data.obj.low, Validators.required), // Set a default numeric value here
-        high_limit: new FormControl(this.data.obj.high, Validators.required), // Set a default numeric value here
+        scan_time: new FormControl(this.data.obj.scanTime, Validators.required), // Set a default numeric value here
+        low_limit: new FormControl(this.data.obj.lowLimit, Validators.required), // Set a default numeric value here
+        high_limit: new FormControl(this.data.obj.highLimit, Validators.required), // Set a default numeric value here
         unit: new FormControl(this.data.obj.unit, Validators.required),
         isScanning: new FormControl(this.data.obj.isScanning, Validators.required),
         btn: new FormControl("")
@@ -82,7 +82,7 @@ export class EditComponent implements OnInit {
         description: new FormControl(this.data.obj.description, Validators.required),
         address: new FormControl(this.data.obj.address, Validators.required),
         function: new FormControl(this.data.obj.function, Validators.required),
-        scan_time: new FormControl(this.data.obj.scan_time, Validators.required),
+        scan_time: new FormControl(this.data.obj.scanTime, Validators.required),
         isScanning: new FormControl(this.data.obj.isScanning, Validators.required),
         btn: new FormControl("")},
       );
@@ -99,8 +99,8 @@ export class EditComponent implements OnInit {
         description: new FormControl(this.data.obj.description, Validators.required),
         address: new FormControl(this.data.obj.address, Validators.required),
         //initial_value: new FormControl(this.data.obj.initial_value, Validators.required),
-        low_limit: new FormControl(this.data.obj.low, Validators.required),
-        high_limit: new FormControl(this.data.obj.high, Validators.required),
+        low_limit: new FormControl(this.data.obj.lowLimit, Validators.required),
+        high_limit: new FormControl(this.data.obj.highLimit, Validators.required),
         unit: new FormControl(this.data.obj.unit, Validators.required),
         btn: new FormControl("")},
       );

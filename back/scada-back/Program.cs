@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 
 // @EVERYONE ovde dodajete servise
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ITagService, TagService>();
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)

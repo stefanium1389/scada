@@ -8,6 +8,8 @@ import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@an
 import { EditComponent } from '../edit/edit.component';
 import { DescriptionComponent } from '../description/description.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AnalogInputDTO, createAnalogInputDTO, AnalogInputIdDTO, createAnalogInputIdDTO } from 'src/app/DTOs/AnalogInputDTO';
+import { TagService } from 'src/app/services/tag.service';
 
 
 @Component({
@@ -22,7 +24,7 @@ export class AnalogInputComponent implements OnInit {
   file_key: string="";
   album_name: string="";
   displayedColumns: string[] = ['name', 'scan_time', 'state', 'address', 'function', 'units', 'actions'];
-  dataSource = new MatTableDataSource<AnalogInput>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
@@ -32,24 +34,26 @@ export class AnalogInputComponent implements OnInit {
    /*------------------------------------------------------------------*/
 
 
-  name: string = "";
-  description: string= "";
-  address: string = "";
+  // name: string = "";
+  // description: string= "";
+  // address: string = "";
   addresses: string[] = [];
-  function: string="";
-  functions: string [] = ["Sinus","Cosinus", "Ramp"];
-  scan_time: number = 0;
-  low_limit: string = ""
-  high_limit: string = ""
-  unit: string = ""
+  // function: string="";
+  functions: string [] = ["SINUS","COSINUS", "RAMP"];
+  // scan_time: number = 0;
+  // low_limit: string = ""
+  // high_limit: string = ""
+  // unit: string = ""
   analogInputForm!: FormGroup;
+  ais: AnalogInputIdDTO[] = [];
 
-  constructor(private router: Router, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private dialog: MatDialog) { }
+  constructor(private router: Router, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private dialog: MatDialog, private tagService: TagService) { }
 
   ngOnInit(): void {
-    for (let i = 1; i <= 10; i++) {
-      this.dataSource.data.push( {name: "kris " + i, scan_time: i, isScanning: true, address: "Address " + i, function: 'Sinus', low: 5 + i, high: 10 + i, unit: 'C', description: 'string'});
-    }
+    this.getAll();
+    // for (let i = 1; i <= 10; i++) {
+    //   this.dataSource.data.push( {name: "kris " + i, scan_time: i, isScanning: true, address: "Address " + i, function: 'RAMP', low: 5 + i, high: 10 + i, unit: 'C', description: 'string'});
+    // }
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'cos', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'ramp', low: 5, high: 10, unit: 'C'});
@@ -77,20 +81,53 @@ export class AnalogInputComponent implements OnInit {
     });
   }
 
-  alarms(item: AnalogInput) {
-    this.router.navigate(['alarms'], { queryParams: { name: item.name, unit:item.unit}} );
-  }
-
-  delete_tag(item: AnalogInput) {
-    const index = this.dataSource.data.indexOf(item);
-      if (index !== -1) {
-        this.dataSource.data.splice(index, 1);
-        this.dataSource = new MatTableDataSource<AnalogInput>(ELEMENT_DATA);
-        this.dataSource.paginator = this.paginator;
+  getAll() {
+    this.tagService.getAllAnalogInputs().subscribe({
+      next: result => {
+        console.log(result);
+        this.ais = result.results;
+        this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(this.ais);
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
       }
+
+    })
   }
 
-  edit_tag(obj: AnalogInput) {
+  alarms(item: AnalogInputIdDTO) {
+    this.router.navigate(['alarms'], { queryParams: { name: item.Name, unit:item.Unit}} );
+  }
+
+  delete_tag(item: any) {
+    console.log(item.id);
+    this.tagService.deleteAnalogInput(item.id).subscribe({
+      next: result => {
+        console.log(result);
+        this.getAll();
+        // const index = this.dataSource.data.indexOf(item);
+        // if (index !== -1) {
+        //   this.dataSource.data.splice(index, 1);
+        //   this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+        //   this.dataSource.paginator = this.paginator;
+        // }
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
+      }
+
+    })
+    // const index = this.dataSource.data.indexOf(item);
+    //   if (index !== -1) {
+    //     this.dataSource.data.splice(index, 1);
+    //     this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+    //     this.dataSource.paginator = this.paginator;
+    //   }
+  }
+
+  edit_tag(obj: any) {
     const dialogRef = this.dialog.open(EditComponent, {
       data: {obj: obj, type:'ai' /*date:this.someDate*/},
       panelClass: 'my-dialog-container-class',
@@ -98,14 +135,23 @@ export class AnalogInputComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if (result!=undefined) {
-        if (result.date!=undefined) {
-          // ride = {
-          //   "locations": obj.locations,
-          //   "passengers": obj.passengers,
-          //   "vehicleType": obj.vehicleType,
-          //   "babyTransport": obj.babyTransport,
-          //   "petTransport": obj.petTransport,
-          //   "scheduledTime": result.scheduledTime + ":00.000Z"
+        if (result.obj!=undefined) {
+          console.log(result.obj);
+          let p = result.obj;
+          let a = createAnalogInputDTO(p.name, p.description, p.function, p.address, p.scanTime, p.isScanning, p.lowLimit, p.highLimit, p.unit);
+          console.log('a');
+          console.log(a);
+          this.tagService.editAnalogInput(a, p.id).subscribe({
+            next: result => {
+              console.log(result);
+              this.getAll();
+            },
+            error: err => {
+              console.log(err);
+              alert(err?.error?.message || JSON.stringify(err));
+            }
+      
+          })
           // };
         } else {
           // ride = {
@@ -120,7 +166,8 @@ export class AnalogInputComponent implements OnInit {
   });
 }
 
-desc_tag(obj: AnalogInput) {
+desc_tag(obj: any) {
+  console.log(obj);
   const dialogRef = this.dialog.open(DescriptionComponent, {
     data: {obj: obj.description, /*date:this.someDate*/},
     panelClass: 'my-dialog-container-class',
@@ -151,34 +198,54 @@ desc_tag(obj: AnalogInput) {
 }
 
   onSubmit() {
-    this.name = this.analogInputForm.get('name')?.value;
-    this.description = this.analogInputForm.get('description')?.value
-    this.address = this.analogInputForm.get('address')?.value
-    this.function = this.analogInputForm.get('function')?.value
-    this.scan_time = this.analogInputForm.get('scan_time')?.value
-    this.low_limit = this.analogInputForm.get('low_limit')?.value
-    this.high_limit = this.analogInputForm.get('high_limit')?.value
-    this.unit = this.analogInputForm.get('unit')?.value
-    console.log(this.name);
-    console.log(this.description);
-    console.log(this.address);
-    console.log(this.function);
-    console.log(this.scan_time);
-    console.log(this.low_limit);
-    console.log(this.high_limit);
-    console.log(this.unit);
+    let name = this.analogInputForm.get('name')?.value;
+    let description = this.analogInputForm.get('description')?.value
+    let address = this.analogInputForm.get('address')?.value
+    let functionn = this.analogInputForm.get('function')?.value
+    let scan_time = this.analogInputForm.get('scan_time')?.value
+    let low_limit = this.analogInputForm.get('low_limit')?.value
+    let high_limit = this.analogInputForm.get('high_limit')?.value
+    let unit = this.analogInputForm.get('unit')?.value
+    // console.log(this.name);
+    // console.log(this.description);
+    // console.log(this.address);
+    // console.log(this.function);
+    // console.log(this.scan_time);
+    // console.log(this.low_limit);
+    // console.log(this.high_limit);
+    // console.log(this.unit);
+    let dto = createAnalogInputDTO(name, description, functionn, address, scan_time, true, low_limit, high_limit, unit);
+    console.log(dto);
+    this.tagService.addAnalogInput(dto).subscribe({
+      next: result => {
+        console.log(result);
+        this.getAll();
+        this.analogInputForm.reset();
+    //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+    // // this.changeDetectorRef.detectChanges();
+    // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+    // this.dataSource.paginator = this.paginator;
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
+      }
+
+    })
+
+
 
     // iz nekog razloga ovo sve mora da se desi za update dok u onInit ima samo 1. linija ..................................... glupavi angular
-    this.dataSource.data.push( {name: "krisNovi", scan_time: 1, isScanning: false , address: "Address 10", function: 'Cosinus', low: 5, high: 10, unit: 'C', description: 'string'});
-    // this.changeDetectorRef.detectChanges();
-    this.dataSource = new MatTableDataSource<AnalogInput>(ELEMENT_DATA);
-    this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource.data);
+    // this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+    // // this.changeDetectorRef.detectChanges();
+    // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+    // this.dataSource.paginator = this.paginator;
+    // console.log(this.dataSource.data);
   }
 
 }
 
-const ELEMENT_DATA: AnalogInput[] = [];
+const ELEMENT_DATA: AnalogInputIdDTO[] = [];
 
 interface AnalogInput {
   name: string;
