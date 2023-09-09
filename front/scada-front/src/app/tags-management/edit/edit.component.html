@@ -80,6 +80,13 @@
         </select>
         <br/>
 
+        <label for="function">Function:</label><br/>
+        <select style="width: 55%;" #typeOption class="element" name="function" formControlName="function">
+            <option value="" disabled selected>Function</option> 
+            <option *ngFor="let function of functions;let i = 'index';" [value]="function">{{function}}</option>
+        </select>
+        <br/>
+
         <div class="rtu">
             <div>
                 <label for="scan_time">Scan Time [s]:</label><br/>

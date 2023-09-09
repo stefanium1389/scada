@@ -81,6 +81,7 @@ export class EditComponent implements OnInit {
         name: new FormControl(this.data.obj.name, Validators.required),
         description: new FormControl(this.data.obj.description, Validators.required),
         address: new FormControl(this.data.obj.address, Validators.required),
+        function: new FormControl(this.data.obj.function, Validators.required),
         scan_time: new FormControl(this.data.obj.scan_time, Validators.required),
         isScanning: new FormControl(this.data.obj.isScanning, Validators.required),
         btn: new FormControl("")},
@@ -137,6 +138,7 @@ export class EditComponent implements OnInit {
       this.data.obj.name = this.EditDigitalInputForm.get('name')?.value;
       this.data.obj.description = this.EditDigitalInputForm.get('description')?.value
       this.data.obj.address = this.EditDigitalInputForm.get('address')?.value
+      this.data.obj.function = this.EditDigitalInputForm.get('function')?.value
       this.data.obj.scan_time = this.EditDigitalInputForm.get('scan_time')?.value
       this.data.obj.isScanning = this.EditDigitalInputForm.get('isScanning')?.value
     } else if (this.type == 'ao') {

@@ -17,7 +17,7 @@ export class AlarmsComponent implements OnInit {
   priority: string = "";
   priorities: string[] = ['Low', 'Medium', 'High'];
   type: string="";
-  types: string [] = ['Above', 'Below'];
+  types: string [] = ['Above [High]', 'Below [Low]'];
   limit: number = 0;
   unit: string = 'C';
   name: string = '';
@@ -92,7 +92,7 @@ export class AlarmsComponent implements OnInit {
     let type = this.alarmForm.get('type')?.value
     let limit = this.alarmForm.get('limit')?.value
     let sign = '';
-    if (type == 'Above') {
+    if (type == 'Above [High]') {
       sign = '>';
     } else {
       sign = '<';

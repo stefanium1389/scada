@@ -48,7 +48,7 @@ export class AnalogInputComponent implements OnInit {
 
   ngOnInit(): void {
     for (let i = 1; i <= 10; i++) {
-      this.dataSource.data.push( {name: "kris " + i, scan_time: "" + i, isScanning: true, address: "Address " + i, function: 'Sinus', low: 5 + i, high: 10 + i, unit: 'C', description: 'string'});
+      this.dataSource.data.push( {name: "kris " + i, scan_time: i, isScanning: true, address: "Address " + i, function: 'Sinus', low: 5 + i, high: 10 + i, unit: 'C', description: 'string'});
     }
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'cos', low: 5, high: 10, unit: 'C'});
@@ -169,7 +169,7 @@ desc_tag(obj: AnalogInput) {
     console.log(this.unit);
 
     // iz nekog razloga ovo sve mora da se desi za update dok u onInit ima samo 1. linija ..................................... glupavi angular
-    this.dataSource.data.push( {name: "krisNovi", scan_time: "krisA", isScanning: false , address: "Address 10", function: 'Cosinus', low: 5, high: 10, unit: 'C', description: 'string'});
+    this.dataSource.data.push( {name: "krisNovi", scan_time: 1, isScanning: false , address: "Address 10", function: 'Cosinus', low: 5, high: 10, unit: 'C', description: 'string'});
     // this.changeDetectorRef.detectChanges();
     this.dataSource = new MatTableDataSource<AnalogInput>(ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
@@ -182,7 +182,7 @@ const ELEMENT_DATA: AnalogInput[] = [];
 
 interface AnalogInput {
   name: string;
-  scan_time: string;
+  scan_time: number;
   isScanning: boolean;
   address: string;
   function: string;
