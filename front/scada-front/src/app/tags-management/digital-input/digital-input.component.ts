@@ -81,7 +81,8 @@ export class DigitalInputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        // alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to get digital inputs');
       }
 
     })
@@ -116,7 +117,8 @@ export class DigitalInputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        // alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to add digital input');
       }
 
     })
@@ -137,7 +139,8 @@ export class DigitalInputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        // alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to delete digital input');
       }
 
     })
@@ -170,7 +173,8 @@ export class DigitalInputComponent implements OnInit {
             },
             error: err => {
               console.log(err);
-              alert(err?.error?.message || JSON.stringify(err));
+              // alert(err?.error?.message || JSON.stringify(err));
+              alert('Failed to edit digital input');
             }
       
           })

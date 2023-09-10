@@ -90,7 +90,8 @@ export class AnalogInputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        // alert(err?.message || JSON.stringify(err));
+        alert('Failed to get analog inputs');
       }
 
     })
@@ -102,7 +103,7 @@ export class AnalogInputComponent implements OnInit {
 
   delete_tag(item: any) {
     console.log(item.id);
-    this.tagService.deleteAnalogInput(item.id).subscribe({
+    this.tagService.deleteAnalogInput(-1).subscribe({
       next: result => {
         console.log(result);
         this.getAll();
@@ -115,7 +116,8 @@ export class AnalogInputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to delete analog input');
+        // alert(err?.error?.message || JSON.stringify(err));
       }
 
     })
@@ -148,7 +150,8 @@ export class AnalogInputComponent implements OnInit {
             },
             error: err => {
               console.log(err);
-              alert(err?.error?.message || JSON.stringify(err));
+              alert('Failed to edit analog input');
+              // alert(err?.error?.message || JSON.stringify(err));
             }
       
           })
@@ -227,7 +230,8 @@ desc_tag(obj: any) {
     // this.dataSource.paginator = this.paginator;
       },
       error: err => {
-        console.log(err);
+        // console.log(err);
+        alert('Failed to add analog input');
         alert(err?.error?.message || JSON.stringify(err));
       }
 

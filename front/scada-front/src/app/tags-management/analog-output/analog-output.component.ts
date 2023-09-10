@@ -86,7 +86,8 @@ export class AnalogOutputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        // alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to get analog outputs');
       }
 
     })
@@ -128,7 +129,8 @@ export class AnalogOutputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to add analog output');
+        // alert(err?.error?.message || JSON.stringify(err));
       }
 
     })
@@ -151,7 +153,8 @@ export class AnalogOutputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to delete analog output');
+        // alert(err?.error?.message || JSON.stringify(err));
       }
 
     })
@@ -184,7 +187,8 @@ export class AnalogOutputComponent implements OnInit {
             },
             error: err => {
               console.log(err);
-              alert(err?.error?.message || JSON.stringify(err));
+              // alert(err?.error?.message || JSON.stringify(err));
+              alert('Failed to edit analog output');
             }
       
           })

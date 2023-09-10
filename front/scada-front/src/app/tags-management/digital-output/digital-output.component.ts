@@ -80,7 +80,8 @@ export class DigitalOutputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        // alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to get digital outputs');
       }
 
     })
@@ -114,7 +115,8 @@ export class DigitalOutputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        // alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to add digital output');
       }
 
     })
@@ -135,7 +137,8 @@ export class DigitalOutputComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert(err?.error?.message || JSON.stringify(err));
+        // alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to delete digital output');
       }
 
     })
@@ -168,7 +171,8 @@ export class DigitalOutputComponent implements OnInit {
             },
             error: err => {
               console.log(err);
-              alert(err?.error?.message || JSON.stringify(err));
+              // alert(err?.error?.message || JSON.stringify(err));
+              alert('Failed to edit digital output');
             }
       
           })
