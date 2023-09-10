@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="item item-left">
+        <h1 style="text-align: center; font-size: large;"><b>Alarms for tag {{name}}</b></h1>
+        <div class="legends">
+            <div class="legend" id="legend-low">
+                <p>Low priority alarms</p>
+                <div class="legend_item item-low" *ngFor='let item of selectedItemsLow'>
+                    <div class="legend_content">
+                        <label *ngIf="item.Type == 'LOW'">&gt; {{item.Limit}} {{unit}}</label>
+                        <label *ngIf="item.Type == 'HIGH'">&lt; {{item.Limit}} {{unit}}</label>
+                    <span matTooltip="Delete alarm" (click)="delete_alarm(item)" class="material-symbols-outlined">delete</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="legend" id="legend-medium">
+                <p>Medium priority alarms</p>
+                <div class="legend_item item-medium" *ngFor='let item of selectedItemsMedium'>
+                <div class="legend_content">
+                    <label *ngIf="item.Type == 'LOW'">&gt; {{item.Limit}} {{unit}}</label>
+                    <label *ngIf="item.Type == 'HIGH'">&lt; {{item.Limit}} {{unit}}</label>
+                    <span matTooltip="Delete alarm" (click)="delete_alarm(item)" class="material-symbols-outlined">delete</span>
+                </div>
+                </div>
+            </div>
+
+            <div class="legend" id="legend-high">
+                <p>High priority alarms</p>
+                <div class="legend_item item-high" *ngFor='let item of selectedItemsHigh'>
+                    <div class="legend_content">
+                        <label *ngIf="item.Type == 'LOW'">&gt; {{item.Limit}} {{unit}}</label>
+                        <label *ngIf="item.Type == 'HIGH'">&lt; {{item.Limit}} {{unit}}</label>
+                    <span matTooltip="Delete alarm" (click)="delete_alarm(item)" class="material-symbols-outlined">delete</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="item item-right">
+        <h3>Add new alarm</h3>
+        <div class="div">
+            <form
+                method="POST"
+                [formGroup]="alarmForm" 
+                (ngSubmit)="onSubmit()"
+                >
+                <select style="width: 55%;" #typeOption class="element" name="priority" formControlName="priority">
+                    <option value="" disabled selected>Priority</option> 
+                    <option *ngFor="let priority of priorities;let i = 'index';" [value]="priority">{{priority}}</option>
+                </select>
+        
+                <select style="width: 55%;" #typeOption class="element" name="type" formControlName="type">
+                    <option value="" disabled selected>Type</option> 
+                    <option *ngFor="let type of types;let i = 'index';" [value]="type">{{type}}</option>
+                </select>
+        
+                <input class="element" type="number" formControlName="limit" placeholder="Limit" name="limit" id="limit" required>
+
+                <button (keydown.enter)="onSubmit()" type="submit">Create alarm</button>
+            </form>
+        </div>
+    </div>
+</div>

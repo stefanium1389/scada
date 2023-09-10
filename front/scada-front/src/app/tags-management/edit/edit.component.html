@@ -1,0 +1,209 @@
+<!-- <p>edit works!</p> -->
+<div *ngIf="type=='ai'" class="div">
+    <form
+        method="POST"
+        [formGroup]="EditAnalogInputForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <label for="name">Name:</label> <br/>
+        <input class="element" type="text" formControlName="name" placeholder="Name" name="name" id="name" required>
+        <br/>
+
+        <label for="description">Description:</label><br/>
+        <textarea formControlName="description" name="description" id="description" required class="element ta" placeholder="Description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        <br/>
+
+        <label for="address">Address:</label><br/>
+        <select style="width: 55%;" #typeOption class="element" name="address" formControlName="address">
+            <option value="" disabled selected>Address</option> 
+            <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
+        </select>
+        <br/>
+
+        <label for="function">Function:</label><br/>
+        <select style="width: 55%;" #typeOption class="element" name="function" formControlName="function">
+            <option value="" disabled selected>Function</option> 
+            <option *ngFor="let function of functions;let i = 'index';" [value]="function">{{function}}</option>
+        </select>
+        <br/>
+
+        <div class="rtu">
+            <div>
+                <label for="scan_time">Scan Time [s]:</label><br/>
+                <input class="element" type="number" formControlName="scan_time" placeholder="Scan Time [s]" name="scan_time" id="scan_time" required>
+            </div>
+            <div>
+                <label for="scan_time">Scanning</label><br/>
+                <mat-slide-toggle formControlName="isScanning" (change)="onToggleClick($event)">{{toggle_label}}</mat-slide-toggle>
+            </div>
+        </div>
+
+        <div class="analog-meta-data">
+            <div>
+                <label>Low Limit:</label><br/>
+                <input class="small element" placeholder="Low Limit" type="number" formControlName="low_limit" name="low_limit" id="low_limit" required/>
+            </div>
+            <div>
+                <label>High Limit:</label><br/>
+                <input class="small element" placeholder="High Limit" type="number" formControlName="high_limit" name="high_limit" id="high_limit" required/>
+            </div>
+            <div>
+                <label>Unit:</label><br/>
+                <input class="small element" placeholder="Units" formControlName="unit" name="unit" id="unit" required/>
+            </div>
+        </div>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Edit analog input tag</button>
+    </form>
+</div>
+
+
+
+<div *ngIf="type=='di'" class="div">
+    <form
+        method="POST"
+        [formGroup]="EditDigitalInputForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <label for="name">Name:</label> <br/>
+        <input class="element" type="text" formControlName="name" placeholder="Name" name="name" id="name" required>
+        <br/>
+
+        <label for="description">Description:</label><br/>
+        <textarea formControlName="description" name="description" id="description" required class="element ta" placeholder="Description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        <br/>
+
+        <label for="address">Address:</label><br/>
+        <select style="width: 55%;" #typeOption class="element" name="address" formControlName="address">
+            <option value="" disabled selected>Address</option> 
+            <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
+        </select>
+        <br/>
+
+        <label for="function">Function:</label><br/>
+        <select style="width: 55%;" #typeOption class="element" name="function" formControlName="function">
+            <option value="" disabled selected>Function</option> 
+            <option *ngFor="let function of functions;let i = 'index';" [value]="function">{{function}}</option>
+        </select>
+        <br/>
+
+        <div class="rtu">
+            <div>
+                <label for="scan_time">Scan Time [s]:</label><br/>
+                <input class="element" type="number" formControlName="scan_time" placeholder="Scan Time [s]" name="scan_time" id="scan_time" required>
+            </div>
+            <div>
+                <label for="scan_time">Scanning</label><br/>
+                <mat-slide-toggle formControlName="isScanning" (change)="onToggleClick($event)">{{toggle_label}}</mat-slide-toggle>
+            </div>
+        </div>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Edit digital input tag</button>
+    </form>
+</div>
+
+<div *ngIf="type=='ao'" class="div">
+    <form
+        method="POST"
+        [formGroup]="EditAnalogOutputForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <label for="name">Name:</label> <br/>
+        <input class="element" type="text" formControlName="name" placeholder="Name" name="name" id="name" required>
+        <br/>
+        
+        <label for="description">Description:</label><br/>
+        <textarea formControlName="description" name="description" id="description" required class="element ta" placeholder="Description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        <br/>
+        
+        <label for="address">Address:</label><br/>
+        <select style="width: 55%;" #typeOption class="element" name="address" formControlName="address">
+            <option value="" disabled selected>Address</option> 
+            <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
+        </select>
+        <br/>
+
+        <label for="initial_value">Initial Value:</label><br/><br>
+        <label class="element" style="color:black">{{initial_value_form}} </label>
+        <br><br>
+        <!-- <input [disabled] class="element" type="number" formControlName="initial_value" placeholder="Initial Value" name="initial_value" id="initial_value" required> -->
+        <!-- <br/> -->
+
+        <div class="analog-meta-data">
+            <div>
+                <label>Low Limit:</label><br/>
+                <input class="small element" placeholder="Low Limit" type="number" formControlName="low_limit" name="low_limit" id="low_limit" required/>
+            </div>
+            <div>
+                <label>High Limit:</label><br/>
+                <input class="small element" placeholder="High Limit" type="number" formControlName="high_limit" name="high_limit" id="high_limit" required/>
+            </div>
+            <div>
+                <label>Unit:</label><br/>
+                <input class="small element" placeholder="Units" formControlName="unit" name="unit" id="unit" required/>
+            </div>
+        </div>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Edit analog output tag</button>
+    </form>
+</div>
+
+
+<div *ngIf="type=='do'" class="div">
+    <form
+        method="POST"
+        [formGroup]="EditDigitalOutputForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <label for="name">Name:</label> <br/>
+        <input class="element" type="text" formControlName="name" placeholder="Name" name="name" id="name" required>
+        <br/>
+        
+        <label for="description">Description:</label><br/>
+        <textarea formControlName="description" name="description" id="description" required class="element ta" placeholder="Description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        <br/>
+        
+        <label for="address">Address:</label><br/>
+        <select style="width: 55%;" #typeOption class="element" name="address" formControlName="address">
+            <option value="" disabled selected>Address</option> 
+            <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
+        </select>
+        <br/>
+
+        <label for="initial_value">Initial Value:</label><br/><br>
+        <label class="element" style="color:black">{{initial_value_form}} </label>
+        <br><br>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Edit digital output tag</button>
+    </form>
+</div>
+
+<div *ngIf="type=='rtu'" class="div">
+    <form
+        method="POST"
+        [formGroup]="editRtuForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <label for="address">Address:</label><br/>
+        <select style="width: 55%;" #typeOption class="element" name="address" formControlName="address">
+            <option value="" disabled selected>Address</option> 
+            <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
+        </select>
+        <br/>
+
+        <div class="rtu">
+            <div>
+                <label>Low Limit:</label><br/>
+                <input class="small element" placeholder="Low Limit" type="number" formControlName="low_limit" name="low_limit" id="low_limit" required/>
+            </div>
+            <div>
+                <label>High Limit:</label><br/>
+                <input class="small element" placeholder="High Limit" type="number" formControlName="high_limit" name="high_limit" id="high_limit" required/>
+            </div>
+        </div>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Edit RTU</button>
+    </form>
+</div>
+
+

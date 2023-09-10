@@ -10,6 +10,28 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegistrationComponent } from './registration/registration.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {MatTabsModule} from '@angular/material/tabs';
+import {TextFieldModule} from '@angular/cdk/text-field';
+
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatDialogModule} from "@angular/material/dialog";
+
+
+import { TagsManagementComponent } from './tags-management/tags-management.component';
+import { AlarmsComponent } from './tags-management/alarms/alarms.component';
+import { RtuComponent } from './tags-management/rtu/rtu.component';
+import { AnalogInputComponent } from './tags-management/analog-input/analog-input.component';
+import { AnalogOutputComponent } from './tags-management/analog-output/analog-output.component';
+import { DigitalInputComponent } from './tags-management/digital-input/digital-input.component';
+import { DigitalOutputComponent } from './tags-management/digital-output/digital-output.component';
+import { EditComponent } from './tags-management/edit/edit.component';
+import { DescriptionComponent } from './tags-management/description/description.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +39,16 @@ import { RegistrationComponent } from './registration/registration.component';
     TrendingComponent,
     LoginComponent,
     NavbarComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    TagsManagementComponent,
+    AlarmsComponent,
+    RtuComponent,
+    AnalogInputComponent,
+    AnalogOutputComponent,
+    DigitalInputComponent,
+    DigitalOutputComponent,
+    EditComponent,
+    DescriptionComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +56,16 @@ import { RegistrationComponent } from './registration/registration.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    MatTabsModule,
+    TextFieldModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatDialogModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
