@@ -116,8 +116,8 @@ export class EditComponent implements OnInit {
     } else {
       this.editRtuForm = new FormGroup({
         address: new FormControl(this.data.obj.address, Validators.required),
-        low_limit: new FormControl(this.data.obj.low, Validators.required),
-        high_limit: new FormControl(this.data.obj.high, Validators.required),
+        low_limit: new FormControl(this.data.obj.lowLimit, Validators.required),
+        high_limit: new FormControl(this.data.obj.highLimit, Validators.required),
         btn: new FormControl("")},
       );
     }
@@ -156,8 +156,8 @@ export class EditComponent implements OnInit {
       this.data.obj.initialValue = this.initial_value_form;
     } else {
       this.data.obj.address = this.editRtuForm.get('address')?.value
-      this.data.obj.low = this.editRtuForm.get('low_limit')?.value
-      this.data.obj.high = this.editRtuForm.get('high_limit')?.value
+      this.data.obj.lowLimit = this.editRtuForm.get('low_limit')?.value
+      this.data.obj.highLimit = this.editRtuForm.get('high_limit')?.value
     }
 
 
