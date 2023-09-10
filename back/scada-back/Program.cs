@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using scada_back.Context;
 using Microsoft.EntityFrameworkCore;
 using scada_back.Services;
@@ -16,6 +15,7 @@ builder.Services.AddSwaggerGen();
 // @EVERYONE ovde dodajete servise
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITagService, TagService>();
+builder.Services.AddTransient<IAlarmService, AlarmService>();
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)

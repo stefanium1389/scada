@@ -97,13 +97,14 @@ export class AnalogInputComponent implements OnInit {
     })
   }
 
-  alarms(item: AnalogInputIdDTO) {
-    this.router.navigate(['alarms'], { queryParams: { name: item.Name, unit:item.Unit}} );
+  alarms(item: any) {
+    console.log(item);
+    this.router.navigate(['alarms'], { queryParams: { id: item.id, name: item.name, unit:item.unit}} );
   }
 
   delete_tag(item: any) {
     console.log(item.id);
-    this.tagService.deleteAnalogInput(-1).subscribe({
+    this.tagService.deleteAnalogInput(item.id).subscribe({
       next: result => {
         console.log(result);
         this.getAll();

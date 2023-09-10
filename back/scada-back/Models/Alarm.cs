@@ -28,7 +28,7 @@ namespace scada_back.Models
 
         [Column("tag_id")]
         [JsonIgnore]
-        public AnalogInput? TagId { get; set; }
+        public AnalogInput? Tag { get; set; }
 
         [Column("limit")]
         public double Limit { get; set; }

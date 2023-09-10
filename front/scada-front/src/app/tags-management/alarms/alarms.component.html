@@ -4,30 +4,33 @@
         <div class="legends">
             <div class="legend" id="legend-low">
                 <p>Low priority alarms</p>
-                <div class="legend_item item-low" *ngFor='let item of selectedItemsLow' (click)="selectItemInLegend($event)">
+                <div class="legend_item item-low" *ngFor='let item of selectedItemsLow'>
                     <div class="legend_content">
-                    <label>{{item}}</label>
-                    <span matTooltip="Delete alarm" (click)="delete_alarm_low(item)" class="material-symbols-outlined">delete</span>
+                        <label *ngIf="item.Type == 'LOW'">&gt; {{item.Limit}} {{unit}}</label>
+                        <label *ngIf="item.Type == 'HIGH'">&lt; {{item.Limit}} {{unit}}</label>
+                    <span matTooltip="Delete alarm" (click)="delete_alarm(item)" class="material-symbols-outlined">delete</span>
                     </div>
                 </div>
             </div>
 
             <div class="legend" id="legend-medium">
                 <p>Medium priority alarms</p>
-                <div class="legend_item item-medium" *ngFor='let item of selectedItemsMedium' (click)="selectItemInLegend($event)">
+                <div class="legend_item item-medium" *ngFor='let item of selectedItemsMedium'>
                 <div class="legend_content">
-                    <label>{{item}}</label>
-                    <span matTooltip="Delete alarm" (click)="delete_alarm_medium(item)" class="material-symbols-outlined">delete</span>
+                    <label *ngIf="item.Type == 'LOW'">&gt; {{item.Limit}} {{unit}}</label>
+                    <label *ngIf="item.Type == 'HIGH'">&lt; {{item.Limit}} {{unit}}</label>
+                    <span matTooltip="Delete alarm" (click)="delete_alarm(item)" class="material-symbols-outlined">delete</span>
                 </div>
                 </div>
             </div>
 
             <div class="legend" id="legend-high">
                 <p>High priority alarms</p>
-                <div class="legend_item item-high" *ngFor='let item of selectedItemsHigh' (click)="selectItemInLegend($event)">
+                <div class="legend_item item-high" *ngFor='let item of selectedItemsHigh'>
                     <div class="legend_content">
-                    <label>{{item}}</label>
-                    <span matTooltip="Delete alarm" (click)="delete_alarm_high(item)" class="material-symbols-outlined">delete</span>
+                        <label *ngIf="item.Type == 'LOW'">&gt; {{item.Limit}} {{unit}}</label>
+                        <label *ngIf="item.Type == 'HIGH'">&lt; {{item.Limit}} {{unit}}</label>
+                    <span matTooltip="Delete alarm" (click)="delete_alarm(item)" class="material-symbols-outlined">delete</span>
                     </div>
                 </div>
             </div>

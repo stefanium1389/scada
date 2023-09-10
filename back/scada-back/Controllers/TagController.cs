@@ -202,7 +202,7 @@ namespace scada_back.Controllers
                 DigitalInput di = _tagService.AddDigitalInput(dto);
                 if (di != null)
                 {
-                    return Ok(new { ai = new DigitalInputIdDTO(di) });
+                    return Ok(new { di = new DigitalInputIdDTO(di) });
                 }
                 else
                 {
@@ -282,7 +282,7 @@ namespace scada_back.Controllers
                 DigitalOutput doo = _tagService.AddDigitalOutput(dto);
                 if (doo != null)
                 {
-                    return Ok(new { ai = new DigitalOutputIdDTO(doo) });
+                    return Ok(new { doo = new DigitalOutputIdDTO(doo) });
                 }
                 else
                 {

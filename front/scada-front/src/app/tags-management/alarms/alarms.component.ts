@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AlarmDTO, createAlarmDTO, AlarmIdDTO, createAlarmIdDTO } from 'src/app/DTOs/AlarmDTO';
+import { AlarmService } from 'src/app/services/alarm.service';
 
 @Component({
   selector: 'app-alarms',
@@ -9,10 +11,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AlarmsComponent implements OnInit {
 
-  selectedLegendItem!: string;
-  selectedItemsLow: string[] = [];
-  selectedItemsMedium: string[] = [];
-  selectedItemsHigh: string[] = [];
+  selectedLegendItem!: AlarmIdDTO;
+  selectedItemsLow: AlarmIdDTO[] = [];
+  selectedItemsMedium: AlarmIdDTO[] = [];
+  selectedItemsHigh: AlarmIdDTO[] = [];
 
   priority: string = "";
   priorities: string[] = ['Low', 'Medium', 'High'];
@@ -21,29 +23,21 @@ export class AlarmsComponent implements OnInit {
   limit: number = 0;
   unit: string = 'C';
   name: string = '';
+  id: number = 0;
 
   alarmForm!: FormGroup;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private alarmService: AlarmService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
+      this.id = params['id'];
+      console.log(this.id);
       this.name = params['name'];
       console.log(this.name);
       this.unit = params['unit'];
       console.log(this.unit);
     });
-    // for (let i = -15; i < 30; i++) {
-    //   this.selectedItemsLow.push(i.toString());
-    // }
-
-    // for (let i = 0; i < 60; i++) {
-    //   this.selectedItemsMedium.push(i.toString());
-    // }
-
-    // for (let i = 61; i < 100; i++) {
-    //   this.selectedItemsHigh.push(i.toString());
-    // }
 
     this.alarmForm = new FormGroup({
       priority: new FormControl('', Validators.required),
@@ -51,40 +45,51 @@ export class AlarmsComponent implements OnInit {
       limit: new FormControl('', Validators.required),
       btn: new FormControl("")
     });
+
+    this.getAll();
   }
 
-  selectItemInLegend(event:any){
-    const clicked = event.target as HTMLDivElement;
-    // this.lastSelectedLegendItem = this.selectedLegendItem;
-    this.selectedLegendItem = clicked.innerText;
-    console.log(this.selectedLegendItem);
-    // this.updateCharts();
-  }
+  getAll() {
+    this.selectedItemsHigh.length = 0;
+    this.selectedItemsMedium.length = 0;
+    this.selectedItemsLow.length = 0;
+    this.alarmService.getAllAlarmsForTag(this.id).subscribe({
+      next: result => {
+        // console.log(result);
+        for (let i = 0; i < result.length; i++) {
+          // console.log(result[i].id);
+          let elem = result[i];
+          if (elem.priority == 'LOW') {
+            this.selectedItemsLow.push(createAlarmIdDTO(elem.id, elem.type, elem.priority, elem.tagId, elem.limit));
+          } else if (elem.priority == 'MEDIUM') {
+            this.selectedItemsMedium.push(createAlarmIdDTO(elem.id, elem.type, elem.priority, elem.tagId, elem.limit));
+          } else {
+            this.selectedItemsHigh.push(createAlarmIdDTO(elem.id, elem.type, elem.priority, elem.tagId, elem.limit));
+          }
+        }
 
-  delete_alarm_low(item: string) {
-    const index = this.selectedItemsLow.indexOf(item);
-    if (index !== -1) {
-      this.selectedItemsLow.splice(index, 1);
-    }
-  }
+      },
+      error: err => {
+        console.log(err);
+        // alert(err?.error?.message || JSON.stringify(err));
+        alert('Failed to get alarms');
+      }
 
-  delete_alarm_medium(item: string) {
-    const index = this.selectedItemsMedium.indexOf(item);
-    if (index !== -1) {
-      this.selectedItemsMedium.splice(index, 1);
-    }
-  }
-
-  delete_alarm_high(item: string) {
-    const index = this.selectedItemsHigh.indexOf(item);
-    if (index !== -1) {
-      this.selectedItemsHigh.splice(index, 1);
-    }
+    })
   }
   
+  delete_alarm(item:AlarmIdDTO) {
+    this.alarmService.deleteAlarm(item.Id).subscribe({
+      next: result => {
+        this.getAll();
+      },
+      error: err => {
+        console.log(err);
+        alert('Failed to delete alarm');
+        // alert(err?.error?.message || JSON.stringify(err));
+      }
 
-  edit_tag(obj: any) {
-    console.log('kris');
+    })
   }
 
   onSubmit() {
@@ -97,14 +102,37 @@ export class AlarmsComponent implements OnInit {
     } else {
       sign = '<';
     }
-    if (priority == 'Low') {
-      this.selectedItemsLow.push(sign + ' ' + limit + ' ' + this.unit);
-    } else if (priority == 'Medium') {
-      this.selectedItemsMedium.push(sign + ' ' + limit + ' ' + this.unit);
+
+    let t = '';
+    if (type == 'Above [High]') {
+      t = 'LOW';
     } else {
-      this.selectedItemsHigh.push(sign + ' ' + limit + ' ' + this.unit);
+      t = 'HIGH';
     }
-    console.log(this.priority, this.type, this.limit);
+
+    let p = '';
+    if (priority == 'Low') {
+      p = 'LOW';
+    } else if (priority == 'Medium') {
+      p = 'MEDIUM';
+    } else {
+      p = 'HIGH'
+    }
+
+    let dto = createAlarmDTO(t, p, this.id, limit);
+    // console.log(dto);
+    this.alarmService.addAlarm(dto).subscribe({
+      next: result => {
+        this.getAll();
+      },
+      error: err => {
+        console.log(err);
+        alert('Failed to add alarm');
+        // alert(err?.error?.message || JSON.stringify(err));
+      }
+
+    })
+
   }
 
 }
