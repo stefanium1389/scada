@@ -25,5 +25,8 @@ namespace scada_back.Context
         public DbSet<DigitalInput> DigitalInputs { get; set; }
         public DbSet<DigitalOutput> DigitalOutputs { get; set; }
         public DbSet<RealTimeUnit> RealTimeUnits { get; set; }
+        public DbSet<AnalogInputValue> AnalogInputValues { get; set; }
+        public DbSet<DigitalInputValue> DigitalInputValues { get; set; }
+        public DbSet<ActivatedAlarm> ActivatedAlarms { get; set;}
     }
 }
