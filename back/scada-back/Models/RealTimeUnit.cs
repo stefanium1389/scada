@@ -10,12 +10,15 @@ namespace scada_back.Models
         public int Id { get; set; }
 
         [Column("address")]
-        public string Address { get; set; }
+        public Address Address { get; set; }
 
-        [Column("low_limit")]
-        public double LowLimit { get; set; }
+        [Column("min_value")]
+        public double MinValue { get; set; }
 
-        [Column("high_limit")]
-        public double HighLimit { get; set; }
+        [Column("max_value")]
+        public double MaxValue { get; set; }
+
+        [Column("generate_time")]
+        public int GenerateTime { get; set; }
     }
 }

@@ -2,11 +2,17 @@
 
 namespace scada_back.Models
 {
-    [Table("Drivers")]
-    public class Driver
+    [Table("DigitalOutputValues")]
+    public class DigitalOutputValue
     {
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        public DigitalOutput Tag { get; set; }
+
+        public DateTime TimeStamp { get; set; }
+
+        public double Value { get; set; }
     }
 }

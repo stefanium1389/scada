@@ -6,14 +6,16 @@ namespace scada_back.DTOs
     {
         public int Id { get; set; }
         public string Address { get; set; }
-        public double LowLimit { get; set; }
-        public double HighLimit { get; set; }
+        public double MinValue { get; set; }
+        public double MaxValue { get; set; }
+        public int GenerateTime { get; set; }
 
         public RTUIdDTO(RealTimeUnit rtu) { 
             Id = rtu.Id;
-            Address = rtu.Address;
-            LowLimit = rtu.LowLimit;
-            HighLimit = rtu.HighLimit;
+            Address = rtu.Address.Name;
+            MinValue = rtu.MinValue;
+            MaxValue = rtu.MaxValue;
+            GenerateTime = rtu.GenerateTime;
         }
     }
 }

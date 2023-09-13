@@ -3,7 +3,8 @@
     public class RTUDTO
     {
         public string Address { get; set; }
-        public double LowLimit { get; set; }
-        public double HighLimit { get; set; }
+        public double MinValue { get; set; }
+        public double MaxValue { get; set; }
+        public int GenerateTime { get; set; }
     }
 }

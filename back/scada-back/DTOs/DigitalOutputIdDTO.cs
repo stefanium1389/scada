@@ -19,7 +19,7 @@ namespace scada_back.DTOs
             Id = doo.Id;
             Name = doo.Name;
             Description = doo.Description;
-            Address = doo.Address;
+            Address = doo.Address.Name;
             InitialValue = doo.InitialValue;
         }
     }

@@ -31,7 +31,7 @@ namespace scada_back.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RTUIdDTO>> AddAnalogInput([FromBody] RTUDTO dto)
+        public async Task<ActionResult<RTUIdDTO>> AddRealTimeUnit([FromBody] RTUDTO dto)
         {
             try
             {

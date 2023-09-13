@@ -24,11 +24,27 @@ namespace scada_back.Services
         }
         public RealTimeUnit AddRealTimeUnit(RTUDTO dto)
         {
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
+            if (address == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (address.Driver == Driver.RTU)
+                {
+                    return null;
+                }
+            }
+            address.Driver = Driver.RTU;
+            Context.Addresses.Update(address);
+            Context.SaveChanges();
             RealTimeUnit newTRU = new RealTimeUnit()
             {
-               Address = dto.Address,
-               LowLimit = dto.LowLimit,
-               HighLimit = dto.HighLimit,
+               Address = address,
+               MinValue = dto.MinValue,
+               MaxValue = dto.MaxValue,
+               GenerateTime = dto.GenerateTime,
             };
             Context.RealTimeUnits.Add(newTRU);
             Context.SaveChanges();
@@ -36,10 +52,26 @@ namespace scada_back.Services
         }
         public RealTimeUnit EditRealTimeUnit(RTUDTO dto, int id)
         {
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
+            if (address == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (address.Driver == Driver.RTU)
+                {
+                    return null;
+                }
+            }
+            address.Driver = Driver.RTU;
+            Context.Addresses.Update(address);
+            Context.SaveChanges();
             RealTimeUnit rtu = Context.RealTimeUnits.FirstOrDefault(p => p.Id == id);
-            rtu.Address = dto.Address;
-            rtu.LowLimit = dto.LowLimit;
-            rtu.HighLimit = dto.HighLimit;
+            rtu.MinValue = dto.MinValue;
+            rtu.MaxValue = dto.MaxValue;
+            rtu.GenerateTime = dto.GenerateTime;
+            rtu.Address = address;
             Context.RealTimeUnits.Update(rtu);
             Context.SaveChanges();
             return rtu;
@@ -47,6 +79,10 @@ namespace scada_back.Services
         public bool DeleteRealTimeUnit(int id)
         {
             RealTimeUnit rtu = Context.RealTimeUnits.First(x => x.Id == id);
+            Address address = rtu.Address;
+            address.Driver = Driver.SIMULATION;
+            Context.Addresses.Update(address);
+            Context.SaveChanges();
             if (rtu != null)
             {
                 Context.RealTimeUnits.Remove(rtu);

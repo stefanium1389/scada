@@ -10,7 +10,7 @@ namespace scada_back.DTOs
 
         public string Description { get; set; }
 
-        public string Function { get; set; }
+        //public string Function { get; set; }
 
         public string Address { get; set; }
 
@@ -29,8 +29,7 @@ namespace scada_back.DTOs
             Id = ai.Id;
             Name = ai.Name;
             Description = ai.Description;
-            Function = ai.Function.ToString();
-            Address = ai.Address;
+            Address = ai.Address.Name;
             ScanTime = ai.ScanTime;
             IsScanning = ai.IsScanning;
             LowLimit = ai.LowLimit;

@@ -47,13 +47,12 @@ namespace scada_back.Services
 
         public AnalogInput AddAnalogInput(AnalogInputDTO dto)
         {
-            Enum.TryParse(dto.Function, out Function function);
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             AnalogInput newAI = new AnalogInput()
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                Function = function,
-                Address = dto.Address,
+                Address = address,
                 ScanTime = dto.ScanTime,
                 IsScanning = dto.IsScanning,
                 LowLimit = dto.LowLimit,
@@ -69,12 +68,11 @@ namespace scada_back.Services
 
         public AnalogInput EditAnalogInput(AnalogInputDTO dto, int id)
         {
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             AnalogInput ai = Context.AnalogInputs.FirstOrDefault(p => p.Id == id);
             ai.Name = dto.Name;
             ai.Description = dto.Description;
-            Enum.TryParse(dto.Function, out Function function);
-            ai.Function = function;
-            ai.Address = dto.Address;
+            ai.Address = address;
             ai.ScanTime = dto.ScanTime;
             ai.IsScanning = dto.IsScanning;
             ai.LowLimit = dto.LowLimit;
@@ -107,11 +105,12 @@ namespace scada_back.Services
 
         public AnalogOutput AddAnalogOutput(AnalogOutputDTO dto)
         {
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             AnalogOutput newAO = new AnalogOutput()
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                Address = dto.Address,
+                Address = address,
                 InitialValue = dto.InitialValue,
                 LowLimit = dto.LowLimit,
                 HighLimit = dto.HighLimit,
@@ -126,10 +125,11 @@ namespace scada_back.Services
 
         public AnalogOutput EditAnalogOutput(AnalogOutputDTO dto, int id)
         {
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             AnalogOutput ao = Context.AnalogOutputs.FirstOrDefault(p => p.Id == id);
             ao.Name = dto.Name;
             ao.Description = dto.Description;
-            ao.Address = dto.Address;
+            ao.Address = address;
             ao.InitialValue = dto.InitialValue;
             ao.LowLimit = dto.LowLimit;
             ao.HighLimit = dto.HighLimit;
@@ -161,13 +161,12 @@ namespace scada_back.Services
 
         public DigitalInput AddDigitalInput(DigitalInputDTO dto)
         {
-            Enum.TryParse(dto.Function, out Function function);
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             DigitalInput newDI = new DigitalInput()
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                Function = function,
-                Address = dto.Address,
+                Address = address,
                 ScanTime = dto.ScanTime,
                 IsScanning = dto.IsScanning
             };
@@ -180,12 +179,11 @@ namespace scada_back.Services
 
         public DigitalInput EditDigitalInput(DigitalInputDTO dto, int id)
         {
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             DigitalInput di = Context.DigitalInputs.FirstOrDefault(p => p.Id == id);
             di.Name = dto.Name;
             di.Description = dto.Description;
-            Enum.TryParse(dto.Function, out Function function);
-            di.Function = function;
-            di.Address = dto.Address;
+            di.Address = address;
             di.ScanTime = dto.ScanTime;
             di.IsScanning = dto.IsScanning;
             Context.DigitalInputs.Update(di);
@@ -215,11 +213,12 @@ namespace scada_back.Services
 
         public DigitalOutput AddDigitalOutput(DigitalOutputDTO dto)
         {
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             DigitalOutput newDO = new DigitalOutput()
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                Address = dto.Address,
+                Address = address,
                 InitialValue = dto.InitialValue
             };
             //using (var context = new AppContext())
@@ -231,10 +230,11 @@ namespace scada_back.Services
 
         public DigitalOutput EditDigitalOutput(DigitalOutputDTO dto, int id)
         {
+            Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             DigitalOutput doo = Context.DigitalOutputs.FirstOrDefault(p => p.Id == id);
             doo.Name = dto.Name;
             doo.Description = dto.Description;
-            doo.Address = dto.Address;
+            doo.Address = address;
             doo.InitialValue = dto.InitialValue;
             Context.DigitalOutputs.Update(doo);
             Context.SaveChanges();

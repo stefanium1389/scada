@@ -15,8 +15,11 @@ namespace scada_back.Models
         [Column("description")]
         public string Description { get; set; }
 
+        //[Column("address")]
+        //public string Address { get; set; }
+
         [Column("address")]
-        public string Address { get; set; }
+        public Address Address { get; set; }
 
         [Column("initial_value")]
         public double InitialValue { get; set; }

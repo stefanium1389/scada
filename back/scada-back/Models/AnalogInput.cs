@@ -4,10 +4,10 @@ using System.Net;
 namespace scada_back.Models
 {
 
-    public enum Function
-    {
-        SINUS, COSINUS, RAMP
-    }
+    //public enum Function
+    //{
+    //    SINUS, COSINUS, RAMP
+    //}
 
     [Table("AnalogInputs")]
     public class AnalogInput
@@ -22,14 +22,18 @@ namespace scada_back.Models
         [Column("description")]
         public string Description { get; set; }
 
-        [Column("driver")]
-        public int DriverId { get; set; }
+        //[Column("driver")]
+        //public int DriverId { get; set; }
 
-        [Column("function")]
-        public Function Function { get; set; }
+        //[Column("function")]
+        //public Function Function { get; set; }
+
+        //[Column("address")]
+        //public string Address { get; set; }
 
         [Column("address")]
-        public string Address { get; set; }
+        public Address Address { get; set; }
+
 
         [Column("scan_time")]
         public int ScanTime { get; set; }

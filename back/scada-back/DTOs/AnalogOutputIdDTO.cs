@@ -25,7 +25,7 @@ namespace scada_back.DTOs
             Id = ao.Id;
             Name = ao.Name;
             Description = ao.Description;
-            Address = ao.Address;
+            Address = ao.Address.Name;
             InitialValue = ao.InitialValue;
             LowLimit = ao.LowLimit;
             HighLimit = ao.HighLimit;
