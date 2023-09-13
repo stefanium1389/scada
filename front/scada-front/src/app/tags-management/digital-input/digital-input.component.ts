@@ -22,7 +22,7 @@ export class DigitalInputComponent implements OnInit {
   album_key: string = "";
   file_key: string="";
   album_name: string="";
-  displayedColumns: string[] = ['name', 'scan_time', 'state', 'address', 'function', 'actions'];
+  displayedColumns: string[] = ['name', 'scan_time', 'state', 'address', 'actions'];
   dataSource = new MatTableDataSource<DigitalInputIdDTO>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -35,9 +35,9 @@ export class DigitalInputComponent implements OnInit {
   // name: string = "";
   // description: string= "";
   // address: string = "";
-  addresses: string[] = [];
+  addresses: string[] = ["S1", "S2", "S3", "C1", "C2", "C3", "R1", "R2", "R3"];
   // function: string="";
-  functions: string [] = ["SINUS","COSINUS", "RAMP"];
+  // functions: string [] = ["SINUS","COSINUS", "RAMP"];
   // scan_time: number = 0;
   digitalInputForm!: FormGroup;
   dis: DigitalInputIdDTO[] = [];
@@ -59,14 +59,13 @@ export class DigitalInputComponent implements OnInit {
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Off", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Of", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
-    for (let i = 1; i <= 20; i++) {
-      this.addresses.push("Address " + i)
-    }
+    // for (let i = 1; i <= 20; i++) {
+    //   this.addresses.push("Address " + i)
+    // }
     this.digitalInputForm = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
-      function: new FormControl('', Validators.required),
       scan_time: new FormControl('', Validators.required),
       btn: new FormControl("")},
     );
@@ -92,7 +91,6 @@ export class DigitalInputComponent implements OnInit {
     let name = this.digitalInputForm.get('name')?.value;
     let description = this.digitalInputForm.get('description')?.value
     let address = this.digitalInputForm.get('address')?.value
-    let functionn = this.digitalInputForm.get('function')?.value
     let scan_time = this.digitalInputForm.get('scan_time')?.value
     // console.log(this.name);
     // console.log(this.description);
@@ -103,7 +101,7 @@ export class DigitalInputComponent implements OnInit {
     // this.dataSource = new MatTableDataSource<DigitalInput>(ELEMENT_DATA);
     // this.dataSource.paginator = this.paginator;
     // console.log(this.dataSource.data);
-    let dto = createDigitalInputDTO(name, description, functionn, address, scan_time, true);
+    let dto = createDigitalInputDTO(name, description,  address, scan_time, true);
     console.log(dto);
     this.tagService.addDigitalInput(dto).subscribe({
       next: result => {
@@ -163,7 +161,7 @@ export class DigitalInputComponent implements OnInit {
         if (result.obj!=undefined) {
           console.log(result.obj);
           let p = result.obj;
-          let a = createDigitalInputDTO(p.name, p.description, p.function, p.address, p.scanTime, p.isScanning);
+          let a = createDigitalInputDTO(p.name, p.description, p.address, p.scanTime, p.isScanning);
           console.log('a');
           console.log(a);
           this.tagService.editDigitalInput(a, p.id).subscribe({

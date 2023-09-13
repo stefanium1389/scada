@@ -35,7 +35,7 @@ export class DigitalOutputComponent implements OnInit {
   // name: string = "";
   // description: string= "";
   // address: string = "";
-  addresses: string[] = [];
+  addresses: string[] = ["S1", "S2", "S3", "C1", "C2", "C3", "R1", "R2", "R3"];
   // initial_value: number = 0;
   digitalOutputForm!: FormGroup;
   dos: DigitalOutputIdDTO[] = []
@@ -48,9 +48,9 @@ export class DigitalOutputComponent implements OnInit {
     //   this.dataSource.data.push( {name: "kris " + i, address: "Address " + i,  description: 'string', initial_value: i});
     // }
     
-    for (let i = 1; i <= 20; i++) {
-      this.addresses.push("Address " + i)
-    }
+    // for (let i = 1; i <= 20; i++) {
+    //   this.addresses.push("Address " + i)
+    // }
     this.digitalOutputForm = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),

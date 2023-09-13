@@ -35,7 +35,7 @@ export class AnalogOutputComponent implements OnInit {
   // name: string = "";
   // description: string= "";
   // address: string = "";
-  addresses: string[] = [];
+  addresses: string[] = ["S1", "S2", "S3", "C1", "C2", "C3", "R1", "R2", "R3"];
   // initial_value: number = 0;
   // low_limit: string = ""
   // high_limit: string = ""
@@ -62,9 +62,9 @@ export class AnalogOutputComponent implements OnInit {
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Of", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
 
-    for (let i = 1; i <= 20; i++) {
-      this.addresses.push("Address " + i)
-    }
+    // for (let i = 1; i <= 20; i++) {
+    //   this.addresses.push("Address " + i)
+    // }
     this.analogOutputForm = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),

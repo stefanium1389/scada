@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using scada_back.Context;
 using scada_back.DTOs;
 using scada_back.Models;
@@ -19,7 +20,7 @@ namespace scada_back.Services
 
         public List<RealTimeUnit> GetAllRealTimeUnits()
         {
-            List<RealTimeUnit> rtus = Context.RealTimeUnits.ToList();
+            List<RealTimeUnit> rtus = Context.RealTimeUnits.Include(a => a.Address).ToList();
             return rtus;
         }
         public RealTimeUnit AddRealTimeUnit(RTUDTO dto)
@@ -53,21 +54,27 @@ namespace scada_back.Services
         public RealTimeUnit EditRealTimeUnit(RTUDTO dto, int id)
         {
             Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
+            RealTimeUnit rtu = Context.RealTimeUnits.Include(a => a.Address).FirstOrDefault(p => p.Id == id);
             if (address == null)
             {
                 return null;
             }
             else
             {
-                if (address.Driver == Driver.RTU)
+                if (address.Driver == Driver.RTU && rtu.Address != address)
                 {
                     return null;
                 }
             }
+            if (rtu.Address != address)
+            {
+                Address old = rtu.Address;
+                old.Driver = Driver.SIMULATION;
+                Context.Addresses.Update(old);
+            }
             address.Driver = Driver.RTU;
             Context.Addresses.Update(address);
             Context.SaveChanges();
-            RealTimeUnit rtu = Context.RealTimeUnits.FirstOrDefault(p => p.Id == id);
             rtu.MinValue = dto.MinValue;
             rtu.MaxValue = dto.MaxValue;
             rtu.GenerateTime = dto.GenerateTime;
@@ -78,7 +85,7 @@ namespace scada_back.Services
         }
         public bool DeleteRealTimeUnit(int id)
         {
-            RealTimeUnit rtu = Context.RealTimeUnits.First(x => x.Id == id);
+            RealTimeUnit rtu = Context.RealTimeUnits.Include(a => a.Address).First(x => x.Id == id);
             Address address = rtu.Address;
             address.Driver = Driver.SIMULATION;
             Context.Addresses.Update(address);

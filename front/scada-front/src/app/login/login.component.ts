@@ -3,6 +3,7 @@ import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@an
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import {NewUserDTO, createNewUserDTO} from '../DTOs/NewUserDTO';
+import { SystemService } from '../services/system.service';
 // import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 // import { environment } from 'src/environments/environment';
 // import { JwtService } from '../jwt.service';
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   isDisabled: boolean = false;
 
-  constructor(private router: Router, private UserService: UserService) { 
+  constructor(private router: Router, private UserService: UserService, private systemService: SystemService) { 
   }
 
   ngOnInit(): void {
@@ -32,6 +33,17 @@ export class LoginComponent implements OnInit {
       btn: new FormControl("")},
       // { validators: this.check },
     );
+    // this.systemService.postAddresses().subscribe({
+    //   next: result => {
+    //     // alert(result.message);
+    //     // console.log(result.message); //.then(()=>{location.reload();});
+    //   },
+    //   error: err => {
+    //     console.log(err);
+    //     alert(err?.error?.message || JSON.stringify(err));
+    //   }
+
+    // })
   }
 
   onLogin() {

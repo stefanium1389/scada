@@ -22,7 +22,7 @@ export class RtuComponent implements OnInit {
   album_key: string = "";
   file_key: string="";
   album_name: string="";
-  displayedColumns: string[] = ['id', 'address', 'units', 'actions'];
+  displayedColumns: string[] = ['id', 'address', 'units', 'generate_time', 'actions'];
   dataSource = new MatTableDataSource<RTUIdDTO>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -35,7 +35,7 @@ export class RtuComponent implements OnInit {
 
   // id: string = "";
   // address: string = "";
-  addresses: string[] = [];
+  addresses: string[] = ["S1", "S2", "S3", "C1", "C2", "C3", "R1", "R2", "R3"];
   // low_limit: string = ""
   // high_limit: string = ""
   rtuForm!: FormGroup;
@@ -59,13 +59,14 @@ export class RtuComponent implements OnInit {
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Of", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
 
-    for (let i = 1; i <= 20; i++) {
-      this.addresses.push("Address " + i)
-    }
+    // for (let i = 1; i <= 20; i++) {
+    //   this.addresses.push("Address " + i)
+    // }
     this.rtuForm = new FormGroup({
       address: new FormControl('', Validators.required),
       low_limit: new FormControl('', Validators.required),
       high_limit: new FormControl('', Validators.required),
+      generate_time: new FormControl('', Validators.required),
       btn: new FormControl("")
     });
   }
@@ -133,7 +134,7 @@ export class RtuComponent implements OnInit {
         if (result.obj!=undefined) {
           console.log(result.obj);
           let p = result.obj;
-          let a = createRTUDTO(p.address, p.lowLimit, p.highLimit);
+          let a = createRTUDTO(p.address, p.minValue, p.maxValue, p.generateTime);
           console.log('a');
           console.log(a);
           console.log(p.id);
@@ -167,6 +168,7 @@ export class RtuComponent implements OnInit {
     let address = this.rtuForm.get('address')?.value
     let low_limit = this.rtuForm.get('low_limit')?.value
     let high_limit = this.rtuForm.get('high_limit')?.value
+    let generate_time = this.rtuForm.get('generate_time')?.value
     // console.log(this.address);
     // console.log(this.low_limit);
     // console.log(this.high_limit);
@@ -178,7 +180,7 @@ export class RtuComponent implements OnInit {
     // this.dataSource.paginator = this.paginator;
     // console.log(this.dataSource.data);
 
-    let dto = createRTUDTO(address, low_limit, high_limit);
+    let dto = createRTUDTO(address, low_limit, high_limit, generate_time);
     console.log(dto);
     this.rtuService.addRTU(dto).subscribe({
       next: result => {

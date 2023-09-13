@@ -41,7 +41,7 @@ namespace scada_back.Services
         // ANALOG INPUT
         public List<AnalogInput> GetAllAnalogInputs()
         {
-            List<AnalogInput> analogInputs = Context.AnalogInputs.ToList();
+            List<AnalogInput> analogInputs = Context.AnalogInputs.Include(a => a.Address).ToList();
             return analogInputs;
         }
 
@@ -69,7 +69,7 @@ namespace scada_back.Services
         public AnalogInput EditAnalogInput(AnalogInputDTO dto, int id)
         {
             Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
-            AnalogInput ai = Context.AnalogInputs.FirstOrDefault(p => p.Id == id);
+            AnalogInput ai = Context.AnalogInputs.Include(a => a.Address).FirstOrDefault(p => p.Id == id);
             ai.Name = dto.Name;
             ai.Description = dto.Description;
             ai.Address = address;
@@ -99,7 +99,7 @@ namespace scada_back.Services
         // ANALOG OUTPUT
         public List<AnalogOutput> GetAllAnalogOutputs()
         {
-            List<AnalogOutput> analogOutputs = Context.AnalogOutputs.ToList();
+            List<AnalogOutput> analogOutputs = Context.AnalogOutputs.Include(a => a.Address).ToList();
             return analogOutputs;
         }
 
@@ -126,7 +126,7 @@ namespace scada_back.Services
         public AnalogOutput EditAnalogOutput(AnalogOutputDTO dto, int id)
         {
             Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
-            AnalogOutput ao = Context.AnalogOutputs.FirstOrDefault(p => p.Id == id);
+            AnalogOutput ao = Context.AnalogOutputs.Include(a => a.Address).FirstOrDefault(p => p.Id == id);
             ao.Name = dto.Name;
             ao.Description = dto.Description;
             ao.Address = address;
@@ -155,7 +155,7 @@ namespace scada_back.Services
         // DIGITAL INPUT
         public List<DigitalInput> GetAllDigitalInputs()
         {
-            List<DigitalInput> digitalInput = Context.DigitalInputs.ToList();
+            List<DigitalInput> digitalInput = Context.DigitalInputs.Include(a => a.Address).ToList();
             return digitalInput;
         }
 
@@ -180,7 +180,7 @@ namespace scada_back.Services
         public DigitalInput EditDigitalInput(DigitalInputDTO dto, int id)
         {
             Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
-            DigitalInput di = Context.DigitalInputs.FirstOrDefault(p => p.Id == id);
+            DigitalInput di = Context.DigitalInputs.Include(a => a.Address).FirstOrDefault(p => p.Id == id);
             di.Name = dto.Name;
             di.Description = dto.Description;
             di.Address = address;
@@ -207,7 +207,7 @@ namespace scada_back.Services
         // DIGITAL OUTPUT
         public List<DigitalOutput> GetAllDigitalOutputs()
         {
-            List<DigitalOutput> digitalOutputs = Context.DigitalOutputs.ToList();
+            List<DigitalOutput> digitalOutputs = Context.DigitalOutputs.Include(a => a.Address).ToList();
             return digitalOutputs;
         }
 
@@ -231,7 +231,7 @@ namespace scada_back.Services
         public DigitalOutput EditDigitalOutput(DigitalOutputDTO dto, int id)
         {
             Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
-            DigitalOutput doo = Context.DigitalOutputs.FirstOrDefault(p => p.Id == id);
+            DigitalOutput doo = Context.DigitalOutputs.Include(a => a.Address).FirstOrDefault(p => p.Id == id);
             doo.Name = dto.Name;
             doo.Description = dto.Description;
             doo.Address = address;

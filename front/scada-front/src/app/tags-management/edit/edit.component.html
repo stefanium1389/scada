@@ -20,16 +20,9 @@
         </select>
         <br/>
 
-        <label for="function">Function:</label><br/>
-        <select style="width: 55%;" #typeOption class="element" name="function" formControlName="function">
-            <option value="" disabled selected>Function</option> 
-            <option *ngFor="let function of functions;let i = 'index';" [value]="function">{{function}}</option>
-        </select>
-        <br/>
-
         <div class="rtu">
             <div>
-                <label for="scan_time">Scan Time [s]:</label><br/>
+                <label for="scan_time">Scan Time [ms]:</label><br/>
                 <input class="element" type="number" formControlName="scan_time" placeholder="Scan Time [s]" name="scan_time" id="scan_time" required>
             </div>
             <div>
@@ -80,16 +73,9 @@
         </select>
         <br/>
 
-        <label for="function">Function:</label><br/>
-        <select style="width: 55%;" #typeOption class="element" name="function" formControlName="function">
-            <option value="" disabled selected>Function</option> 
-            <option *ngFor="let function of functions;let i = 'index';" [value]="function">{{function}}</option>
-        </select>
-        <br/>
-
         <div class="rtu">
             <div>
-                <label for="scan_time">Scan Time [s]:</label><br/>
+                <label for="scan_time">Scan Time [ms]:</label><br/>
                 <input class="element" type="number" formControlName="scan_time" placeholder="Scan Time [s]" name="scan_time" id="scan_time" required>
             </div>
             <div>
@@ -191,6 +177,8 @@
         </select>
         <br/>
 
+        <input class="element" type="number" formControlName="generate_time" placeholder="Generate Time [ms]" name="generate_time" id="generate_time" required>
+
         <div class="rtu">
             <div>
                 <label>Low Limit:</label><br/>
@@ -201,6 +189,11 @@
                 <input class="small element" placeholder="High Limit" type="number" formControlName="high_limit" name="high_limit" id="high_limit" required/>
             </div>
         </div>
+
+        <ng-container matColumnDef="generate_time">
+            <th mat-header-cell *matHeaderCellDef> Generate Time [ms] </th>
+            <td mat-cell *matCellDef="let element"> {{element.generateTime}} </td>
+        </ng-container>
 
         <button (keydown.enter)="onSubmit()" type="submit">Edit RTU</button>
     </form>

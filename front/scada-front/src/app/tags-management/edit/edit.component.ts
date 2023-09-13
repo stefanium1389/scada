@@ -18,9 +18,7 @@ export class EditComponent implements OnInit {
   name: string = "";
   description: string= "";
   address: string = "";
-  addresses: string[] = [];
-  function: string="";
-  functions: string [] = ["SINUS","COSINUS", "RAMP"];
+  addresses: string[] = ["S1", "S2", "S3", "C1", "C2", "C3", "R1", "R2", "R3"];
   scan_time: number = 0;
   initial_value: number = 0;
   initial_value_form: number = 0;
@@ -54,15 +52,14 @@ export class EditComponent implements OnInit {
     console.log(this.data);
     this.type = this.data.type;
     // console.log(this.type);
-    for (let i = 1; i <= 20; i++) {
-      this.addresses.push("Address " + i)
-    }
+    // for (let i = 1; i <= 20; i++) {
+    //   this.addresses.push("Address " + i)
+    // }
     if (this.type == 'ai') {
       this.EditAnalogInputForm = new FormGroup({
         name: new FormControl(this.data.obj.name, Validators.required),
         description: new FormControl(this.data.obj.description, Validators.required),
         address: new FormControl(this.data.obj.address, Validators.required),
-        function: new FormControl(this.data.obj.function, Validators.required),
         scan_time: new FormControl(this.data.obj.scanTime, Validators.required), // Set a default numeric value here
         low_limit: new FormControl(this.data.obj.lowLimit, Validators.required), // Set a default numeric value here
         high_limit: new FormControl(this.data.obj.highLimit, Validators.required), // Set a default numeric value here
@@ -81,7 +78,6 @@ export class EditComponent implements OnInit {
         name: new FormControl(this.data.obj.name, Validators.required),
         description: new FormControl(this.data.obj.description, Validators.required),
         address: new FormControl(this.data.obj.address, Validators.required),
-        function: new FormControl(this.data.obj.function, Validators.required),
         scan_time: new FormControl(this.data.obj.scanTime, Validators.required),
         isScanning: new FormControl(this.data.obj.isScanning, Validators.required),
         btn: new FormControl("")},
@@ -116,8 +112,9 @@ export class EditComponent implements OnInit {
     } else {
       this.editRtuForm = new FormGroup({
         address: new FormControl(this.data.obj.address, Validators.required),
-        low_limit: new FormControl(this.data.obj.lowLimit, Validators.required),
-        high_limit: new FormControl(this.data.obj.highLimit, Validators.required),
+        low_limit: new FormControl(this.data.obj.minValue, Validators.required),
+        high_limit: new FormControl(this.data.obj.maxValue, Validators.required),
+        generate_time: new FormControl(this.data.obj.generateTime, Validators.required),
         btn: new FormControl("")},
       );
     }
@@ -128,7 +125,6 @@ export class EditComponent implements OnInit {
       this.data.obj.name = this.EditAnalogInputForm.get('name')?.value;
       this.data.obj.description = this.EditAnalogInputForm.get('description')?.value
       this.data.obj.address = this.EditAnalogInputForm.get('address')?.value
-      this.data.obj.function = this.EditAnalogInputForm.get('function')?.value
       this.data.obj.scanTime = this.EditAnalogInputForm.get('scan_time')?.value
       this.data.obj.isScanning = this.EditAnalogInputForm.get('isScanning')?.value
       this.data.obj.lowLimit = this.EditAnalogInputForm.get('low_limit')?.value
@@ -138,7 +134,6 @@ export class EditComponent implements OnInit {
       this.data.obj.name = this.EditDigitalInputForm.get('name')?.value;
       this.data.obj.description = this.EditDigitalInputForm.get('description')?.value
       this.data.obj.address = this.EditDigitalInputForm.get('address')?.value
-      this.data.obj.function = this.EditDigitalInputForm.get('function')?.value
       this.data.obj.scanTime = this.EditDigitalInputForm.get('scan_time')?.value
       this.data.obj.isScanning = this.EditDigitalInputForm.get('isScanning')?.value
     } else if (this.type == 'ao') {
@@ -156,8 +151,9 @@ export class EditComponent implements OnInit {
       this.data.obj.initialValue = this.initial_value_form;
     } else {
       this.data.obj.address = this.editRtuForm.get('address')?.value
-      this.data.obj.lowLimit = this.editRtuForm.get('low_limit')?.value
-      this.data.obj.highLimit = this.editRtuForm.get('high_limit')?.value
+      this.data.obj.minValue = this.editRtuForm.get('low_limit')?.value
+      this.data.obj.maxValue = this.editRtuForm.get('high_limit')?.value
+      this.data.obj.generate_time = this.editRtuForm.get('generate_time')?.value
     }
 
 

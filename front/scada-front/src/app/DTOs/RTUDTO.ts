@@ -1,20 +1,22 @@
 export interface RTUDTO {
     Address: string;
-    LowLimit: number;
-    HighLimit: number;
+    MinValue: number;
+    MaxValue: number;
+    GenerateTime: number;
   }
 
-export function createRTUDTO( Address: string, LowLimit: number, HighLimit: number): RTUDTO {
-    return {Address, LowLimit, HighLimit};
+export function createRTUDTO( Address: string, MinValue: number, MaxValue: number, GenerateTime: number): RTUDTO {
+    return {Address, MinValue, MaxValue, GenerateTime};
   }
 
 export interface RTUIdDTO {
     Id: number;
     Address: string;
-    LowLimit: number;
-    HighLimit: number;
+    MinValue: number;
+    MaxValue: number;
+    GenerateTime: number;
   }
 
-export function createRTUIdDTO(Id: number, Address: string, LowLimit: number, HighLimit: number): RTUIdDTO {
-    return {Id, Address, LowLimit, HighLimit};
+export function createRTUIdDTO(Id: number, Address: string, MinValue: number, MaxValue: number, GenerateTime: number): RTUIdDTO {
+    return {Id, Address, MinValue, MaxValue, GenerateTime};
   }

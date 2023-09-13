@@ -10,7 +10,6 @@ namespace scada_back.DTOs
         public string Description { get; set; }
 
         //public string Function { get; set; }
-        //public string Function { get; set; }
 
         public string Address { get; set; }
 

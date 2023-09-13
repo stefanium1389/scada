@@ -17,6 +17,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IAlarmService, AlarmService>();
 builder.Services.AddTransient<IRTUService, RTUService>();
+builder.Services.AddTransient<ISystemService, SystemService>();
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)

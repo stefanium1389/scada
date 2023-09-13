@@ -16,8 +16,6 @@ namespace scada_back.Controllers
             _rtuService = rtuService;
         }
 
-        // ANALOG INPUT
-
         [HttpGet]
         public async Task<ActionResult<List<RTUIdDTO>>> GetAllRealTimeUnits()
         {

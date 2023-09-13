@@ -23,7 +23,7 @@ export class AnalogInputComponent implements OnInit {
   album_key: string = "";
   file_key: string="";
   album_name: string="";
-  displayedColumns: string[] = ['name', 'scan_time', 'state', 'address', 'function', 'units', 'actions'];
+  displayedColumns: string[] = ['name', 'scan_time', 'state', 'address', 'units', 'actions'];
   dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -37,9 +37,9 @@ export class AnalogInputComponent implements OnInit {
   // name: string = "";
   // description: string= "";
   // address: string = "";
-  addresses: string[] = [];
+  addresses: string[] = ["S1", "S2", "S3", "C1", "C2", "C3", "R1", "R2", "R3"];
   // function: string="";
-  functions: string [] = ["SINUS","COSINUS", "RAMP"];
+  // functions: string [] = ["SINUS","COSINUS", "RAMP"];
   // scan_time: number = 0;
   // low_limit: string = ""
   // high_limit: string = ""
@@ -65,14 +65,13 @@ export class AnalogInputComponent implements OnInit {
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "On", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
     // this.dataSource.data.push( {name: "kris", scan_time: "krisA", state: "Of", address: "krisC", function: 'sin', low: 5, high: 10, unit: 'C'});
 
-    for (let i = 1; i <= 20; i++) {
-      this.addresses.push("Address " + i)
-    }
+    // for (let i = 1; i <= 20; i++) {
+    //   this.addresses.push("Address " + i)
+    // }
     this.analogInputForm = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
-      function: new FormControl('', Validators.required),
       scan_time: new FormControl('', Validators.required), // Set a default numeric value here
       low_limit: new FormControl('', Validators.required), // Set a default numeric value here
       high_limit: new FormControl('', Validators.required), // Set a default numeric value here
@@ -141,7 +140,7 @@ export class AnalogInputComponent implements OnInit {
         if (result.obj!=undefined) {
           console.log(result.obj);
           let p = result.obj;
-          let a = createAnalogInputDTO(p.name, p.description, p.function, p.address, p.scanTime, p.isScanning, p.lowLimit, p.highLimit, p.unit);
+          let a = createAnalogInputDTO(p.name, p.description, p.address, p.scanTime, p.isScanning, p.lowLimit, p.highLimit, p.unit);
           console.log('a');
           console.log(a);
           this.tagService.editAnalogInput(a, p.id).subscribe({
@@ -205,7 +204,6 @@ desc_tag(obj: any) {
     let name = this.analogInputForm.get('name')?.value;
     let description = this.analogInputForm.get('description')?.value
     let address = this.analogInputForm.get('address')?.value
-    let functionn = this.analogInputForm.get('function')?.value
     let scan_time = this.analogInputForm.get('scan_time')?.value
     let low_limit = this.analogInputForm.get('low_limit')?.value
     let high_limit = this.analogInputForm.get('high_limit')?.value
@@ -218,7 +216,7 @@ desc_tag(obj: any) {
     // console.log(this.low_limit);
     // console.log(this.high_limit);
     // console.log(this.unit);
-    let dto = createAnalogInputDTO(name, description, functionn, address, scan_time, true, low_limit, high_limit, unit);
+    let dto = createAnalogInputDTO(name, description, address, scan_time, true, low_limit, high_limit, unit);
     console.log(dto);
     this.tagService.addAnalogInput(dto).subscribe({
       next: result => {
