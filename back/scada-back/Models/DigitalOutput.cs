@@ -22,6 +22,6 @@ namespace scada_back.Models
         public Address Address { get; set; }
 
         [Column("initial_value")]
-        public double InitialValue { get; set; }
+        public bool InitialValue { get; set; }
     }
 }

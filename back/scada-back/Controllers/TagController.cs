@@ -162,7 +162,7 @@ namespace scada_back.Controllers
 
         [HttpPut]
         [Route("analogOutput/changeValue/{id}")]
-        public async Task<ActionResult<AnalogOutputIdDTO>> EditAnalogOutputValue([FromBody] ChangeValueDTO dto, [FromRoute] int id)
+        public async Task<ActionResult<AnalogOutputIdDTO>> EditAnalogOutputValue([FromBody] AnalogValueDTO dto, [FromRoute] int id)
         {
             try
             {
@@ -348,7 +348,7 @@ namespace scada_back.Controllers
 
         [HttpPut]
         [Route("digitalOutput/changeValue/{id}")]
-        public async Task<ActionResult<DigitalOutputIdDTO>> EditDgitialOutputValue([FromBody] ChangeValueDTO dto, [FromRoute] int id)
+        public async Task<ActionResult<DigitalOutputIdDTO>> EditDgitialOutputValue([FromBody] DigitalValueDTO dto, [FromRoute] int id)
         {
             try
             {

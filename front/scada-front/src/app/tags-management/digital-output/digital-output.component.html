@@ -17,7 +17,10 @@
 
               <ng-container matColumnDef="current_value">
                 <th mat-header-cell *matHeaderCellDef> Current Value </th>
-                <td mat-cell *matCellDef="let element"> {{element.currentValue}} </td>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="!element.currentValue">Off</span>
+                  <span *ngIf="element.currentValue">On</span>
+                </td>
               </ng-container>
 
               <ng-container matColumnDef="last_changed">
@@ -60,7 +63,10 @@
                     <option *ngFor="let address of addresses;let i = 'index';" [value]="address">{{address}}</option>
                 </select>
         
-                <input class="element" type="number" formControlName="initial_value" placeholder="Initial Value" name="initial_value" id="initial_value" required>
+                <select style="width: 55%;" #typeOption class="element" name="initial_value" formControlName="initial_value">
+                  <option value="" disabled selected>Initial Value</option> 
+                  <option *ngFor="let initial_value of initial_values;let i = 'index';" [value]="initial_value">{{initial_value}}</option>
+                </select>
         
                 <button (keydown.enter)="onSubmit()" type="submit">Create new digital output tag</button>
             </form>

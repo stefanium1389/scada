@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TagService } from 'src/app/services/tag.service';
 import { AnalogOutputDTO, createAnalogOutputDTO, AnalogOutputIdDTO, createAnalogOutputIdDTO } from 'src/app/DTOs/AnalogOutputDTO';
 import { ChangeValueComponent } from '../change-value/change-value.component';
-import { ChangeValueDTO, createChangeValueDTO } from 'src/app/DTOs/CurrentValueDTO';
+import { AnalogValueDTO, createAnalogValueDTO } from 'src/app/DTOs/CurrentValueDTO';
 
 @Component({
   selector: 'app-analog-output',
@@ -211,7 +211,7 @@ export class AnalogOutputComponent implements OnInit {
 
 edit_current_value(obj: any) {
   const dialogRef = this.dialog.open(ChangeValueComponent, {
-    data: {obj: obj /*date:this.someDate*/},
+    data: {obj: obj, type:'ao' /*date:this.someDate*/},
     panelClass: 'my-dialog-container-class',
   });
   dialogRef.afterClosed().subscribe(result => {
@@ -220,7 +220,7 @@ edit_current_value(obj: any) {
       if (result.obj!=undefined) {
         console.log(result.obj);
         let p = result.obj;
-        let a = createChangeValueDTO(p.currentValue);
+        let a = createAnalogValueDTO(p.currentValue);
         console.log('a');
         console.log(a);
         this.tagService.editAnalogOutputValue(a, p.id).subscribe({

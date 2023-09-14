@@ -19,7 +19,7 @@ namespace scada_back.Services
         List<AnalogOutput> GetAllAnalogOutputs();
         AnalogOutput AddAnalogOutput(AnalogOutputDTO dto, DateTime now);
         AnalogOutput EditAnalogOutput(AnalogOutputDTO dto, int id);
-        AnalogOutputValue EditAnalogOutputValue(ChangeValueDTO dto, int id);
+        AnalogOutputValue EditAnalogOutputValue(AnalogValueDTO dto, int id);
         bool DeleteAnalogOutput(int id);
         AnalogOutputValue GetLastValueAO(AnalogOutput analogOutput);
 
@@ -31,7 +31,7 @@ namespace scada_back.Services
         List<DigitalOutput> GetAllDigitalOutputs();
         DigitalOutput AddDigitalOutput(DigitalOutputDTO dto, DateTime now);
         DigitalOutput EditDigitalOutput(DigitalOutputDTO dto, int id);
-        DigitalOutputValue EditDigitalOutputValue(ChangeValueDTO dto, int id);
+        DigitalOutputValue EditDigitalOutputValue(DigitalValueDTO dto, int id);
         bool DeleteDigitalOutput(int id);
         DigitalOutputValue GetLastValueDO(DigitalOutput digitalOutput);
     }
@@ -150,7 +150,7 @@ namespace scada_back.Services
             return ao;
         }
 
-        public AnalogOutputValue EditAnalogOutputValue(ChangeValueDTO dto, int id)
+        public AnalogOutputValue EditAnalogOutputValue(AnalogValueDTO dto, int id)
         {
             AnalogOutputValue aov = new AnalogOutputValue()
             {
@@ -301,7 +301,7 @@ namespace scada_back.Services
             return doo;
         }
 
-        public DigitalOutputValue EditDigitalOutputValue(ChangeValueDTO dto, int id)
+        public DigitalOutputValue EditDigitalOutputValue(DigitalValueDTO dto, int id)
         {
             DigitalOutputValue aov = new DigitalOutputValue()
             {

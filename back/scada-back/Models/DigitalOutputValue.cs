@@ -13,6 +13,6 @@ namespace scada_back.Models
 
         public DateTime TimeStamp { get; set; }
 
-        public double Value { get; set; }
+        public bool Value { get; set; }
     }
 }

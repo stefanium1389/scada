@@ -2,10 +2,10 @@ export interface DigitalOutputDTO {
     Name: string;
     Description: string;
     Address: string;
-    InitialValue: number;
+    InitialValue: boolean;
   }
 
-export function createDigitalOutputDTO(Name: string, Description: string, Address: string, InitialValue: number): DigitalOutputDTO {
+export function createDigitalOutputDTO(Name: string, Description: string, Address: string, InitialValue: boolean): DigitalOutputDTO {
     return {Name, Description, Address, InitialValue};
   }
 
@@ -14,11 +14,11 @@ export interface DigitalOutputIdDTO {
     Name: string;
     Description: string;
     Address: string;
-    InitialValue: number;
-    CurrentValue: number;
+    InitialValue: boolean;
+    CurrentValue: boolean;
     LastChanged: string
   }
 
-export function createDigitalOutputIdDTO(Id: number, Name: string, Description: string, Address: string, InitialValue: number, CurrentValue: number, LastChanged: string): DigitalOutputIdDTO {
+export function createDigitalOutputIdDTO(Id: number, Name: string, Description: string, Address: string, InitialValue: boolean, CurrentValue: boolean, LastChanged: string): DigitalOutputIdDTO {
     return {Id, Name, Description, Address, InitialValue, CurrentValue, LastChanged};
   }

@@ -11,18 +11,33 @@ export class ChangeValueComponent implements OnInit {
 
   constructor(public matDialogRef: MatDialogRef<ChangeValueComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  changeValueForm!: FormGroup;
+  changeAnalogValueForm!: FormGroup;
+  changeDigitalValueForm!: FormGroup;
   getData: boolean = false;
+  type: string = '';
+  current_values: string[] = ['On', 'Off'];
 
   ngOnInit(): void {
-    this.changeValueForm = new FormGroup({
-      current_value: new FormControl(this.data.obj.currentValue, Validators.required),
-      btn: new FormControl("")},
-    );
+    this.type = this.data.type;
+    if (this.type == 'ao') {
+      this.changeAnalogValueForm = new FormGroup({
+        current_value: new FormControl(this.data.obj.currentValue, Validators.required),
+        btn: new FormControl("")},
+      );
+    } else {
+      this.changeDigitalValueForm = new FormGroup({
+        current_value: new FormControl(this.data.obj.currentValue, Validators.required),
+        btn: new FormControl("")},
+      );
+    }
   }
 
   onSubmit() {
-    this.data.obj.currentValue = this.changeValueForm.get('current_value')?.value
+    if (this.type == 'ao') {
+      this.data.obj.currentValue = this.changeAnalogValueForm.get('current_value')?.value
+    } else {
+      this.data.obj.currentValue = this.changeDigitalValueForm.get('current_value')?.value
+    }
     this.onClose();
   }
 

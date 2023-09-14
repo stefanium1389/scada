@@ -12,13 +12,13 @@ namespace scada_back.DTOs
 
         public string Address { get; set; }
 
-        public double InitialValue { get; set; }
+        public bool InitialValue { get; set; }
 
-        public double CurrentValue { get; set; }
+        public bool CurrentValue { get; set; }
 
         public string LastChanged { get; set; }
 
-        public DigitalOutputIdDTO(DigitalOutput doo, double currentValue, DateTime _lastChanged)
+        public DigitalOutputIdDTO(DigitalOutput doo, bool currentValue, DateTime _lastChanged)
         {
             Id = doo.Id;
             Name = doo.Name;

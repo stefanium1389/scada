@@ -1,6 +1,6 @@
 ﻿namespace scada_back.DTOs
 {
-    public class ChangeValueDTO
+    public class AnalogValueDTO
     {
         public double Value { get; set; }
     }

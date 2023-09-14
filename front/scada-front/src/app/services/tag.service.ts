@@ -6,7 +6,7 @@ import { AnalogInputDTO, AnalogInputIdDTO } from '../DTOs/AnalogInputDTO';
 import { AnalogOutputDTO } from '../DTOs/AnalogOutputDTO';
 import { DigitalInputDTO } from '../DTOs/DigitalInputDTO';
 import { DigitalOutputDTO } from '../DTOs/DigitalOutputDTO';
-import { ChangeValueDTO } from '../DTOs/CurrentValueDTO';
+import { AnalogValueDTO, DigitalValueDTO } from '../DTOs/CurrentValueDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +57,7 @@ export class TagService {
     );
   }
 
-  editAnalogOutputValue(dto: ChangeValueDTO, id: number):Observable<any> {
+  editAnalogOutputValue(dto: AnalogValueDTO, id: number):Observable<any> {
     console.log(dto);
     return this.http.put(`${environment.api}tag/analogOutput/changeValue/` + id, 
     dto, 
@@ -111,7 +111,7 @@ export class TagService {
     );
   }
 
-  editDigitalOutputValue(dto: ChangeValueDTO, id: number):Observable<any> {
+  editDigitalOutputValue(dto: DigitalValueDTO, id: number):Observable<any> {
     console.log(dto);
     return this.http.put(`${environment.api}tag/digitalOutput/changeValue/` + id, 
     dto, 

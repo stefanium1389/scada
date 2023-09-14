@@ -8,6 +8,6 @@
 
         public string Address { get; set; }
 
-        public double InitialValue { get; set; }
+        public bool InitialValue { get; set; }
     }
 }

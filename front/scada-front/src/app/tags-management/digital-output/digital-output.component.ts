@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TagService } from 'src/app/services/tag.service';
 import { DigitalOutputDTO, createDigitalOutputDTO, DigitalOutputIdDTO, createDigitalOutputIdDTO } from 'src/app/DTOs/DigitalOutputDTO';
 import { ChangeValueComponent } from '../change-value/change-value.component';
-import { ChangeValueDTO, createChangeValueDTO } from 'src/app/DTOs/CurrentValueDTO';
+import { DigitalValueDTO, createDigitalValueDTO } from 'src/app/DTOs/CurrentValueDTO';
 
 @Component({
   selector: 'app-digital-output',
@@ -38,6 +38,7 @@ export class DigitalOutputComponent implements OnInit {
   // description: string= "";
   // address: string = "";
   addresses: string[] = ["S1", "S2", "S3", "C1", "C2", "C3", "R1", "R2", "R3"];
+  initial_values: string[] = ['On', 'Off'];
   // initial_value: number = 0;
   digitalOutputForm!: FormGroup;
   dos: DigitalOutputIdDTO[] = []
@@ -95,6 +96,12 @@ export class DigitalOutputComponent implements OnInit {
     let description = this.digitalOutputForm.get('description')?.value
     let address = this.digitalOutputForm.get('address')?.value
     let initial_value = this.digitalOutputForm.get('initial_value')?.value
+    let b = false;
+    if (initial_value == 'On') {
+      b = true;
+    } else {
+      b = false;
+    }
     // console.log(this.name);
     // console.log(this.description);
     // console.log(this.address);
@@ -104,7 +111,7 @@ export class DigitalOutputComponent implements OnInit {
     // this.dataSource = new MatTableDataSource<DigitalOutput>(ELEMENT_DATA);
     // this.dataSource.paginator = this.paginator;
     // console.log(this.dataSource.data);
-    let dto = createDigitalOutputDTO(name, description, address, initial_value);
+    let dto = createDigitalOutputDTO(name, description, address, b);
     console.log(dto);
     this.tagService.addDigitalOutput(dto).subscribe({
       next: result => {
@@ -195,7 +202,7 @@ export class DigitalOutputComponent implements OnInit {
 
 edit_current_value(obj: any) {
   const dialogRef = this.dialog.open(ChangeValueComponent, {
-    data: {obj: obj /*date:this.someDate*/},
+    data: {obj: obj, type:'do' /*date:this.someDate*/},
     panelClass: 'my-dialog-container-class',
   });
   dialogRef.afterClosed().subscribe(result => {
@@ -204,7 +211,13 @@ edit_current_value(obj: any) {
       if (result.obj!=undefined) {
         console.log(result.obj);
         let p = result.obj;
-        let a = createChangeValueDTO(p.currentValue);
+        let b = false;
+        if (p.currentValue == 'On') {
+          b = true
+        } else {
+          b = false
+        }
+        let a = createDigitalValueDTO(b);
         console.log('a');
         console.log(a);
         this.tagService.editDigitalOutputValue(a, p.id).subscribe({
