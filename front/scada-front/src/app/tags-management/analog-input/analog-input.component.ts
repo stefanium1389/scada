@@ -99,7 +99,7 @@ export class AnalogInputComponent implements OnInit {
 
   alarms(item: any) {
     console.log(item);
-    this.router.navigate(['alarms'], { queryParams: { id: item.id, name: item.name, unit:item.unit}} );
+    this.router.navigate(['alarms'], { queryParams: { id: item.id}} );
   }
 
   delete_tag(item: any) {
@@ -217,25 +217,31 @@ desc_tag(obj: any) {
     // console.log(this.low_limit);
     // console.log(this.high_limit);
     // console.log(this.unit);
-    let dto = createAnalogInputDTO(name, description, address, scan_time, true, low_limit, high_limit, unit);
-    console.log(dto);
-    this.tagService.addAnalogInput(dto).subscribe({
-      next: result => {
-        console.log(result);
-        this.getAll();
-        this.analogInputForm.reset();
-    //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
-    // // this.changeDetectorRef.detectChanges();
-    // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
-    // this.dataSource.paginator = this.paginator;
-      },
-      error: err => {
-        // console.log(err);
-        alert('Failed to add analog input');
-        alert(err?.error?.message || JSON.stringify(err));
-      }
 
-    })
+    if (high_limit < low_limit) {
+      alert ('High limit is smaller than low limit');
+    } else {
+
+        let dto = createAnalogInputDTO(name, description, address, scan_time, true, low_limit, high_limit, unit);
+        console.log(dto);
+        this.tagService.addAnalogInput(dto).subscribe({
+          next: result => {
+            console.log(result);
+            this.getAll();
+            this.analogInputForm.reset();
+        //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+        // // this.changeDetectorRef.detectChanges();
+        // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+        // this.dataSource.paginator = this.paginator;
+          },
+          error: err => {
+            // console.log(err);
+            alert('Failed to add analog input');
+            alert(err?.error?.message || JSON.stringify(err));
+          }
+
+        })
+      }
 
 
 

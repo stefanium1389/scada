@@ -33,6 +33,21 @@ namespace scada_back.Controllers
             return Ok(new { results = analogInputIdDTOs });
         }
 
+        [HttpGet]
+        [Route("analogInput/{id}")]
+        public async Task<ActionResult<List<AnalogInputIdDTO>>> GetAnalogInputById([FromRoute] int id)
+        {
+            try
+            {
+                AnalogInput analogInput = _tagService.GetAnalogInputById(id);
+                return Ok(new AnalogInputIdDTO(analogInput));
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
         [HttpPost]
         [Route("analogInput")]
         public async Task<ActionResult<AnalogInputIdDTO>> AddAnalogInput([FromBody] AnalogInputDTO dto)

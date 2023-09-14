@@ -3,6 +3,7 @@ import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@an
 import { ActivatedRoute } from '@angular/router';
 import { AlarmDTO, createAlarmDTO, AlarmIdDTO, createAlarmIdDTO } from 'src/app/DTOs/AlarmDTO';
 import { AlarmService } from 'src/app/services/alarm.service';
+import { TagService } from 'src/app/services/tag.service';
 
 @Component({
   selector: 'app-alarms',
@@ -24,19 +25,18 @@ export class AlarmsComponent implements OnInit {
   unit: string = 'C';
   name: string = '';
   id: number = 0;
+  lowLimit: number = 0;
+  highLimit: number = 0;
 
   alarmForm!: FormGroup;
 
-  constructor(private route: ActivatedRoute, private alarmService: AlarmService) { }
+  constructor(private route: ActivatedRoute, private alarmService: AlarmService, private tagService: TagService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.id = params['id'];
       console.log(this.id);
-      this.name = params['name'];
-      console.log(this.name);
-      this.unit = params['unit'];
-      console.log(this.unit);
+      this.getTag();
     });
 
     this.alarmForm = new FormGroup({
@@ -47,6 +47,25 @@ export class AlarmsComponent implements OnInit {
     });
 
     this.getAll();
+  }
+
+  getTag() {
+    this.tagService.getAnalogInputById(this.id).subscribe({
+      next: result => {
+        console.log('tag');
+        this.name = result.name;
+        this.unit = result.unit;
+        this.lowLimit = result.lowLimit;
+        this.highLimit = result.highLimit;
+        console.log(this.name, this.unit, this.lowLimit, this.highLimit);
+      },
+      error: err => {
+        console.log(err);
+        alert('Failed to obtain tag');
+        // alert(err?.error?.message || JSON.stringify(err));
+      }
+
+    })
   }
 
   getAll() {
@@ -103,36 +122,40 @@ export class AlarmsComponent implements OnInit {
       sign = '<';
     }
 
-    let t = '';
-    if (type == 'Above [High]') {
-      t = 'LOW';
+    if (limit < this.lowLimit || limit > this.highLimit) {
+      alert('This limit value is not being tracked for this tag!');
     } else {
-      t = 'HIGH';
-    }
+        let t = '';
+        if (type == 'Above [High]') {
+          t = 'LOW';
+        } else {
+          t = 'HIGH';
+        }
 
-    let p = '';
-    if (priority == 'Low') {
-      p = 'LOW';
-    } else if (priority == 'Medium') {
-      p = 'MEDIUM';
-    } else {
-      p = 'HIGH'
-    }
+        let p = '';
+        if (priority == 'Low') {
+          p = 'LOW';
+        } else if (priority == 'Medium') {
+          p = 'MEDIUM';
+        } else {
+          p = 'HIGH'
+        }
 
-    let dto = createAlarmDTO(t, p, this.id, limit);
-    // console.log(dto);
-    this.alarmService.addAlarm(dto).subscribe({
-      next: result => {
-        this.getAll();
-      },
-      error: err => {
-        console.log(err);
-        alert('Failed to add alarm');
-        // alert(err?.error?.message || JSON.stringify(err));
+        let dto = createAlarmDTO(t, p, this.id, limit);
+        // console.log(dto);
+        this.alarmService.addAlarm(dto).subscribe({
+          next: result => {
+            this.getAll();
+          },
+          error: err => {
+            console.log(err);
+            alert('Failed to add alarm');
+            // alert(err?.error?.message || JSON.stringify(err));
+          }
+
+        })
+
       }
-
-    })
-
-  }
+    }
 
 }

@@ -12,6 +12,7 @@ namespace scada_back.Services
     public interface ITagService
     {
         List<AnalogInput> GetAllAnalogInputs();
+        AnalogInput GetAnalogInputById(int id);
         AnalogInput AddAnalogInput(AnalogInputDTO dto);
         AnalogInput EditAnalogInput(AnalogInputDTO dto, int id);
         bool DeleteAnalogInput(int id);
@@ -49,8 +50,18 @@ namespace scada_back.Services
             return analogInputs;
         }
 
+        public AnalogInput GetAnalogInputById(int id)
+        {
+            AnalogInput analog = Context.AnalogInputs.Include(a => a.Address).FirstOrDefault(a => a.Id == id);
+            return analog;
+        }
+
         public AnalogInput AddAnalogInput(AnalogInputDTO dto)
         {
+            if (dto.HighLimit < dto.LowLimit)
+            {
+                return null;
+            }
             Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             AnalogInput newAI = new AnalogInput()
             {
@@ -109,6 +120,14 @@ namespace scada_back.Services
 
         public AnalogOutput AddAnalogOutput(AnalogOutputDTO dto, DateTime now)
         {
+            if (dto.HighLimit < dto.LowLimit)
+            {
+                return null;
+            }
+            if (dto.InitialValue > dto.HighLimit || dto.InitialValue < dto.LowLimit)
+            {
+                return null;
+            }
             Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             AnalogOutput newAO = new AnalogOutput()
             {
@@ -152,9 +171,14 @@ namespace scada_back.Services
 
         public AnalogOutputValue EditAnalogOutputValue(AnalogValueDTO dto, int id)
         {
+            AnalogOutput analogOutput = Context.AnalogOutputs.FirstOrDefault(p => p.Id == id);
+            if (dto.Value > analogOutput.HighLimit || dto.Value < analogOutput.LowLimit)
+            {
+                return null;
+            }
             AnalogOutputValue aov = new AnalogOutputValue()
             {
-                Tag = Context.AnalogOutputs.FirstOrDefault(p => p.Id == id),
+                Tag = analogOutput,
                 Value = dto.Value,
                 TimeStamp = DateTime.Now,
             };

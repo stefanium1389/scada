@@ -33,6 +33,10 @@ namespace scada_back.Services
             Enum.TryParse(dto.Priority, out AlarmPriority priority);
             Enum.TryParse(dto.Type, out AlarmType type);
             AnalogInput ai = Context.AnalogInputs.FirstOrDefault(p => p.Id == dto.TagId);
+            if (dto.Limit > ai.HighLimit || dto.Limit < ai.LowLimit)
+            {
+                return null;
+            }
             Alarm newAlarm = new Alarm()
             {
                 Priority = priority,

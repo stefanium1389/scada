@@ -16,6 +16,8 @@ export class ChangeValueComponent implements OnInit {
   getData: boolean = false;
   type: string = '';
   current_values: string[] = ['On', 'Off'];
+  low_limit!: number;
+  high_limit!: number;
 
   ngOnInit(): void {
     this.type = this.data.type;
@@ -25,16 +27,30 @@ export class ChangeValueComponent implements OnInit {
         btn: new FormControl("")},
       );
     } else {
+      console.log(this.data.obj.currentValue)
+      let current_value = 'On';
+      if (this.data.obj.currentValue) {
+        current_value = 'On';
+      } else {
+        current_value = 'Off';
+      }
       this.changeDigitalValueForm = new FormGroup({
-        current_value: new FormControl(this.data.obj.currentValue, Validators.required),
+        current_value: new FormControl(current_value, Validators.required),
         btn: new FormControl("")},
       );
     }
+    this.low_limit = this.data.obj.lowLimit;
+    this.high_limit = this.data.obj.highLimit;
   }
 
   onSubmit() {
     if (this.type == 'ao') {
-      this.data.obj.currentValue = this.changeAnalogValueForm.get('current_value')?.value
+      let m = this.changeAnalogValueForm.get('current_value')?.value;
+      if (m < this.low_limit || m > this.low_limit) {
+        alert ('Value not in range [' + this.low_limit + " , " + this.high_limit + "]!");
+      } else {
+        this.data.obj.currentValue = this.changeAnalogValueForm.get('current_value')?.value
+      }
     } else {
       this.data.obj.currentValue = this.changeDigitalValueForm.get('current_value')?.value
     }

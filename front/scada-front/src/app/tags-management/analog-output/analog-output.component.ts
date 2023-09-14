@@ -104,39 +104,47 @@ export class AnalogOutputComponent implements OnInit {
     let low_limit = this.analogOutputForm.get('low_limit')?.value
     let high_limit = this.analogOutputForm.get('high_limit')?.value
     let unit = this.analogOutputForm.get('unit')?.value
-    // console.log(this.name);
-    // console.log(this.description);
-    // console.log(this.address);
-    // console.log(this.initial_value);
-    // console.log(this.low_limit);
-    // console.log(this.high_limit);
-    // console.log(this.unit);
+    if (high_limit < low_limit) {
+      alert ('High limit is smaller than low limit');
+    } else {
+        if (initial_value < low_limit || initial_value > high_limit) {
+          alert('Initial Value is not trackable (in range)');
+        } else {
+        // console.log(this.name);
+        // console.log(this.description);
+        // console.log(this.address);
+        // console.log(this.initial_value);
+        // console.log(this.low_limit);
+        // console.log(this.high_limit);
+        // console.log(this.unit);
 
-    // this.dataSource.data.push( {name: "krisNovi", address: "Address 20",  low: 5, high: 10, unit: 'C', description: 'string', initial_value: 4});
-    // // this.changeDetectorRef.detectChanges();
-    // this.dataSource = new MatTableDataSource<AnalogOutput>(ELEMENT_DATA);
-    // this.dataSource.paginator = this.paginator;
-    // console.log(this.dataSource.data);
+        // this.dataSource.data.push( {name: "krisNovi", address: "Address 20",  low: 5, high: 10, unit: 'C', description: 'string', initial_value: 4});
+        // // this.changeDetectorRef.detectChanges();
+        // this.dataSource = new MatTableDataSource<AnalogOutput>(ELEMENT_DATA);
+        // this.dataSource.paginator = this.paginator;
+        // console.log(this.dataSource.data);
 
-    let dto = createAnalogOutputDTO(name, description, address, initial_value, low_limit, high_limit, unit);
-    console.log(dto);
-    this.tagService.addAnalogOutput(dto).subscribe({
-      next: result => {
-        console.log(result);
-        this.getAll();
-        this.analogOutputForm.reset();
-    //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
-    // // this.changeDetectorRef.detectChanges();
-    // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
-    // this.dataSource.paginator = this.paginator;
-      },
-      error: err => {
-        console.log(err);
-        alert('Failed to add analog output');
-        // alert(err?.error?.message || JSON.stringify(err));
+          let dto = createAnalogOutputDTO(name, description, address, initial_value, low_limit, high_limit, unit);
+          console.log(dto);
+          this.tagService.addAnalogOutput(dto).subscribe({
+            next: result => {
+              console.log(result);
+              this.getAll();
+              this.analogOutputForm.reset();
+          //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+          // // this.changeDetectorRef.detectChanges();
+          // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+          // this.dataSource.paginator = this.paginator;
+            },
+            error: err => {
+              console.log(err);
+              alert('Failed to add analog output');
+              // alert(err?.error?.message || JSON.stringify(err));
+            }
+
+          })
+        }
       }
-
-    })
   }
 
   

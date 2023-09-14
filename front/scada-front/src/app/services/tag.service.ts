@@ -26,6 +26,10 @@ export class TagService {
     return this.http.get(`${environment.api}tag/analogInput`);
   }
 
+  getAnalogInputById(id: number):Observable<any> {
+    return this.http.get(`${environment.api}tag/analogInput/` + id);
+  }
+
   editAnalogInput(dto: AnalogInputDTO, id: number):Observable<any> {
     console.log(dto);
     return this.http.put(`${environment.api}tag/analogInput/` + id, 
