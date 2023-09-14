@@ -86,6 +86,7 @@ export class AnalogInputComponent implements OnInit {
         console.log(result);
         this.ais = result.results;
         this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(this.ais);
+        this.dataSource.paginator = this.paginator;
       },
       error: err => {
         console.log(err);

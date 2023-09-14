@@ -6,6 +6,7 @@ import { AnalogInputDTO, AnalogInputIdDTO } from '../DTOs/AnalogInputDTO';
 import { AnalogOutputDTO } from '../DTOs/AnalogOutputDTO';
 import { DigitalInputDTO } from '../DTOs/DigitalInputDTO';
 import { DigitalOutputDTO } from '../DTOs/DigitalOutputDTO';
+import { ChangeValueDTO } from '../DTOs/CurrentValueDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,14 @@ export class TagService {
     );
   }
 
+  editAnalogOutputValue(dto: ChangeValueDTO, id: number):Observable<any> {
+    console.log(dto);
+    return this.http.put(`${environment.api}tag/analogOutput/changeValue/` + id, 
+    dto, 
+    {headers: new HttpHeaders().set("content-type", "application/json")}
+    );
+  }
+
   deleteAnalogOutput(id: number):Observable<any> {
     return this.http.delete(`${environment.api}tag/analogOutput/` + id);
   }
@@ -97,6 +106,14 @@ export class TagService {
   editDigitalOutput(dto: DigitalOutputDTO, id: number):Observable<any> {
     console.log(dto);
     return this.http.put(`${environment.api}tag/digitalOutput/` + id, 
+    dto, 
+    {headers: new HttpHeaders().set("content-type", "application/json")}
+    );
+  }
+
+  editDigitalOutputValue(dto: ChangeValueDTO, id: number):Observable<any> {
+    console.log(dto);
+    return this.http.put(`${environment.api}tag/digitalOutput/changeValue/` + id, 
     dto, 
     {headers: new HttpHeaders().set("content-type", "application/json")}
     );

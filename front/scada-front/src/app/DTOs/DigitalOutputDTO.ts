@@ -15,8 +15,10 @@ export interface DigitalOutputIdDTO {
     Description: string;
     Address: string;
     InitialValue: number;
+    CurrentValue: number;
+    LastChanged: string
   }
 
-export function createDigitalOutputIdDTO(Id: number, Name: string, Description: string, Address: string, InitialValue: number): DigitalOutputIdDTO {
-    return {Id, Name, Description, Address, InitialValue};
+export function createDigitalOutputIdDTO(Id: number, Name: string, Description: string, Address: string, InitialValue: number, CurrentValue: number, LastChanged: string): DigitalOutputIdDTO {
+    return {Id, Name, Description, Address, InitialValue, CurrentValue, LastChanged};
   }

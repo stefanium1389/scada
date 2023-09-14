@@ -10,6 +10,8 @@ import { DescriptionComponent } from '../description/description.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TagService } from 'src/app/services/tag.service';
 import { AnalogOutputDTO, createAnalogOutputDTO, AnalogOutputIdDTO, createAnalogOutputIdDTO } from 'src/app/DTOs/AnalogOutputDTO';
+import { ChangeValueComponent } from '../change-value/change-value.component';
+import { ChangeValueDTO, createChangeValueDTO } from 'src/app/DTOs/CurrentValueDTO';
 
 @Component({
   selector: 'app-analog-output',
@@ -22,7 +24,7 @@ export class AnalogOutputComponent implements OnInit {
   album_key: string = "";
   file_key: string="";
   album_name: string="";
-  displayedColumns: string[] = ['name', 'address', 'units', 'actions'];
+  displayedColumns: string[] = ['name', 'address', 'current_value', 'last_changed', 'units', 'actions'];
   dataSource = new MatTableDataSource<AnalogOutputIdDTO>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -83,6 +85,7 @@ export class AnalogOutputComponent implements OnInit {
         console.log(result);
         this.aos = result.results;
         this.dataSource = new MatTableDataSource<AnalogOutputIdDTO>(this.aos);
+        this.dataSource.paginator = this.paginator;
       },
       error: err => {
         console.log(err);
@@ -204,6 +207,46 @@ export class AnalogOutputComponent implements OnInit {
         };
     } ;
   });
+}
+
+edit_current_value(obj: any) {
+  const dialogRef = this.dialog.open(ChangeValueComponent, {
+    data: {obj: obj /*date:this.someDate*/},
+    panelClass: 'my-dialog-container-class',
+  });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log(result);
+    if (result!=undefined) {
+      if (result.obj!=undefined) {
+        console.log(result.obj);
+        let p = result.obj;
+        let a = createChangeValueDTO(p.currentValue);
+        console.log('a');
+        console.log(a);
+        this.tagService.editAnalogOutputValue(a, p.id).subscribe({
+          next: result => {
+            console.log(result);
+            this.getAll();
+          },
+          error: err => {
+            console.log(err);
+            // alert(err?.error?.message || JSON.stringify(err));
+            alert('Failed to edit analog output value');
+          }
+    
+        })
+        // };
+      } else {
+        // ride = {
+        //   "locations": obj.locations,
+        //   "passengers": obj.passengers,
+        //   "vehicleType": obj.vehicleType,
+        //   "babyTransport": obj.babyTransport,
+        //   "petTransport": obj.petTransport
+        // };
+      };
+  } ;
+});
 }
 
 desc_tag(obj: AnalogOutput) {

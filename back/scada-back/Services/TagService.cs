@@ -17,9 +17,11 @@ namespace scada_back.Services
         bool DeleteAnalogInput(int id);
 
         List<AnalogOutput> GetAllAnalogOutputs();
-        AnalogOutput AddAnalogOutput(AnalogOutputDTO dto);
+        AnalogOutput AddAnalogOutput(AnalogOutputDTO dto, DateTime now);
         AnalogOutput EditAnalogOutput(AnalogOutputDTO dto, int id);
+        AnalogOutputValue EditAnalogOutputValue(ChangeValueDTO dto, int id);
         bool DeleteAnalogOutput(int id);
+        AnalogOutputValue GetLastValueAO(AnalogOutput analogOutput);
 
         List<DigitalInput> GetAllDigitalInputs();
         DigitalInput AddDigitalInput(DigitalInputDTO dto);
@@ -27,9 +29,11 @@ namespace scada_back.Services
         bool DeleteDigitalInput(int id);
 
         List<DigitalOutput> GetAllDigitalOutputs();
-        DigitalOutput AddDigitalOutput(DigitalOutputDTO dto);
+        DigitalOutput AddDigitalOutput(DigitalOutputDTO dto, DateTime now);
         DigitalOutput EditDigitalOutput(DigitalOutputDTO dto, int id);
+        DigitalOutputValue EditDigitalOutputValue(ChangeValueDTO dto, int id);
         bool DeleteDigitalOutput(int id);
+        DigitalOutputValue GetLastValueDO(DigitalOutput digitalOutput);
     }
 
     public class TagService : ITagService
@@ -103,7 +107,7 @@ namespace scada_back.Services
             return analogOutputs;
         }
 
-        public AnalogOutput AddAnalogOutput(AnalogOutputDTO dto)
+        public AnalogOutput AddAnalogOutput(AnalogOutputDTO dto, DateTime now)
         {
             Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             AnalogOutput newAO = new AnalogOutput()
@@ -119,6 +123,13 @@ namespace scada_back.Services
             //using (var context = new AppContext())
             //{
             Context.AnalogOutputs.Add(newAO);
+            Context.SaveChanges();
+            Context.AnalogOutputValues.Add(new AnalogOutputValue()
+            {
+                Tag = newAO,
+                TimeStamp = now,
+                Value = dto.InitialValue
+            });
             Context.SaveChanges();
             return newAO;
         }
@@ -139,6 +150,19 @@ namespace scada_back.Services
             return ao;
         }
 
+        public AnalogOutputValue EditAnalogOutputValue(ChangeValueDTO dto, int id)
+        {
+            AnalogOutputValue aov = new AnalogOutputValue()
+            {
+                Tag = Context.AnalogOutputs.FirstOrDefault(p => p.Id == id),
+                Value = dto.Value,
+                TimeStamp = DateTime.Now,
+            };
+            Context.AnalogOutputValues.Add(aov);
+            Context.SaveChanges();
+            return aov;
+        }
+
         public bool DeleteAnalogOutput(int id)
         {
             Console.WriteLine(id);
@@ -146,10 +170,28 @@ namespace scada_back.Services
             if (ao != null)
             {
                 Context.AnalogOutputs.Remove(ao);
+                List<AnalogOutputValue> aovs = Context.AnalogOutputValues.Include(a => a.Tag)
+                                                                    .Where(a => a.Tag != null && a.Tag.Id == id)
+                                                                    .ToList();
+                foreach(AnalogOutputValue v in aovs)
+                {
+                    Context.AnalogOutputValues.Remove(v);
+                }
                 Context.SaveChanges();
                 return true;
             }
             return false;
+        }
+
+        public AnalogOutputValue GetLastValueAO(AnalogOutput analogOutput)
+        {
+            AnalogOutputValue lastValue = Context.AnalogOutputValues
+                            .Include(a => a.Tag)
+                            .Where(p => p.Tag.Id == analogOutput.Id)
+                            .OrderBy(p => p.TimeStamp)
+                            .LastOrDefault();
+
+            return lastValue;
         }
 
         // DIGITAL INPUT
@@ -211,7 +253,18 @@ namespace scada_back.Services
             return digitalOutputs;
         }
 
-        public DigitalOutput AddDigitalOutput(DigitalOutputDTO dto)
+        public DigitalOutputValue GetLastValueDO(DigitalOutput digitalOutput)
+        {
+            DigitalOutputValue lastValue = Context.DigitalOutputValues
+                            .Include(a => a.Tag)
+                            .Where(p => p.Tag.Id == digitalOutput.Id)
+                            .OrderBy(p => p.TimeStamp)
+                            .LastOrDefault();
+
+            return lastValue;
+        }
+
+        public DigitalOutput AddDigitalOutput(DigitalOutputDTO dto, DateTime now)
         {
             Address address = Context.Addresses.FirstOrDefault(p => p.Name == dto.Address);
             DigitalOutput newDO = new DigitalOutput()
@@ -224,6 +277,13 @@ namespace scada_back.Services
             //using (var context = new AppContext())
             //{
             Context.DigitalOutputs.Add(newDO);
+            Context.SaveChanges();
+            Context.DigitalOutputValues.Add(new DigitalOutputValue()
+            {
+                Tag = newDO,
+                TimeStamp = now,
+                Value = dto.InitialValue
+            });
             Context.SaveChanges();
             return newDO;
         }
@@ -241,6 +301,19 @@ namespace scada_back.Services
             return doo;
         }
 
+        public DigitalOutputValue EditDigitalOutputValue(ChangeValueDTO dto, int id)
+        {
+            DigitalOutputValue aov = new DigitalOutputValue()
+            {
+                Tag = Context.DigitalOutputs.FirstOrDefault(p => p.Id == id),
+                Value = dto.Value,
+                TimeStamp = DateTime.Now,
+            };
+            Context.DigitalOutputValues.Add(aov);
+            Context.SaveChanges();
+            return aov;
+        }
+
         public bool DeleteDigitalOutput(int id)
         {
             Console.WriteLine(id);
@@ -248,6 +321,13 @@ namespace scada_back.Services
             if (doo != null)
             {
                 Context.DigitalOutputs.Remove(doo);
+                List<DigitalOutputValue> aovs = Context.DigitalOutputValues.Include(a => a.Tag)
+                                                                    .Where(a => a.Tag != null && a.Tag.Id == id)
+                                                                    .ToList();
+                foreach (DigitalOutputValue v in aovs)
+                {
+                    Context.DigitalOutputValues.Remove(v);
+                }
                 Context.SaveChanges();
                 return true;
             }

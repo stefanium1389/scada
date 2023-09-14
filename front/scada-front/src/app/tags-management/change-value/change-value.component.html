@@ -1,0 +1,12 @@
+<!-- <p>change-value works!</p> -->
+<div class="div">
+    <form
+        method="POST"
+        [formGroup]="changeValueForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <input class="element" type="number" formControlName="current_value" placeholder="Current Value" name="current_value" id="current_value" required>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Changed tags's value</button>
+    </form>
+</div>

@@ -77,6 +77,7 @@ export class DigitalInputComponent implements OnInit {
         console.log(result);
         this.dis = result.results;
         this.dataSource = new MatTableDataSource<DigitalInputIdDTO>(this.dis);
+        this.dataSource.paginator = this.paginator;
       },
       error: err => {
         console.log(err);

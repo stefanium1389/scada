@@ -32,6 +32,7 @@ import { DigitalInputComponent } from './tags-management/digital-input/digital-i
 import { DigitalOutputComponent } from './tags-management/digital-output/digital-output.component';
 import { EditComponent } from './tags-management/edit/edit.component';
 import { DescriptionComponent } from './tags-management/description/description.component';
+import { ChangeValueComponent } from './tags-management/change-value/change-value.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { DescriptionComponent } from './tags-management/description/description.
     DigitalInputComponent,
     DigitalOutputComponent,
     EditComponent,
-    DescriptionComponent
+    DescriptionComponent,
+    ChangeValueComponent
   ],
   imports: [
     BrowserModule,

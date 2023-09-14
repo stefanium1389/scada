@@ -3,6 +3,7 @@ using scada_back.DTO;
 using scada_back.DTOs;
 using scada_back.Models;
 using scada_back.Services;
+using System.Data;
 
 namespace scada_back.Controllers
 {
@@ -107,7 +108,8 @@ namespace scada_back.Controllers
             List<AnalogOutput> analogOutputs = _tagService.GetAllAnalogOutputs();
             foreach (var analogOutput in analogOutputs)
             {
-                analogOutputIdDTOs.Add(new AnalogOutputIdDTO(analogOutput));
+                AnalogOutputValue lastValue = _tagService.GetLastValueAO(analogOutput);
+                analogOutputIdDTOs.Add(new AnalogOutputIdDTO(analogOutput, lastValue.Value, lastValue.TimeStamp));
             }
             return Ok(new { results = analogOutputIdDTOs });
         }
@@ -118,10 +120,11 @@ namespace scada_back.Controllers
         {
             try
             {
-                AnalogOutput ao = _tagService.AddAnalogOutput(dto);
+                DateTime now = DateTime.Now;
+                AnalogOutput ao = _tagService.AddAnalogOutput(dto, now);
                 if (ao != null)
                 {
-                    return Ok(new { ao = new AnalogOutputIdDTO(ao) });
+                    return Ok(new { ao = new AnalogOutputIdDTO(ao, ao.InitialValue, now) });
                 }
                 else
                 {
@@ -141,9 +144,32 @@ namespace scada_back.Controllers
             try
             {
                 AnalogOutput ao = _tagService.EditAnalogOutput(dto, id);
+                AnalogOutputValue lastValue = _tagService.GetLastValueAO(ao);
                 if (ao != null)
                 {
-                    return Ok(new AnalogOutputIdDTO(ao));
+                    return Ok(new AnalogOutputIdDTO(ao, lastValue.Value, lastValue.TimeStamp));
+                }
+                else
+                {
+                    return BadRequest(new { message = "Failed to edit ao" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("analogOutput/changeValue/{id}")]
+        public async Task<ActionResult<AnalogOutputIdDTO>> EditAnalogOutputValue([FromBody] ChangeValueDTO dto, [FromRoute] int id)
+        {
+            try
+            {
+                AnalogOutputValue ao = _tagService.EditAnalogOutputValue(dto, id);
+                if (ao != null)
+                {
+                    return Ok();
                 }
                 else
                 {
@@ -268,7 +294,8 @@ namespace scada_back.Controllers
             List<DigitalOutput> digitalOutputs = _tagService.GetAllDigitalOutputs();
             foreach (var digitalOutput in digitalOutputs)
             {
-                digitalOutputIdDTOs.Add(new DigitalOutputIdDTO(digitalOutput));
+                DigitalOutputValue lastValue = _tagService.GetLastValueDO(digitalOutput);
+                digitalOutputIdDTOs.Add(new DigitalOutputIdDTO(digitalOutput, lastValue.Value, lastValue.TimeStamp));
             }
             return Ok(new { results = digitalOutputIdDTOs });
         }
@@ -279,10 +306,11 @@ namespace scada_back.Controllers
         {
             try
             {
-                DigitalOutput doo = _tagService.AddDigitalOutput(dto);
+                DateTime now = DateTime.Now;
+                DigitalOutput doo = _tagService.AddDigitalOutput(dto, now);
                 if (doo != null)
                 {
-                    return Ok(new { doo = new DigitalOutputIdDTO(doo) });
+                    return Ok(new { doo = new DigitalOutputIdDTO(doo, doo.InitialValue, now) });
                 }
                 else
                 {
@@ -302,13 +330,36 @@ namespace scada_back.Controllers
             try
             {
                 DigitalOutput doo = _tagService.EditDigitalOutput(dto, id);
+                DigitalOutputValue lastValue = _tagService.GetLastValueDO(doo);
                 if (doo != null)
                 {
-                    return Ok(new DigitalOutputIdDTO(doo));
+                    return Ok(new DigitalOutputIdDTO(doo, lastValue.Value, lastValue.TimeStamp));
                 }
                 else
                 {
                     return BadRequest(new { message = "Failed to edit do" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("digitalOutput/changeValue/{id}")]
+        public async Task<ActionResult<DigitalOutputIdDTO>> EditDgitialOutputValue([FromBody] ChangeValueDTO dto, [FromRoute] int id)
+        {
+            try
+            {
+                DigitalOutputValue dov = _tagService.EditDigitalOutputValue(dto, id);
+                if (dov != null)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(new { message = "Failed to edit ao" });
                 }
             }
             catch (Exception exception)

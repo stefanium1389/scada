@@ -18,11 +18,13 @@ export interface AnalogOutputIdDTO {
     Description: string;
     Address: string;
     InitialValue: number;
+    CurrentValue: number;
+    LastChanged: string;
     LowLimit: number;
     HighLimit: number;
     Unit: string
   }
 
-export function createAnalogOutputIdDTO(Id: number, Name: string, Description: string, Address: string, InitialValue: number, LowLimit: number, HighLimit: number, Unit: string): AnalogOutputIdDTO {
-    return {Id, Name, Description, Address, InitialValue, LowLimit, HighLimit, Unit};
+export function createAnalogOutputIdDTO(Id: number, Name: string, Description: string, Address: string, InitialValue: number, CurrentValue: number, LastChanged: string, LowLimit: number, HighLimit: number, Unit: string): AnalogOutputIdDTO {
+    return {Id, Name, Description, Address, InitialValue, CurrentValue, LastChanged, LowLimit, HighLimit, Unit};
   }

@@ -78,6 +78,7 @@ export class RtuComponent implements OnInit {
         console.log(result);
         this.rtus = result.results;
         this.dataSource = new MatTableDataSource<RTUIdDTO>(this.rtus);
+        this.dataSource.paginator = this.paginator;
       },
       error: err => {
         console.log(err);
