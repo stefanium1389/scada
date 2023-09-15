@@ -35,6 +35,8 @@ namespace scada_back.Services
         DigitalOutputValue EditDigitalOutputValue(DigitalValueDTO dto, int id);
         bool DeleteDigitalOutput(int id);
         DigitalOutputValue GetLastValueDO(DigitalOutput digitalOutput);
+        List<AnalogInputValue> GetCurrentAnalogInputValues();
+        AnalogInputValue GetAnalogInputValueById(int id);
     }
 
     public class TagService : ITagService
@@ -356,6 +358,21 @@ namespace scada_back.Services
                 return true;
             }
             return false;
+        }
+
+        public List<AnalogInputValue> GetCurrentAnalogInputValues()
+        {
+            var list = new List<AnalogInputValue>();
+            foreach (var analog in Context.AnalogInputs)
+            {
+                Context.AnalogInputValues.LastOrDefault(a => analog.Id == a.Tag.Id);
+            }
+            return list;
+        }
+
+        public AnalogInputValue GetAnalogInputValueById(int id)
+        {
+            return Context.AnalogInputValues.LastOrDefault(a => a.Tag.Id == id);
         }
     }
 }

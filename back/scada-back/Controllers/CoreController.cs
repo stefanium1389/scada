@@ -9,6 +9,7 @@ namespace scada_back.Controllers
     public class CoreController
     {
         public ISystemService _systemService { get; set; }
+        public StartService StartService { get; set; }
 
         public CoreController(ISystemService systemService)
         {
@@ -20,6 +21,12 @@ namespace scada_back.Controllers
         public async void Addresses()
         {
             _systemService.AddAddresses();
+        }
+        [HttpGet]
+        [Route("start")]
+        public async void Start()
+        {
+            StartService.Start();
         }
     }
 }
