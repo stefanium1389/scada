@@ -9,11 +9,12 @@ namespace scada_back.Controllers
     public class CoreController
     {
         public ISystemService _systemService { get; set; }
-        public StartService StartService { get; set; }
+        public IStartService _startService { get; set; }
 
-        public CoreController(ISystemService systemService)
+        public CoreController(ISystemService systemService, IStartService startService)
         {
             _systemService = systemService;
+            _startService = startService;
         }
 
         [HttpGet]
@@ -26,7 +27,13 @@ namespace scada_back.Controllers
         [Route("start")]
         public async void Start()
         {
-            StartService.Start();
+            _startService.Start();
+        }
+        [HttpGet]
+        [Route("stop")]
+        public async void Stop()
+        {
+            _startService.Stop();
         }
     }
 }

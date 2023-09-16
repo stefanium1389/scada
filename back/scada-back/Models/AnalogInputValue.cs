@@ -10,6 +10,10 @@ namespace scada_back.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Column("analog_input_id")]
+        public int AnalogInputId { get; set; }
+
+        [ForeignKey("AnalogInputId")]
         public AnalogInput Tag { get; set; }
 
         public DateTime TimeStamp { get; set; }

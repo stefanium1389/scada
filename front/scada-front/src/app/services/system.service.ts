@@ -13,4 +13,10 @@ export class SystemService {
   postAddresses():Observable<any> {
     return this.http.get(`${environment.api}system/addresses`);
   }
+  startSystemSimulation():Observable<any>{
+    return this.http.get(`${environment.api}system/start`)
+  }
+  stopSystemSimulation():Observable<any>{
+    return this.http.get(`${environment.api}system/stop`)
+  }
 }

@@ -16,7 +16,8 @@ namespace scada_back.Services
     public class RTUService : IRTUService
     {
         public ScadaDbContext Context { get; set; }
-        public RTUService(ScadaDbContext scadaContext) { Context = scadaContext; }
+        private GlobalVariables _globalVariables {  get; set; }
+        public RTUService(ScadaDbContext scadaContext) { Context = scadaContext; _globalVariables = GlobalVariables.Instance; }
 
         public List<RealTimeUnit> GetAllRealTimeUnits()
         {
@@ -49,6 +50,7 @@ namespace scada_back.Services
             };
             Context.RealTimeUnits.Add(newTRU);
             Context.SaveChanges();
+            _globalVariables.AddressRTU[address.Id] = newTRU.Id;
             return newTRU;
         }
         public RealTimeUnit EditRealTimeUnit(RTUDTO dto, int id)
@@ -71,6 +73,7 @@ namespace scada_back.Services
                 Address old = rtu.Address;
                 old.Driver = Driver.SIMULATION;
                 Context.Addresses.Update(old);
+                _globalVariables.AddressRTU.Remove(old.Id);
             }
             address.Driver = Driver.RTU;
             Context.Addresses.Update(address);
@@ -81,6 +84,7 @@ namespace scada_back.Services
             rtu.Address = address;
             Context.RealTimeUnits.Update(rtu);
             Context.SaveChanges();
+            _globalVariables.AddressRTU[address.Id] = rtu.Id;
             return rtu;
         }
         public bool DeleteRealTimeUnit(int id)
@@ -94,9 +98,11 @@ namespace scada_back.Services
             {
                 Context.RealTimeUnits.Remove(rtu);
                 Context.SaveChanges();
+                _globalVariables.AddressRTU.Remove(address.Id);
                 return true;
             }
             return false;
+
         }
     }
 }
