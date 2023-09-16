@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ReportService } from 'src/app/services/report.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatSort, Sort} from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-alarms-time',
@@ -12,24 +12,34 @@ import {MatSort, Sort} from '@angular/material/sort';
   styleUrls: ['./alarms-time.component.css']
 })
 export class AlarmsTimeComponent implements OnInit {
-  startDate: Date | null = null; 
-  startTime: string = ''; 
+  startDate: Date | null = null;
+  startTime: string = '';
   endDate: Date | null = null;
   endTime: string = '';
 
-  dataSource = new MatTableDataSource<AlarmReportItem>(ELEMENT_DATA);
-  displayedColumns: string[] = ['time', 'priority'];
+  dataSource = new MatTableDataSource<AlarmReportItem>([]);
+  displayedColumns: string[] = ['timestamp', 'priority', 'type', 'limit', 'tagName'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private reportService: ReportService) {}
+  priorityMap: { [key: number]: string } = {
+    0: 'Low',
+    1: 'Medium',
+    2: 'High',
+  };
+  
+  typeMap: { [key: number]: string } = {
+    0: 'Bottom',
+    1: 'Upper',
+  };
 
-  ngOnInit(): void {}
+  constructor(private reportService: ReportService) { }
+
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.dataSource.data = ELEMENT_DATA; // Assign your data
   }
 
   processReport() {
@@ -50,26 +60,51 @@ export class AlarmsTimeComponent implements OnInit {
     const endMinute = parseInt(endTimeParts[1], 10);
     endDateTime.setHours(endHour, endMinute);
 
-
     if (startDateTime >= endDateTime) {
       alert('Start date and time must be before the end date and time.');
       return;
     }
 
+    this.reportService.alarmsTime(startDateTime, endDateTime).subscribe({
+      next: result => {
+        console.log(result);
+    
+        if (Array.isArray(result.results)) {
+          if (result.results.length === 0) {
+            console.log('No alarm records found.');
+          } else {
+            const mappedData: AlarmReportItem[] = result.results.map((item: any) => ({
+              timestamp: new Date(item.timestamp),
+              priority: item.priority,
+              type: item.type,
+              limit: item.limit,
+              tagName: item.tagName,
+            }));
+    
+            this.dataSource.data = mappedData;
+          }
+        } else {
+          console.error('Result.results is not an array:', result.results);
+        }
+    
+        this.dataSource.paginator = this.paginator;
+      },
+      error: err => {
+        console.log(err);
+        // alert(err?.message || JSON.stringify(err));
+        alert(err);
+      }
+    });
+    
   }
 }
 
-const ELEMENT_DATA: AlarmReportItem[] = [
-  { time: new Date("2023-03-11T14:30:00"), priority: 1 },
-  { time: new Date("2023-03-12T13:45:00"), priority: 2 },
-  { time: new Date("2023-03-13T14:55:00"), priority: 4 },
-  { time: new Date("2023-09-12T11:45:00"), priority: 3 },
-  { time: new Date("2023-05-11T15:30:00"), priority: 4 },
-  { time: new Date("2023-05-11T12:45:00"), priority: 1 },
-
-];
-
 interface AlarmReportItem {
-  time: Date;
+  timestamp: Date;
   priority: number;
+  type: number;
+  limit: number;
+  tagName: string;
 }
+
+
