@@ -40,6 +40,7 @@ import { TagsTimeComponent } from './reports/tags-time/tags-time.component';
 import { AiLastComponent } from './reports/ai-last/ai-last.component';
 import { DiLastComponent } from './reports/di-last/di-last.component';
 import { TagIdComponent } from './reports/tag-id/tag-id.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { TagIdComponent } from './reports/tag-id/tag-id.component';
     MatIconModule,
     MatTooltipModule,
     MatDialogModule,
+    MatSortModule
     
   ],
   providers: [],

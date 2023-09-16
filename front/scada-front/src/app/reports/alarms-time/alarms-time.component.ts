@@ -4,6 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ReportService } from 'src/app/services/report.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import {MatSort, Sort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-alarms-time',
@@ -19,6 +20,7 @@ export class AlarmsTimeComponent implements OnInit {
   dataSource = new MatTableDataSource<AlarmReportItem>(ELEMENT_DATA);
   displayedColumns: string[] = ['time', 'priority'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private reportService: ReportService) {}
 
@@ -26,6 +28,8 @@ export class AlarmsTimeComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.dataSource.data = ELEMENT_DATA; // Assign your data
   }
 
   processReport() {
@@ -55,9 +59,17 @@ export class AlarmsTimeComponent implements OnInit {
   }
 }
 
-const ELEMENT_DATA: AlarmReportItem[] = [{ time: "123", priority: "400" }];
+const ELEMENT_DATA: AlarmReportItem[] = [
+  { time: new Date("2023-03-11T14:30:00"), priority: 1 },
+  { time: new Date("2023-03-12T13:45:00"), priority: 2 },
+  { time: new Date("2023-03-13T14:55:00"), priority: 4 },
+  { time: new Date("2023-09-12T11:45:00"), priority: 3 },
+  { time: new Date("2023-05-11T15:30:00"), priority: 4 },
+  { time: new Date("2023-05-11T12:45:00"), priority: 1 },
+
+];
 
 interface AlarmReportItem {
-  time: string;
-  priority: string;
+  time: Date;
+  priority: number;
 }
