@@ -29,8 +29,8 @@ export class AlarmsTimeComponent implements OnInit {
   };
   
   typeMap: { [key: number]: string } = {
-    0: 'Bottom',
-    1: 'Upper',
+    0: 'Above',
+    1: 'Below',
   };
 
   constructor(private reportService: ReportService) { }
