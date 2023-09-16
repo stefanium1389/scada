@@ -17,6 +17,7 @@ namespace scada_back.Services
     public class StartService: IStartService
     {
         private object _lock = new object();
+        private bool isRunning;
         public ScadaDbContext Context { get; set; }
         public IServiceProvider _serviceProvider { get; set; }
         public GlobalVariables GlobalVariables { get; set; }
@@ -25,6 +26,7 @@ namespace scada_back.Services
         public StartService(ScadaDbContext context, IServiceProvider serviceProvider) {  Context = context; GlobalVariables = GlobalVariables.Instance; _serviceProvider = serviceProvider; }
 
         public void Start() {
+            isRunning = true;
             foreach (var address in Context.Addresses)
             {
                 Console.WriteLine(address.Id);
@@ -69,7 +71,7 @@ namespace scada_back.Services
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ScadaDbContext>();
             
-                while (true)
+                while (isRunning)
                 {
                     double realValue = 0;
                     if (GlobalVariables.AddressValues.ContainsKey(digital.Address.Id))
@@ -115,7 +117,7 @@ namespace scada_back.Services
 
                 if (address.Driver == Driver.SIMULATION)
                 {
-                    while (true)
+                    while (isRunning)
                     {
                         if (address.Function == Function.SIN)
                         {
@@ -135,7 +137,7 @@ namespace scada_back.Services
                 }
                 if (address.Driver == Driver.RTU)
                 {
-                    while (true)
+                    while (isRunning)
                     {
                         var rtuId = GlobalVariables.AddressRTU[address.Id];
                         var rtu = dbContext.RealTimeUnits.Find(rtuId);
@@ -154,7 +156,7 @@ namespace scada_back.Services
             using (var scope = _serviceProvider.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ScadaDbContext>();
-                while (true)
+                while (isRunning)
                 {
                     if (analog.IsScanning)
                     {
@@ -225,17 +227,9 @@ namespace scada_back.Services
         }
         public void Stop()
         {
-            foreach(var thread in GlobalVariables.AddressThread.Values) {
-                thread.Abort();
-            }
-            foreach (var thread in GlobalVariables.AnalogInputThread.Values)
-            {
-                thread.Abort();
-            }
-            foreach (var thread in GlobalVariables.DigitalInputThread.Values)
-            {
-                thread.Abort();
-            }
+            Console.WriteLine("ALOOOOO STOOOOOJ!!!!!");
+            isRunning = false;
+            Console.WriteLine(isRunning);
         }
     }
 }
