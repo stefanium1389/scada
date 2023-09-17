@@ -63,7 +63,7 @@ namespace scada_back.Services
                     var digitalVal = new DigitalInputValue();
                     digitalVal.Value = readValue;
                     digitalVal.DigitalInputId = digital.Id;
-                    digitalVal.TimeStamp = new DateTime();
+                    digitalVal.TimeStamp = DateTime.Now;
                     dbContext.DigitalInputValues.Add(digitalVal);
                     dbContext.SaveChanges();
                     Thread.Sleep(digital.ScanTime);
@@ -138,7 +138,7 @@ namespace scada_back.Services
                     {
                         var analogValue = new AnalogInputValue();
                         analogValue.AnalogInputId = analog.Id;
-                        analogValue.TimeStamp = new DateTime();
+                        analogValue.TimeStamp = DateTime.Now;
                         double realValue = 0;
                         if (GlobalVariables.AddressValues.ContainsKey(analog.Address.Id))
                         {
@@ -169,7 +169,7 @@ namespace scada_back.Services
                                 {
                                     ActivatedAlarm aa = new ActivatedAlarm();
                                     aa.Alarm = alarm;
-                                    aa.TimeStamp = new DateTime();
+                                    aa.TimeStamp = DateTime.Now;
                                     dbContext.ActivatedAlarms.Add(aa);
                                     dbContext.SaveChanges();
                                 }
@@ -180,7 +180,7 @@ namespace scada_back.Services
                                 {
                                     ActivatedAlarm aa = new ActivatedAlarm();
                                     aa.Alarm = alarm;
-                                    aa.TimeStamp = new DateTime();
+                                    aa.TimeStamp = DateTime.Now;
                                     //lock (_lock)
                                     {
                                         dbContext.ActivatedAlarms.Add(aa);
