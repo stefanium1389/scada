@@ -16,7 +16,7 @@ namespace scada_back.Services
     }
     public class StartService: IStartService
     {
-        private bool isRunning = true;
+        public object _lock = new object();
         public ScadaDbContext Context { get; set; }
         public IServiceProvider _serviceProvider { get; set; }
         public GlobalVariables GlobalVariables { get; set; }
@@ -25,7 +25,6 @@ namespace scada_back.Services
         public StartService(ScadaDbContext context, IServiceProvider serviceProvider) {  Context = context; GlobalVariables = GlobalVariables.Instance; _serviceProvider = serviceProvider; }
 
         public void Start() {
-            isRunning = true;
             foreach (var address in Context.Addresses)
             {
                 StartAddressThread(address);
@@ -39,7 +38,6 @@ namespace scada_back.Services
                 StartDigitalThread(digital);
             }
         }
-
         private void DigitalReading(DigitalInput digital, CancellationToken cancellationToken)
         {
             using (var scope = _serviceProvider.CreateScope())
@@ -66,28 +64,24 @@ namespace scada_back.Services
                     digitalVal.Value = readValue;
                     digitalVal.DigitalInputId = digital.Id;
                     digitalVal.TimeStamp = new DateTime();
-                    //lock (_lock)
-                    {
-
-                        dbContext.DigitalInputValues.Add(digitalVal);
-                        dbContext.SaveChanges();
-                    
-                   
-                    }
+                    dbContext.DigitalInputValues.Add(digitalVal);
+                    dbContext.SaveChanges();
                     Thread.Sleep(digital.ScanTime);
                 }
             }
         }
-
         private void AddressReading(Address address, CancellationToken cancellationToken)
         {
             using (var scope = _serviceProvider.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ScadaDbContext>();
 
-                foreach(RealTimeUnit rtu in dbContext.RealTimeUnits.Include(a => a.Address))
+                lock (_lock)
                 {
-                    GlobalVariables.AddressRTU[rtu.Address.Id] = rtu.Id;
+                    foreach (RealTimeUnit rtu in dbContext.RealTimeUnits.Include(a => a.Address))
+                    {
+                        GlobalVariables.AddressRTU[rtu.Address.Id] = rtu.Id;
+                    }
                 }
 
                 while (!cancellationToken.IsCancellationRequested)
@@ -97,15 +91,24 @@ namespace scada_back.Services
                     {
                         if (address.Function == Function.SIN)
                         {
-                            GlobalVariables.AddressValues[address.Id] = SimulationDriver.Sine();
+                            lock (_lock)
+                            {
+                                GlobalVariables.AddressValues[address.Id] = SimulationDriver.Sine();
+                            }
                         }
                         if (address.Function == Function.COS)
                         {
-                            GlobalVariables.AddressValues[address.Id] = SimulationDriver.Cosine();
+                            lock (_lock)
+                            {
+                                GlobalVariables.AddressValues[address.Id] = SimulationDriver.Cosine();
+                            }
                         }
                         if (address.Function == Function.RAMP)
                         {
-                            GlobalVariables.AddressValues[address.Id] = SimulationDriver.Ramp();
+                            lock (_lock)
+                            {
+                                GlobalVariables.AddressValues[address.Id] = SimulationDriver.Ramp();
+                            }
                         }
                         Thread.Sleep((int)address.SimGenerateTime);
                     }
@@ -113,12 +116,13 @@ namespace scada_back.Services
                 
                     if (address.Driver == Driver.RTU)
                     {
-                    
                         var rtuId = GlobalVariables.AddressRTU[address.Id];
-                        var rtu = dbContext.RealTimeUnits.Find(rtuId);
-
-                        double value = random.NextDouble() * (rtu.MaxValue - rtu.MinValue) + rtu.MaxValue;
-                        GlobalVariables.AddressValues[address.Id] = value;
+                        var rtu = dbContext.RealTimeUnits.FirstOrDefault(i => i.Id == rtuId);
+                        double value = random.NextDouble() * (rtu!.MaxValue - rtu.MinValue) + rtu.MinValue;
+                        lock(_lock)
+                        {
+                            GlobalVariables.AddressValues[address.Id] = value;
+                        }
                         Thread.Sleep(rtu.GenerateTime);
                     }
                 }
@@ -155,13 +159,8 @@ namespace scada_back.Services
                             savedValue = realValue;
                         }
                         analogValue.Value = savedValue;
-                        //lock (_lock)
-                        {
-
-                            dbContext.AnalogInputValues.Add(analogValue);
-                            dbContext.SaveChanges();
-
-                        }
+                        dbContext.AnalogInputValues.Add(analogValue);
+                        dbContext.SaveChanges();
                         foreach (Alarm alarm in analog.Alarms)
                         {
                             if (alarm.Type == AlarmType.LOW)
@@ -173,7 +172,6 @@ namespace scada_back.Services
                                     aa.TimeStamp = new DateTime();
                                     dbContext.ActivatedAlarms.Add(aa);
                                     dbContext.SaveChanges();
-
                                 }
                             }
                             else if (alarm.Type == AlarmType.HIGH)
@@ -192,14 +190,12 @@ namespace scada_back.Services
                             }
                         }
                     }
-
                     Thread.Sleep(analog.ScanTime);
                 }
             }
         }
         public void Stop()
         {
-            isRunning = false;
             foreach (var address in Context.Addresses)
             {
                 StopAddressThread(address.Id);
