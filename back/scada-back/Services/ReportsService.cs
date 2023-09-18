@@ -47,22 +47,24 @@ namespace scada_back.Services
 
         public List<ReportAlarmItemForPriorityDTO> GetAlarmsForGivenPriority(ReportRequestPriorityDTO dto)
         {
-            int priority = dto.Priority; 
+            int priority = dto.Priority; // Assuming dto has a property called Priority
 
             var alarms = Context.ActivatedAlarms
-                .Where(aa => aa.Alarm.Priority == (AlarmPriority)priority)
+                .Where(aa => aa.Alarm.Priority == (AlarmPriority)priority) // Assuming AlarmPriority is an enum
                 .Include(aa => aa.Alarm)
                 .ThenInclude(a => a.Tag)
                 .Select(aa => new ReportAlarmItemForPriorityDTO
                 {
                     Type = (int)aa.Alarm.Type,
                     Limit = aa.Alarm.Limit,
-                    TagName = aa.Alarm.Tag != null ? aa.Alarm.Tag.Name : null
+                    TagName = aa.Alarm.Tag != null ? aa.Alarm.Tag.Name : null,
+                    Timestamp = aa.TimeStamp
                 })
                 .ToList();
 
             return alarms;
         }
+
 
 
     }

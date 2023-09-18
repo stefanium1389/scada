@@ -7,5 +7,7 @@
         public double Limit { get; set; }
 
         public string TagName { get; set; }
+
+        public DateTime Timestamp { get; set; }
     }
 }

@@ -17,7 +17,7 @@ export class AlarmsPriorityComponent implements OnInit {
   selectedPriority: number = 0;
 
   dataSource = new MatTableDataSource<AlarmReportItem>([]);
-  displayedColumns: string[] = ['type', 'limit', 'tagName'];
+  displayedColumns: string[] = ['type', 'limit', 'tagName','timestamp'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
