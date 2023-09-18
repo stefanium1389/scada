@@ -74,6 +74,7 @@ export class AlarmsComponent implements OnInit {
     this.selectedItemsLow.length = 0;
     this.alarmService.getAllAlarmsForTag(this.id).subscribe({
       next: result => {
+        console.log(result);
         // console.log(result);
         for (let i = 0; i < result.length; i++) {
           // console.log(result[i].id);
@@ -127,9 +128,9 @@ export class AlarmsComponent implements OnInit {
     } else {
         let t = '';
         if (type == 'Above [High]') {
-          t = 'LOW';
-        } else {
           t = 'HIGH';
+        } else {
+          t = 'LOW';
         }
 
         let p = '';
@@ -142,6 +143,7 @@ export class AlarmsComponent implements OnInit {
         }
 
         let dto = createAlarmDTO(t, p, this.id, limit);
+        console.log(dto);
         // console.log(dto);
         this.alarmService.addAlarm(dto).subscribe({
           next: result => {
