@@ -24,4 +24,11 @@ export class ReportService {
     );
   }
 
+  tagsTime(start:Date, end:Date):Observable<any> {
+    return this.http.post(`${environment.api}reports/tags/time`, 
+    {StartDateTime:start, EndDateTime:end}, 
+    {headers: new HttpHeaders().set("content-type", "application/json")}
+    );
+  }
+
 }

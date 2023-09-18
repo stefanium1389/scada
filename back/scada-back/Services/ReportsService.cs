@@ -12,6 +12,7 @@ namespace scada_back.Services
     {
         List<ReportAlarmItemDTO> GetAlarmsForGivenInterval(ReportRequestStartEndTimeDTO dto);
         List<ReportAlarmItemForPriorityDTO> GetAlarmsForGivenPriority(ReportRequestPriorityDTO dto);
+        List<ReportTagItemDTO> GetTagsForGivenInterval(ReportRequestStartEndTimeDTO dto);
     }
 
     public class ReportsService : IReportsService
@@ -64,6 +65,47 @@ namespace scada_back.Services
 
             return alarms;
         }
+
+        public List<ReportTagItemDTO> GetTagsForGivenInterval(ReportRequestStartEndTimeDTO dto)
+        {
+            DateTime startDate = dto.StartDateTime;
+            DateTime endDate = dto.EndDateTime;
+
+            var analogTags = Context.AnalogInputValues
+                .Where(aiv => aiv.TimeStamp >= startDate && aiv.TimeStamp <= endDate)
+                .Include(aiv => aiv.Tag)
+                .Select(aiv => new ReportTagItemDTO
+                {
+                    Timestamp = aiv.TimeStamp,
+                    Type = 0,
+                    LowLimit = aiv.Tag.LowLimit,
+                    HighLimit = aiv.Tag.HighLimit,
+                    ScanTime = aiv.Tag.ScanTime,
+                    Value = aiv.Value,
+                    Name = aiv.Tag.Name,
+                })
+                .ToList();
+
+            var digitalTags = Context.DigitalInputValues
+                .Where(div => div.TimeStamp >= startDate && div.TimeStamp <= endDate)
+                .Include(div => div.Tag)
+                .Select(div => new ReportTagItemDTO
+                {
+                    Timestamp = div.TimeStamp,
+                    Type = 1,
+                    LowLimit = null,
+                    HighLimit = null,
+                    ScanTime = div.Tag.ScanTime,
+                    Value = div.Value ? 1 : 0,
+                    Name = div.Tag.Name
+                })
+                .ToList();
+
+            var allTags = analogTags.Concat(digitalTags).ToList();
+
+            return allTags;
+        }
+
 
 
 

@@ -51,6 +51,22 @@ namespace scada_back.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("tags/time")]
+        public async Task<ActionResult<List<ReportTagItemDTO>>> getTagsByPriority([FromBody] ReportRequestStartEndTimeDTO dto)
+        {
+            try
+            {
+                List<ReportTagItemDTO> items = _reportsService.GetTagsForGivenInterval(dto);
+
+                return Ok(new { results = items });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
     }
 
 }
