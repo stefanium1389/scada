@@ -16,4 +16,12 @@ export class ReportService {
     {headers: new HttpHeaders().set("content-type", "application/json")}
     );
   }
+
+  alarmsPriority(priority:number):Observable<any> {
+    return this.http.post(`${environment.api}reports/alarms/priority`, 
+    {Priority:priority}, 
+    {headers: new HttpHeaders().set("content-type", "application/json")}
+    );
+  }
+
 }

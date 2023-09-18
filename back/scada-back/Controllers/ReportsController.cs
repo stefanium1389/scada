@@ -35,6 +35,22 @@ namespace scada_back.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("alarms/priority")]
+        public async Task<ActionResult<List<ReportAlarmItemDTO>>> getAlarmsByPriority([FromBody] ReportRequestPriorityDTO dto)
+        {
+            try
+            {
+                List<ReportAlarmItemForPriorityDTO> reportAlarmItems = _reportsService.GetAlarmsForGivenPriority(dto);
+
+                return Ok(new { results = reportAlarmItems });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
     }
 
 }

@@ -99,7 +99,7 @@ export class AlarmsTimeComponent implements OnInit {
   }
 }
 
-interface AlarmReportItem {
+export interface AlarmReportItem {
   timestamp: Date;
   priority: number;
   type: number;
