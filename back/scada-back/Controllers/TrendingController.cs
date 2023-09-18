@@ -10,25 +10,38 @@ namespace scada_back.Controllers
     [Route("api/trending")]
     public class TrendingController : ControllerBase
     {
-        public ITagService _tagService { get; set; }
+        public ITrendingService _trendingService { get; set; }
 
-        public TrendingController(ITagService tagService)
+        public TrendingController(ITrendingService trendingService)
         {
-            _tagService = tagService;
+            _trendingService = trendingService;
         }
 
         [HttpGet]
-        [Route("analogInputValue/{id}")]
-        public async Task<ActionResult<List<AnalogInputIdDTO>>> GetAnalogInputValueById([FromRoute] int id)
+        [Route("analogInput/{id}")]
+        public async Task<ActionResult<TrendingAnalogDTO>> GetAnalogInputValueById([FromRoute] int id)
         {
             try
             {
-                AnalogInputValue analogInput = _tagService.GetAnalogInputValueById(id);
-                return Ok(new AnalogInputValueDTO(analogInput));
+                return Ok(_trendingService.GetTrendingAnalog(id));
             }
-            catch (Exception exception)
+            catch(Exception ex) 
             {
-                return BadRequest(exception.Message);
+                return StatusCode(404, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("digitalInput/{id}")]
+        public async Task<ActionResult<TrendingDigitalDTO>> GetDigitalInputValueById([FromRoute] int id)
+        {
+            try
+            {
+                return Ok(_trendingService.GetTrendingDigital(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message);
             }
         }
 

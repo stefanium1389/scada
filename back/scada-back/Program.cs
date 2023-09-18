@@ -20,6 +20,7 @@ builder.Services.AddTransient<IRTUService, RTUService>();
 builder.Services.AddTransient<ISystemService, SystemService>();
 builder.Services.AddTransient<IStartService, StartService>();
 builder.Services.AddTransient<IServiceProvider, ServiceProvider>();
+builder.Services.AddTransient<ITrendingService, TrendingService>();
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
