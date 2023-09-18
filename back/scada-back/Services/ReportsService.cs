@@ -71,37 +71,59 @@ namespace scada_back.Services
             DateTime startDate = dto.StartDateTime;
             DateTime endDate = dto.EndDateTime;
 
-            var analogTags = Context.AnalogInputValues
+            var analogInputTags = Context.AnalogInputValues
                 .Where(aiv => aiv.TimeStamp >= startDate && aiv.TimeStamp <= endDate)
                 .Include(aiv => aiv.Tag)
                 .Select(aiv => new ReportTagItemDTO
                 {
                     Timestamp = aiv.TimeStamp,
-                    Type = 0,
-                    LowLimit = aiv.Tag.LowLimit,
-                    HighLimit = aiv.Tag.HighLimit,
-                    ScanTime = aiv.Tag.ScanTime,
+                    Type = 0, // Analog input
                     Value = aiv.Value,
                     Name = aiv.Tag.Name,
                 })
                 .ToList();
 
-            var digitalTags = Context.DigitalInputValues
+            var digitalInputTags = Context.DigitalInputValues
                 .Where(div => div.TimeStamp >= startDate && div.TimeStamp <= endDate)
                 .Include(div => div.Tag)
                 .Select(div => new ReportTagItemDTO
                 {
                     Timestamp = div.TimeStamp,
-                    Type = 1,
-                    LowLimit = null,
-                    HighLimit = null,
-                    ScanTime = div.Tag.ScanTime,
+                    Type = 1, // Digital input
                     Value = div.Value ? 1 : 0,
-                    Name = div.Tag.Name
+                    Name = div.Tag.Name,
                 })
                 .ToList();
 
-            var allTags = analogTags.Concat(digitalTags).ToList();
+            var analogOutputTags = Context.AnalogOutputValues
+                .Where(aov => aov.TimeStamp >= startDate && aov.TimeStamp <= endDate)
+                .Include(aov => aov.Tag)
+                .Select(aov => new ReportTagItemDTO
+                {
+                    Timestamp = aov.TimeStamp,
+                    Type = 2, // Analog output
+                    Value = aov.Value,
+                    Name = aov.Tag.Name,
+                })
+                .ToList();
+
+            var digitalOutputTags = Context.DigitalOutputValues
+                .Where(dov => dov.TimeStamp >= startDate && dov.TimeStamp <= endDate)
+                .Include(dov => dov.Tag)
+                .Select(dov => new ReportTagItemDTO
+                {
+                    Timestamp = dov.TimeStamp,
+                    Type = 3, // Digital output
+                    Value = dov.Value ? 1 : 0,
+                    Name = dov.Tag.Name,
+                })
+                .ToList();
+
+            var allTags = analogInputTags
+                .Concat(digitalInputTags)
+                .Concat(analogOutputTags)
+                .Concat(digitalOutputTags)
+                .ToList();
 
             return allTags;
         }

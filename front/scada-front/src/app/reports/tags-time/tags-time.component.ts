@@ -20,13 +20,15 @@ export class TagsTimeComponent implements OnInit {
   endTime: string = '';
 
   dataSource = new MatTableDataSource<TagReportItem>([]);
-  displayedColumns: string[] = ['name', 'type','value', 'low_limit', 'high_limit', 'scan_time', 'timestamp'];
+  displayedColumns: string[] = ['name', 'type','value', 'timestamp'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
   typeMap: { [key: number]: string } = {
-    0: 'Analog',
-    1: 'Digital',
+    0: 'Analog input',
+    1: 'Digital input',
+    2: 'Analog output',
+    3: 'Digital output'
   };
 
   constructor(private reportService: ReportService) { }
@@ -71,9 +73,6 @@ export class TagsTimeComponent implements OnInit {
           } else {
             const mappedData: TagReportItem[] = result.results.map((item: any) => ({
               timestamp: new Date(item.timestamp),
-              low_limit: item.lowLimit,
-              high_limit : item.highLimit,
-              scan_time: item.scanTime,
               type: item.type,
               name: item.name,
               value: item.value
@@ -100,9 +99,6 @@ export class TagsTimeComponent implements OnInit {
 export interface TagReportItem {
   timestamp: Date;
   type: number;
-  low_limit: number;
-  high_limit: number;
   name: string;
-  scan_time : number;
   value: number;
 }
