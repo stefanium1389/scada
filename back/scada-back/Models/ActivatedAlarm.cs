@@ -9,7 +9,11 @@ namespace scada_back.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public Alarm Alarm { get; set; }
+        [Column("alarm_id")]
+        public int AlarmId { get; set; }
+
+        [ForeignKey("AlarmId")]
+        public Alarm TargetAlarm { get; set; }
 
         public DateTime TimeStamp { get; set; }
     }

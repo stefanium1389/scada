@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using scada_back.Context;
 
@@ -11,9 +12,11 @@ using scada_back.Context;
 namespace scada_back.Migrations
 {
     [DbContext(typeof(ScadaDbContext))]
-    partial class ScadaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230918124431_ActivatedAlarmEdit")]
+    partial class ActivatedAlarmEdit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,12 +38,15 @@ namespace scada_back.Migrations
                         .HasColumnType("int")
                         .HasColumnName("alarm_id");
 
+                    b.Property<int>("AnalogInputId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AlarmId");
+                    b.HasIndex("AnalogInputId");
 
                     b.ToTable("ActivatedAlarms");
                 });
@@ -438,7 +444,7 @@ namespace scada_back.Migrations
                 {
                     b.HasOne("scada_back.Models.Alarm", "TargetAlarm")
                         .WithMany()
-                        .HasForeignKey("AlarmId")
+                        .HasForeignKey("AnalogInputId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

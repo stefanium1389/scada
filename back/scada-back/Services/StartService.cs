@@ -25,6 +25,7 @@ namespace scada_back.Services
         public StartService(ScadaDbContext context, IServiceProvider serviceProvider) {  Context = context; GlobalVariables = GlobalVariables.Instance; _serviceProvider = serviceProvider; }
 
         public void Start() {
+            Console.WriteLine("Starting simulation...");
             foreach (var address in Context.Addresses)
             {
                 StartAddressThread(address);
@@ -40,10 +41,6 @@ namespace scada_back.Services
         }
         private void DigitalReading(DigitalInput digital, CancellationToken cancellationToken)
         {
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ScadaDbContext>();
-            
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     double realValue = 0;
@@ -64,78 +61,91 @@ namespace scada_back.Services
                     digitalVal.Value = readValue;
                     digitalVal.DigitalInputId = digital.Id;
                     digitalVal.TimeStamp = DateTime.Now;
-                    dbContext.DigitalInputValues.Add(digitalVal);
-                    dbContext.SaveChanges();
+                    using(var dbContext = getNewScadaDbContext())
+                    {
+                        dbContext.DigitalInputValues.Add(digitalVal);
+                        dbContext.SaveChanges();
+                    }
+                        
+                    
                     Thread.Sleep(digital.ScanTime);
-                }
+                
             }
+            Console.WriteLine($"Stopped Digital {digital.Id}");
+            
         }
         private void AddressReading(Address address, CancellationToken cancellationToken)
         {
-            using (var scope = _serviceProvider.CreateScope())
+            lock (_lock)
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ScadaDbContext>();
-
-                lock (_lock)
+                using (var dbContext = getNewScadaDbContext())
                 {
                     foreach (RealTimeUnit rtu in dbContext.RealTimeUnits.Include(a => a.Address))
                     {
                         GlobalVariables.AddressRTU[rtu.Address.Id] = rtu.Id;
                     }
                 }
+            }
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                if (address.Driver == Driver.SIMULATION)
 
-                while (!cancellationToken.IsCancellationRequested)
                 {
-                    if (address.Driver == Driver.SIMULATION)
-                        
+                    if (address.Function == Function.SIN)
                     {
-                        if (address.Function == Function.SIN)
+                        lock (_lock)
                         {
-                            lock (_lock)
-                            {
-                                GlobalVariables.AddressValues[address.Id] = SimulationDriver.Sine();
-                            }
+                            GlobalVariables.AddressValues[address.Id] = SimulationDriver.Sine();
                         }
-                        if (address.Function == Function.COS)
-                        {
-                            lock (_lock)
-                            {
-                                GlobalVariables.AddressValues[address.Id] = SimulationDriver.Cosine();
-                            }
-                        }
-                        if (address.Function == Function.RAMP)
-                        {
-                            lock (_lock)
-                            {
-                                GlobalVariables.AddressValues[address.Id] = SimulationDriver.Ramp();
-                            }
-                        }
-                        Thread.Sleep((int)address.SimGenerateTime);
                     }
-
-                
-                    if (address.Driver == Driver.RTU)
+                    if (address.Function == Function.COS)
                     {
-                        var rtuId = GlobalVariables.AddressRTU[address.Id];
-                        var rtu = dbContext.RealTimeUnits.FirstOrDefault(i => i.Id == rtuId);
-                        double value = random.NextDouble() * (rtu!.MaxValue - rtu.MinValue) + rtu.MinValue;
-                        lock(_lock)
+                        lock (_lock)
                         {
-                            GlobalVariables.AddressValues[address.Id] = value;
+                            GlobalVariables.AddressValues[address.Id] = SimulationDriver.Cosine();
                         }
-                        Thread.Sleep(rtu.GenerateTime);
                     }
+                    if (address.Function == Function.RAMP)
+                    {
+                        lock (_lock)
+                        {
+                            GlobalVariables.AddressValues[address.Id] = SimulationDriver.Ramp();
+                        }
+                    }
+                    Thread.Sleep((int)address.SimGenerateTime);
                 }
-            }    
+
+
+                if (address.Driver == Driver.RTU)
+                {
+                    var rtuId = GlobalVariables.AddressRTU[address.Id];
+                    RealTimeUnit rtu;
+                    using(var dbContext = getNewScadaDbContext())
+                    {
+                        rtu = dbContext.RealTimeUnits.FirstOrDefault(i => i.Id == rtuId);
+                    }
+                    double value = random.NextDouble() * (rtu!.MaxValue - rtu.MinValue) + rtu.MinValue;
+                    lock (_lock)
+                    {
+                        GlobalVariables.AddressValues[address.Id] = value;
+                    }
+                    Thread.Sleep(rtu.GenerateTime);
+                }
+            }
+            
+            Console.WriteLine($"Stopped Address {address.Id}");
+            
         }
         public void AnalogReading(AnalogInput analog, CancellationToken cancellationToken) {
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ScadaDbContext>();
+            
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     if (analog.IsScanning)
                     {
+                        lock (_lock)
+                        {
+                            GlobalVariables.TagCurrentActivatedAlarm[analog.Id] = null;
+                        }
                         var analogValue = new AnalogInputValue();
                         analogValue.AnalogInputId = analog.Id;
                         analogValue.TimeStamp = DateTime.Now;
@@ -159,8 +169,15 @@ namespace scada_back.Services
                             savedValue = realValue;
                         }
                         analogValue.Value = savedValue;
+                    using (var dbContext = getNewScadaDbContext())
+                    {
                         dbContext.AnalogInputValues.Add(analogValue);
                         dbContext.SaveChanges();
+                    }                       
+                        
+                    
+
+                        
                         foreach (Alarm alarm in analog.Alarms)
                         {
                             if (alarm.Type == AlarmType.LOW)
@@ -168,10 +185,20 @@ namespace scada_back.Services
                                 if (savedValue < alarm.Limit)
                                 {
                                     ActivatedAlarm aa = new ActivatedAlarm();
-                                    aa.Alarm = alarm;
+                                    aa.AlarmId = alarm.Id;
                                     aa.TimeStamp = DateTime.Now;
+
+                                using (var dbContext = getNewScadaDbContext())
+                                {
                                     dbContext.ActivatedAlarms.Add(aa);
                                     dbContext.SaveChanges();
+                                }
+
+
+                                lock (_lock)
+                                    {
+                                        GlobalVariables.TagCurrentActivatedAlarm[analog.Id] = aa;
+                                    }
                                 }
                             }
                             else if (alarm.Type == AlarmType.HIGH)
@@ -179,12 +206,17 @@ namespace scada_back.Services
                                 if (savedValue > alarm.Limit)
                                 {
                                     ActivatedAlarm aa = new ActivatedAlarm();
-                                    aa.Alarm = alarm;
+                                    aa.AlarmId = alarm.Id;
                                     aa.TimeStamp = DateTime.Now;
-                                    //lock (_lock)
+                                using (var dbContext = getNewScadaDbContext())
+                                {
+                                    dbContext.ActivatedAlarms.Add(aa);
+                                    dbContext.SaveChanges();
+                                }
+                                    
+                                    lock (_lock)
                                     {
-                                        dbContext.ActivatedAlarms.Add(aa);
-                                        dbContext.SaveChanges();
+                                        GlobalVariables.TagCurrentActivatedAlarm[analog.Id] = aa;
                                     }
                                 }
                             }
@@ -192,7 +224,8 @@ namespace scada_back.Services
                     }
                     Thread.Sleep(analog.ScanTime);
                 }
-            }
+            
+            Console.WriteLine($"Stopped Analog {analog.Id}");
         }
         public void Stop()
         {
@@ -215,12 +248,20 @@ namespace scada_back.Services
             {
                 GlobalVariables.AddressCancellationToken[addressId].Cancel();
             }
+            if (GlobalVariables.AddressThread.ContainsKey(addressId))
+            {
+                GlobalVariables.AddressThread.Remove(addressId);
+            }
         }
         public void StopAnalogThread(int analogId)
         {
             if (GlobalVariables.AnalogCancellationToken.ContainsKey(analogId))
             {
                 GlobalVariables.AnalogCancellationToken[analogId].Cancel();
+            }
+            if (GlobalVariables.AnalogInputThread.ContainsKey(analogId))
+            {
+                GlobalVariables.AnalogInputThread.Remove(analogId);
             }
         }
         public void StopDigitalThread(int digitalId)
@@ -229,13 +270,19 @@ namespace scada_back.Services
             {
                 GlobalVariables.DigitalCancellationToken[digitalId].Cancel();
             }
+            if (GlobalVariables.DigitalInputThread.ContainsKey(digitalId))
+            {
+                GlobalVariables.DigitalInputThread.Remove(digitalId);
+            }
         }
         public void StartAddressThread(Address address)
         {
             var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
+
             var thread = new Thread(() =>
             {
-                AddressReading(address, cancellationTokenSource.Token);
+                AddressReading(address, cancellationToken);
             }
                 );
             thread.IsBackground = true;
@@ -246,9 +293,11 @@ namespace scada_back.Services
         public void StartAnalogThread(AnalogInput analog)
         {
             var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
+
             var thread = new Thread(() =>
             {
-                AnalogReading(analog, cancellationTokenSource.Token);
+                AnalogReading(analog, cancellationToken);
             }
                     );
             thread.IsBackground = true;
@@ -260,15 +309,33 @@ namespace scada_back.Services
         public void StartDigitalThread(DigitalInput digital) 
         {
             var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
+
             var thread = new Thread(() =>
-            {
-                DigitalReading(digital, cancellationTokenSource.Token);
-            }
-                );
+                {
+                    DigitalReading(digital, cancellationToken);
+                }
+            );
             thread.IsBackground = true;
             thread.Start();
             GlobalVariables.DigitalInputThread[digital.Id] = thread;
             GlobalVariables.DigitalCancellationToken[digital.Id] = cancellationTokenSource;
+        }
+
+        private ScadaDbContext getNewScadaDbContext()
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            string connectionString = configuration.GetConnectionString("Tim6ScadaConnection");
+
+            DbContextOptionsBuilder<ScadaDbContext> optionsBuilder = new DbContextOptionsBuilder<ScadaDbContext>();
+            optionsBuilder.UseSqlServer(connectionString)
+                          .EnableSensitiveDataLogging(); ;
+
+            return new ScadaDbContext(optionsBuilder.Options);
         }
     }
 }
