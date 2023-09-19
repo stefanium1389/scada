@@ -93,34 +93,30 @@ export class DigitalInputComponent implements OnInit {
     let description = this.digitalInputForm.get('description')?.value
     let address = this.digitalInputForm.get('address')?.value
     let scan_time = this.digitalInputForm.get('scan_time')?.value
-    // console.log(this.name);
-    // console.log(this.description);
-    // console.log(this.address);
-    // console.log(this.scan_time);
-    // this.dataSource.data.push( {name: "krisNovi", scan_time: 20, isScanning: false, address: "Address 20", function: 'COSINUS', description: 'string'});
-    // // this.changeDetectorRef.detectChanges();
-    // this.dataSource = new MatTableDataSource<DigitalInput>(ELEMENT_DATA);
-    // this.dataSource.paginator = this.paginator;
-    // console.log(this.dataSource.data);
-    let dto = createDigitalInputDTO(name, description,  address, scan_time, true);
-    console.log(dto);
-    this.tagService.addDigitalInput(dto).subscribe({
-      next: result => {
-        console.log(result);
-        this.getAll();
-        this.digitalInputForm.reset();
-    //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
-    // // this.changeDetectorRef.detectChanges();
-    // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
-    // this.dataSource.paginator = this.paginator;
-      },
-      error: err => {
-        console.log(err);
-        // alert(err?.error?.message || JSON.stringify(err));
-        alert('Failed to add digital input');
-      }
+    console.log(scan_time)
+    if (name == '' || description == '' || name == null || description == null || address == '' || scan_time === '' || scan_time === null || address == null) {
+      alert('All fields must be filled!');
+    } else {
+      let dto = createDigitalInputDTO(name, description,  address, scan_time, true);
+      console.log(dto);
+      this.tagService.addDigitalInput(dto).subscribe({
+        next: result => {
+          console.log(result);
+          this.getAll();
+          this.digitalInputForm.reset();
+      //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+      // // this.changeDetectorRef.detectChanges();
+      // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+      // this.dataSource.paginator = this.paginator;
+        },
+        error: err => {
+          console.log(err);
+          // alert(err?.error?.message || JSON.stringify(err));
+          alert('Failed to add digital input');
+        }
 
-    })
+      })
+  }
   }
 
   delete_tag(item: any) {
@@ -174,6 +170,7 @@ export class DigitalInputComponent implements OnInit {
               console.log(err);
               // alert(err?.error?.message || JSON.stringify(err));
               alert('Failed to edit digital input');
+              this.getAll();
             }
       
           })

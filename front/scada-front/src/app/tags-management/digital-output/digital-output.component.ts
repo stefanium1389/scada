@@ -102,34 +102,27 @@ export class DigitalOutputComponent implements OnInit {
     } else {
       b = false;
     }
-    // console.log(this.name);
-    // console.log(this.description);
-    // console.log(this.address);
-    // console.log(this.initial_value);
-    // this.dataSource.data.push( {name: "krisNovi", address: "Address 20", description: 'string', initial_value: 4});
-    // // this.changeDetectorRef.detectChanges();
-    // this.dataSource = new MatTableDataSource<DigitalOutput>(ELEMENT_DATA);
-    // this.dataSource.paginator = this.paginator;
-    // console.log(this.dataSource.data);
-    let dto = createDigitalOutputDTO(name, description, address, b);
-    console.log(dto);
-    this.tagService.addDigitalOutput(dto).subscribe({
-      next: result => {
-        console.log(result);
-        this.getAll();
-        this.digitalOutputForm.reset();
-    //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
-    // // this.changeDetectorRef.detectChanges();
-    // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
-    // this.dataSource.paginator = this.paginator;
-      },
-      error: err => {
-        console.log(err);
-        // alert(err?.error?.message || JSON.stringify(err));
-        alert('Failed to add digital output');
-      }
+    console.log(name, description);
+    if (name == '' || description == '' || name == null || description == null || address == '' || initial_value === '' || address == null || initial_value === null) {
+      alert('All fields must be filled!');
+    }
+    else {
+      let dto = createDigitalOutputDTO(name, description, address, b);
+      console.log(dto);
+      this.tagService.addDigitalOutput(dto).subscribe({
+        next: result => {
+          console.log(result);
+          this.getAll();
+          this.digitalOutputForm.reset();
+        },
+        error: err => {
+          console.log(err);
+          // alert(err?.error?.message || JSON.stringify(err));
+          alert('Failed to add digital output');
+        }
 
-    })
+      })
+  }
   }
 
   delete_tag(item: any) {
@@ -183,6 +176,7 @@ export class DigitalOutputComponent implements OnInit {
               console.log(err);
               // alert(err?.error?.message || JSON.stringify(err));
               alert('Failed to edit digital output');
+              this.getAll();
             }
       
           })

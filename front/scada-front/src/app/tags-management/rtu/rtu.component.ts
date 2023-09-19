@@ -125,6 +125,7 @@ export class RtuComponent implements OnInit {
   }
 
   edit_RTU(obj: any) {
+    console.log('obj', obj)
     const dialogRef = this.dialog.open(EditComponent, {
       data: {obj: obj, type:'rtu' /*date:this.someDate*/},
       panelClass: 'my-dialog-container-class',
@@ -170,6 +171,37 @@ export class RtuComponent implements OnInit {
     let low_limit = this.rtuForm.get('low_limit')?.value
     let high_limit = this.rtuForm.get('high_limit')?.value
     let generate_time = this.rtuForm.get('generate_time')?.value
+    if ( address == '' || generate_time === '' || low_limit === '' || high_limit === ''
+      || address == null || generate_time === null || low_limit === null || high_limit === null) 
+    {
+      alert('All fields must be filled!');
+    }
+
+    else {
+      if (high_limit < low_limit) {
+        alert ('High limit is smaller than low limit');
+      } else {
+        let dto = createRTUDTO(address, low_limit, high_limit, generate_time);
+        console.log(dto);
+        this.rtuService.addRTU(dto).subscribe({
+          next: result => {
+            console.log(result);
+            this.getAll();
+            this.rtuForm.reset();
+        //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+        // // this.changeDetectorRef.detectChanges();
+        // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+        // this.dataSource.paginator = this.paginator;
+          },
+          error: err => {
+            console.log(err);
+            alert('Failed to add RTU');
+            // alert(err?.error?.message || JSON.stringify(err));
+          }
+    
+        })
+      }
+    }
     // console.log(this.address);
     // console.log(this.low_limit);
     // console.log(this.high_limit);
@@ -181,25 +213,25 @@ export class RtuComponent implements OnInit {
     // this.dataSource.paginator = this.paginator;
     // console.log(this.dataSource.data);
 
-    let dto = createRTUDTO(address, low_limit, high_limit, generate_time);
-    console.log(dto);
-    this.rtuService.addRTU(dto).subscribe({
-      next: result => {
-        console.log(result);
-        this.getAll();
-        this.rtuForm.reset();
-    //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
-    // // this.changeDetectorRef.detectChanges();
-    // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
-    // this.dataSource.paginator = this.paginator;
-      },
-      error: err => {
-        console.log(err);
-        alert('Failed to add RTU');
-        // alert(err?.error?.message || JSON.stringify(err));
-      }
+    // let dto = createRTUDTO(address, low_limit, high_limit, generate_time);
+    // console.log(dto);
+    // this.rtuService.addRTU(dto).subscribe({
+    //   next: result => {
+    //     console.log(result);
+    //     this.getAll();
+    //     this.rtuForm.reset();
+    // //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+    // // // this.changeDetectorRef.detectChanges();
+    // // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+    // // this.dataSource.paginator = this.paginator;
+    //   },
+    //   error: err => {
+    //     console.log(err);
+    //     alert('Failed to add RTU');
+    //     // alert(err?.error?.message || JSON.stringify(err));
+    //   }
 
-    })
+    // })
   }
 
 }

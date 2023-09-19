@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { generate } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
@@ -122,38 +123,114 @@ export class EditComponent implements OnInit {
 
   onSubmit() {
     if (this.type == 'ai') {
-      this.data.obj.name = this.EditAnalogInputForm.get('name')?.value;
-      this.data.obj.description = this.EditAnalogInputForm.get('description')?.value
-      this.data.obj.address = this.EditAnalogInputForm.get('address')?.value
-      this.data.obj.scanTime = this.EditAnalogInputForm.get('scan_time')?.value
-      this.data.obj.isScanning = this.EditAnalogInputForm.get('isScanning')?.value
-      this.data.obj.lowLimit = this.EditAnalogInputForm.get('low_limit')?.value
-      this.data.obj.highLimit = this.EditAnalogInputForm.get('high_limit')?.value
-      this.data.obj.unit = this.EditAnalogInputForm.get('unit')?.value
+      let name = this.EditAnalogInputForm.get('name')?.value;
+      let description = this.EditAnalogInputForm.get('description')?.value
+      let address = this.EditAnalogInputForm.get('address')?.value
+      let scan_time = this.EditAnalogInputForm.get('scan_time')?.value
+      let isScanning = this.EditAnalogInputForm.get('isScanning')?.value
+      let low_limit = this.EditAnalogInputForm.get('low_limit')?.value
+      let high_limit = this.EditAnalogInputForm.get('high_limit')?.value
+      let unit = this.EditAnalogInputForm.get('unit')?.value
+      console.log(name, description, address, scan_time, isScanning, low_limit, high_limit, unit);
+      if (name == '' || description == '' || address == '' || scan_time === '' || low_limit === '' || high_limit === '' || unit == ''
+      || name == null || description == null || address == null || scan_time === null || low_limit === null || high_limit === null || unit == null) 
+      {
+        alert('All fields must be filled!');
+        return;
+      } else {
+        if (high_limit < low_limit) {
+          alert ('High limit is smaller than low limit');
+          return;
+        } else {
+          this.data.obj.name = name
+          this.data.obj.description = description
+          this.data.obj.address = address
+          this.data.obj.scanTime = scan_time
+          this.data.obj.isScanning = isScanning
+          this.data.obj.lowLimit = low_limit
+          this.data.obj.highLimit = high_limit
+          this.data.obj.unit = unit
+        }
+      }
     } else if (this.type == 'di') {
-      this.data.obj.name = this.EditDigitalInputForm.get('name')?.value;
-      this.data.obj.description = this.EditDigitalInputForm.get('description')?.value
-      this.data.obj.address = this.EditDigitalInputForm.get('address')?.value
-      this.data.obj.scanTime = this.EditDigitalInputForm.get('scan_time')?.value
-      this.data.obj.isScanning = this.EditDigitalInputForm.get('isScanning')?.value
+      let name = this.EditDigitalInputForm.get('name')?.value;
+      let description = this.EditDigitalInputForm.get('description')?.value
+      let address = this.EditDigitalInputForm.get('address')?.value
+      let scanTime = this.EditDigitalInputForm.get('scan_time')?.value
+      let isScanning = this.EditDigitalInputForm.get('isScanning')?.value
+      if (name == '' || description == '' || name == null || description == null || address == '' || scanTime === '' || scanTime === null || address == null) {
+        alert('All fields must be filled!');
+        return;
+      } else {
+        this.data.obj.name = name
+        this.data.obj.description = description
+        this.data.obj.address = address
+        this.data.obj.scanTime = scanTime
+        this.data.obj.isScanning = isScanning
+      }
     } else if (this.type == 'ao') {
-      this.data.obj.name = this.EditAnalogOutputForm.get('name')?.value;
-      this.data.obj.description = this.EditAnalogOutputForm.get('description')?.value
-      this.data.obj.address = this.EditAnalogOutputForm.get('address')?.value
-      this.data.obj.initialValue = this.initial_value_form;
-      this.data.obj.lowLimit = this.EditAnalogOutputForm.get('low_limit')?.value
-      this.data.obj.highLimit = this.EditAnalogOutputForm.get('high_limit')?.value
-      this.data.obj.unit = this.EditAnalogOutputForm.get('unit')?.value
+      let name = this.EditAnalogOutputForm.get('name')?.value;
+      let description = this.EditAnalogOutputForm.get('description')?.value
+      let address = this.EditAnalogOutputForm.get('address')?.value
+      let low_limit = this.EditAnalogOutputForm.get('low_limit')?.value
+      let high_limit = this.EditAnalogOutputForm.get('high_limit')?.value
+      let unit = this.EditAnalogOutputForm.get('unit')?.value
+      if (name == '' || description == '' || address == '' || low_limit === '' || high_limit === '' || unit == ''
+      || name == null || description == null || address == null || low_limit === null || high_limit === null || unit == null) 
+      {
+        alert('All fields must be filled!');
+        return;
+      }
+      else {
+        if (high_limit < low_limit) {
+          alert ('High limit is smaller than low limit');
+          return;
+        } else {
+            this.data.obj.name = name
+            this.data.obj.description = description
+            this.data.obj.address = address
+            this.data.obj.initialValue = this.initial_value_form;
+            this.data.obj.lowLimit = low_limit
+            this.data.obj.highLimit = high_limit
+            this.data.obj.unit = unit
+          }
+        }
     } else if (this.type == 'do'){
-      this.data.obj.name = this.EditDigitalOutputForm.get('name')?.value;
-      this.data.obj.description = this.EditDigitalOutputForm.get('description')?.value
-      this.data.obj.address = this.EditDigitalOutputForm.get('address')?.value
-      this.data.obj.initialValue = this.initial_value_form;
+      let name = this.EditDigitalOutputForm.get('name')?.value;
+      let description = this.EditDigitalOutputForm.get('description')?.value
+      let address = this.EditDigitalOutputForm.get('address')?.value
+      if (name == '' || description == '' || name == null || description == null || address == '' || address == null) {
+        alert('All fields must be filled!');
+        return;
+      } else {
+        this.data.obj.name = name
+        this.data.obj.description = description
+        this.data.obj.address = address
+        this.data.obj.initialValue = this.initial_value_form;
+      }
     } else {
-      this.data.obj.address = this.editRtuForm.get('address')?.value
-      this.data.obj.minValue = this.editRtuForm.get('low_limit')?.value
-      this.data.obj.maxValue = this.editRtuForm.get('high_limit')?.value
-      this.data.obj.generate_time = this.editRtuForm.get('generate_time')?.value
+      let address = this.editRtuForm.get('address')?.value
+      let low_limit = this.editRtuForm.get('low_limit')?.value
+      let high_limit = this.editRtuForm.get('high_limit')?.value
+      let generate_time = this.editRtuForm.get('generate_time')?.value
+      if ( address == '' || generate_time === '' || low_limit === '' || high_limit === ''
+      || address == null || generate_time === null || low_limit === null || high_limit === null) 
+    {
+      alert('All fields must be filled!');
+      return;
+    }
+
+    else {
+      if (high_limit < low_limit) {
+        alert ('High limit is smaller than low limit');
+        return;
+      } else {
+          this.data.obj.address = address
+          this.data.obj.minValue = low_limit
+          this.data.obj.maxValue = high_limit
+          this.data.obj.generateTime = generate_time
+      }
+    }
     }
 
 

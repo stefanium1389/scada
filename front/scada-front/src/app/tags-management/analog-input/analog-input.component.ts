@@ -152,6 +152,7 @@ export class AnalogInputComponent implements OnInit {
             error: err => {
               console.log(err);
               alert('Failed to edit analog input');
+              this.getAll();
               // alert(err?.error?.message || JSON.stringify(err));
             }
       
@@ -209,39 +210,37 @@ desc_tag(obj: any) {
     let low_limit = this.analogInputForm.get('low_limit')?.value
     let high_limit = this.analogInputForm.get('high_limit')?.value
     let unit = this.analogInputForm.get('unit')?.value
-    // console.log(this.name);
-    // console.log(this.description);
-    // console.log(this.address);
-    // console.log(this.function);
-    // console.log(this.scan_time);
-    // console.log(this.low_limit);
-    // console.log(this.high_limit);
-    // console.log(this.unit);
-
-    if (high_limit < low_limit) {
-      alert ('High limit is smaller than low limit');
+    if (name == '' || description == '' || address == '' || scan_time === '' || low_limit === '' || high_limit === '' || unit == ''
+      || name == null || description == null || address == null || scan_time === null || low_limit === null || high_limit === null || unit == null) 
+    {
+      alert('All fields must be filled!');
     } else {
 
-        let dto = createAnalogInputDTO(name, description, address, scan_time, true, low_limit, high_limit, unit);
-        console.log(dto);
-        this.tagService.addAnalogInput(dto).subscribe({
-          next: result => {
-            console.log(result);
-            this.getAll();
-            this.analogInputForm.reset();
-        //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
-        // // this.changeDetectorRef.detectChanges();
-        // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
-        // this.dataSource.paginator = this.paginator;
-          },
-          error: err => {
-            // console.log(err);
-            alert('Failed to add analog input');
-            alert(err?.error?.message || JSON.stringify(err));
-          }
+        if (high_limit < low_limit) {
+          alert ('High limit is smaller than low limit');
+        } else {
 
-        })
-      }
+            let dto = createAnalogInputDTO(name, description, address, scan_time, true, low_limit, high_limit, unit);
+            console.log(dto);
+            this.tagService.addAnalogInput(dto).subscribe({
+              next: result => {
+                console.log(result);
+                this.getAll();
+                this.analogInputForm.reset();
+            //     this.dataSource.data.push( {Id: -1, Name: name, ScanTime: scan_time, IsScanning: true , Address: address, Function: functionn, LowLimit: low_limit, HighLimit: high_limit, Unit: unit, Description: description});
+            // // this.changeDetectorRef.detectChanges();
+            // this.dataSource = new MatTableDataSource<AnalogInputIdDTO>(ELEMENT_DATA);
+            // this.dataSource.paginator = this.paginator;
+              },
+              error: err => {
+                // console.log(err);
+                alert('Failed to add analog input');
+                // alert(err?.error?.message || JSON.stringify(err));
+              }
+
+            })
+          }
+        }
 
 
 
