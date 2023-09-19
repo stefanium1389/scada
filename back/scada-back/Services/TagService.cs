@@ -107,6 +107,22 @@ namespace scada_back.Services
             if (ai != null)
             {
                 Context.AnalogInputs.Remove(ai);
+                List<AnalogInputValue> aovs = Context.AnalogInputValues.Include(a => a.Tag)
+                                                                    .Where(a => a.Tag != null && a.Tag.Id == id)
+                                                                    .ToList();
+                foreach (AnalogInputValue v in aovs)
+                {
+                    Context.AnalogInputValues.Remove(v);
+                }
+
+                List<Alarm> alarms = Context.Alarms.Include(a => a.Tag)
+                                                    .Where(a => a.Tag != null && a.Tag.Id == id)
+                                                    .ToList();
+                foreach (Alarm v in alarms)
+                {
+                    Context.Alarms.Remove(v);
+                }
+
                 Context.SaveChanges();
                 return true;
             }
@@ -266,6 +282,13 @@ namespace scada_back.Services
             if (di != null)
             {
                 Context.DigitalInputs.Remove(di);
+                List<DigitalInputValue> aovs = Context.DigitalInputValues.Include(a => a.Tag)
+                                                                    .Where(a => a.Tag != null && a.Tag.Id == id)
+                                                                    .ToList();
+                foreach (DigitalInputValue v in aovs)
+                {
+                    Context.DigitalInputValues.Remove(v);
+                }
                 Context.SaveChanges();
                 return true;
             }
