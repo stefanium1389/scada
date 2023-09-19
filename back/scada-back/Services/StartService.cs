@@ -209,10 +209,12 @@ namespace scada_back.Services
                                 dbContext.SaveChanges();
                             }
                             aa.TargetAlarm = highestPriorityAlarm;
+
                             lock (_lock)
                             {
                                 GlobalVariables.TagCurrentActivatedAlarm[analog.Id] = aa;
                             }
+                            LogActivatedAlarm(aa);
                         }                        
                     }
                 }
@@ -339,6 +341,19 @@ namespace scada_back.Services
             Stop();
             Thread.Sleep(1500);
             Start();
+        }
+
+        private void LogActivatedAlarm(ActivatedAlarm aa)
+        {
+            string filePath = "alarmLog.txt"; // Change this to your desired file path
+
+            string line = $"{aa.TimeStamp}|{aa.TargetAlarm.Tag.Name}|{aa.TargetAlarm.Type}{aa.TargetAlarm.Limit} PRIORITY: {aa.TargetAlarm.Priority}";
+            
+
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+               writer.WriteLine(line);
+            }
         }
     }
 }
