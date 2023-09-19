@@ -83,6 +83,22 @@ namespace scada_back.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("tags/di")]
+        public async Task<ActionResult<List<ReportTagItemDTO>>> GetLastValuesOfDigitalInputs()
+        {
+            try
+            {
+                List<ReportTagItemDTO> items = _reportsService.GetLastValuesOfDigitalInputs();
+
+                return Ok(new { results = items });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
     }
 
 }

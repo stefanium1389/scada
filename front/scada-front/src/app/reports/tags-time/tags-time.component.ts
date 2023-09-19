@@ -66,24 +66,27 @@ export class TagsTimeComponent implements OnInit {
     this.reportService.tagsTime(startDateTime, endDateTime).subscribe({
       next: result => {
         console.log(result);
-    
+  
         if (Array.isArray(result.results)) {
           if (result.results.length === 0) {
             console.log('No tag records found.');
           } else {
-            const mappedData: TagReportItem[] = result.results.map((item: any) => ({
-              timestamp: new Date(item.timestamp),
-              type: item.type,
-              name: item.name,
-              value: item.value
-            }));
-    
+            const mappedData: TagReportItem[] = result.results.map((item: any) => {
+              const mappedItem: TagReportItem = {
+                timestamp: new Date(item.timestamp),
+                type: item.type,
+                name: item.name,
+                value: this.mapValue(item.type, item.value), // Map value based on type
+              };
+              return mappedItem;
+            });
+  
             this.dataSource.data = mappedData;
           }
         } else {
           console.error('Result.results is not an array:', result.results);
         }
-    
+  
         this.dataSource.paginator = this.paginator;
       },
       error: err => {
@@ -94,11 +97,24 @@ export class TagsTimeComponent implements OnInit {
     });
     
   }
+
+  mapValue(type: number, rawValue: number): string {
+    if (type === 1 || type === 3) {
+      // Map digital input (1) and digital output (3) values to "On" and "Off"
+      return rawValue === 1 ? 'On' : 'Off';
+    } else {
+      // For other types, return the raw value
+      return rawValue.toString();
+    }
+  }
+
 }
+
+
 
 export interface TagReportItem {
   timestamp: Date;
   type: number;
   name: string;
-  value: number;
+  value: number|string;
 }
