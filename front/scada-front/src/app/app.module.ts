@@ -33,6 +33,15 @@ import { DigitalOutputComponent } from './tags-management/digital-output/digital
 import { EditComponent } from './tags-management/edit/edit.component';
 import { DescriptionComponent } from './tags-management/description/description.component';
 import { ChangeValueComponent } from './tags-management/change-value/change-value.component';
+import { ReportsComponent } from './reports/reports/reports.component';
+import { AlarmsTimeComponent } from './reports/alarms-time/alarms-time.component';
+import { AlarmsPriorityComponent } from './reports/alarms-priority/alarms-priority.component';
+import { TagsTimeComponent } from './reports/tags-time/tags-time.component';
+import { AiLastComponent } from './reports/ai-last/ai-last.component';
+import { DiLastComponent } from './reports/di-last/di-last.component';
+import { TagIdComponent } from './reports/tag-id/tag-id.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -50,7 +59,14 @@ import { ChangeValueComponent } from './tags-management/change-value/change-valu
     DigitalOutputComponent,
     EditComponent,
     DescriptionComponent,
-    ChangeValueComponent
+    ChangeValueComponent,
+    ReportsComponent,
+    AlarmsTimeComponent,
+    AlarmsPriorityComponent,
+    TagsTimeComponent,
+    AiLastComponent,
+    DiLastComponent,
+    TagIdComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +83,8 @@ import { ChangeValueComponent } from './tags-management/change-value/change-valu
     MatIconModule,
     MatTooltipModule,
     MatDialogModule,
+    MatSortModule,
+    MatSnackBarModule,
     
   ],
   providers: [],
