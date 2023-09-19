@@ -67,6 +67,22 @@ namespace scada_back.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("tags/ai")]
+        public async Task<ActionResult<List<ReportTagItemDTO>>> GetLastValuesOfAnalogInputs()
+        {
+            try
+            {
+                List<ReportTagItemDTO> items = _reportsService.GetLastValuesOfAnalogInputs();
+
+                return Ok(new { results = items });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
     }
 
 }

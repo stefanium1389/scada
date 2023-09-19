@@ -13,6 +13,8 @@ namespace scada_back.Services
         List<ReportAlarmItemDTO> GetAlarmsForGivenInterval(ReportRequestStartEndTimeDTO dto);
         List<ReportAlarmItemForPriorityDTO> GetAlarmsForGivenPriority(ReportRequestPriorityDTO dto);
         List<ReportTagItemDTO> GetTagsForGivenInterval(ReportRequestStartEndTimeDTO dto);
+        List<ReportTagItemDTO> GetLastValuesOfAnalogInputs();
+        
     }
 
     public class ReportsService : IReportsService
@@ -128,6 +130,41 @@ namespace scada_back.Services
             return allTags;
         }
 
+
+        public List<ReportTagItemDTO> GetLastValuesOfAnalogInputs()
+        {
+            var lastValues = Context.AnalogInputValues
+                .GroupBy(aiv => aiv.AnalogInputId)
+                .Select(group => new
+                {
+                    AnalogInputId = group.Key,
+                    LastTimestamp = group.Max(aiv => aiv.TimeStamp),
+                })
+                .ToList();
+
+            var result = new List<ReportTagItemDTO>();
+
+            foreach (var item in lastValues)
+            {
+                var lastValue = Context.AnalogInputValues
+                    .Where(aiv => aiv.AnalogInputId == item.AnalogInputId && aiv.TimeStamp == item.LastTimestamp)
+                    .Include(aiv => aiv.Tag) // Include the related Tag
+                    .FirstOrDefault();
+
+                if (lastValue != null)
+                {
+                    result.Add(new ReportTagItemDTO
+                    {
+                        Timestamp = lastValue.TimeStamp,
+                        Type = 0, // Analog input
+                        Value = lastValue.Value,
+                        Name = lastValue.Tag.Name,
+                    });
+                }
+            }
+
+            return result;
+        }
 
 
 

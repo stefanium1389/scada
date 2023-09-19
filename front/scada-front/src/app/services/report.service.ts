@@ -31,4 +31,16 @@ export class ReportService {
     );
   }
 
+  lastAI():Observable<any> {
+    return this.http.get(`${environment.api}reports/tags/ai`, 
+    {headers: new HttpHeaders().set("content-type", "application/json")}
+    );
+  }
+
+  lastDI():Observable<any> {
+    return this.http.get(`${environment.api}reports/tags/di`, 
+    {headers: new HttpHeaders().set("content-type", "application/json")}
+    );
+  }
+
 }
