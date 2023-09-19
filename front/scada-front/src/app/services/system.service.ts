@@ -19,4 +19,7 @@ export class SystemService {
   stopSystemSimulation():Observable<any>{
     return this.http.get(`${environment.api}system/stop`)
   }
+  restartSystemSimulation():Observable<any>{
+    return this.http.get(`${environment.api}system/restart`)
+  }
 }

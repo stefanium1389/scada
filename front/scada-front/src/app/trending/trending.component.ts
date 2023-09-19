@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TagService } from '../services/tag.service';
 import { TrendingService } from '../services/trending.service';
+import { SystemService } from '../services/system.service';
 
 @Component({
   selector: 'app-trending',
@@ -9,7 +10,7 @@ import { TrendingService } from '../services/trending.service';
 })
 export class TrendingComponent implements OnInit {
 
-  constructor(private tagService: TagService, private trendingService: TrendingService) { }
+  constructor(private tagService: TagService, private trendingService: TrendingService, private SystemService: SystemService) { }
   analog_input_ids: number[] = [];
   digital_input_ids: number[] = [];
   analog_input: AnalogInputValue[] = [];
@@ -17,6 +18,7 @@ export class TrendingComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.restartSimulation();
     this.tagService.getAllAnalogInputs().subscribe({
       next: result => {
         for (const r of result.results) {
@@ -82,8 +84,17 @@ export class TrendingComponent implements OnInit {
     //this.analog_input = [{title:"title", timestamp:"28.08.2003. 16:54:53.245", value:"69",unit:"C",priority:"normal"},{title:"title", timestamp:"28.08.2003. 16:54:53.245", value:"69",unit:"C",priority:"low"},{title:"title", timestamp:"28.08.2003. 16:54:53.245", value:"69",unit:"C",priority:"high"},{title:"title", timestamp:"28.08.2003. 16:54:53.245", value:"69",unit:"C",priority:"critical"}]
     //this.digital_input = [{title:"title", timestamp:"28.08.2003. 16:54:53.245", value:"True"},{title:"title", timestamp:"28.08.2003. 16:54:53.245", value:"False"},{title:"title", timestamp:"28.08.2003. 16:54:53.245", value:"True"}]
   }
-  round(value:number){
-    return Math.round(value);
+  restartSimulation(){
+    this.SystemService.restartSystemSimulation().subscribe({
+      next: result => {
+        // alert(result.message);
+        console.log(result.message);
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
+      }
+    })
   }
 }
 

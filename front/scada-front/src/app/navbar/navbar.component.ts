@@ -47,6 +47,18 @@ export class NavbarComponent implements OnInit {
       }
     })
   }
+  restartSimulation(){
+    this.SystemService.restartSystemSimulation().subscribe({
+      next: result => {
+        // alert(result.message);
+        console.log(result.message);
+      },
+      error: err => {
+        console.log(err);
+        alert(err?.error?.message || JSON.stringify(err));
+      }
+    })
+  }
 
   logout() {
     this.UserService.logout().subscribe({

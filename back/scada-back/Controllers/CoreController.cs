@@ -38,5 +38,12 @@ namespace scada_back.Controllers
             _startService.Stop();
             return Ok(); 
         }
+        [HttpGet]
+        [Route("restart")]
+        public async Task<IActionResult> Restart()
+        {
+            _startService.Restart();
+            return Ok();
+        }
     }
 }
