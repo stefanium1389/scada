@@ -76,7 +76,7 @@ export class TagsTimeComponent implements OnInit {
                 timestamp: new Date(item.timestamp),
                 type: item.type,
                 name: item.name,
-                value: this.mapValue(item.type, item.value), // Map value based on type
+                value: this.mapValue(item.type, item.value), 
               };
               return mappedItem;
             });
@@ -100,10 +100,8 @@ export class TagsTimeComponent implements OnInit {
 
   mapValue(type: number, rawValue: number): string {
     if (type === 1 || type === 3) {
-      // Map digital input (1) and digital output (3) values to "On" and "Off"
       return rawValue === 1 ? 'On' : 'Off';
     } else {
-      // For other types, return the raw value
       return rawValue.toString();
     }
   }

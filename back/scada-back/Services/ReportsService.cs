@@ -16,6 +16,8 @@ namespace scada_back.Services
         List<ReportTagItemDTO> GetLastValuesOfAnalogInputs();
         List<ReportTagItemDTO> GetLastValuesOfDigitalInputs();
 
+        List<ReportTagItemDTO> GetTagsForGivenName(ReportRequestNameDTO dto);
+
     }
 
     public class ReportsService : IReportsService
@@ -51,10 +53,10 @@ namespace scada_back.Services
 
         public List<ReportAlarmItemForPriorityDTO> GetAlarmsForGivenPriority(ReportRequestPriorityDTO dto)
         {
-            int priority = dto.Priority; // Assuming dto has a property called Priority
+            int priority = dto.Priority; 
 
             var alarms = Context.ActivatedAlarms
-                .Where(aa => aa.Alarm.Priority == (AlarmPriority)priority) // Assuming AlarmPriority is an enum
+                .Where(aa => aa.Alarm.Priority == (AlarmPriority)priority) 
                 .Include(aa => aa.Alarm)
                 .ThenInclude(a => a.Tag)
                 .Select(aa => new ReportAlarmItemForPriorityDTO
@@ -149,7 +151,7 @@ namespace scada_back.Services
             {
                 var lastValue = Context.AnalogInputValues
                     .Where(aiv => aiv.AnalogInputId == item.AnalogInputId && aiv.TimeStamp == item.LastTimestamp)
-                    .Include(aiv => aiv.Tag) // Include the related Tag
+                    .Include(aiv => aiv.Tag)
                     .FirstOrDefault();
 
                 if (lastValue != null)
@@ -157,7 +159,7 @@ namespace scada_back.Services
                     result.Add(new ReportTagItemDTO
                     {
                         Timestamp = lastValue.TimeStamp,
-                        Type = 0, // Analog input
+                        Type = 0,
                         Value = lastValue.Value,
                         Name = lastValue.Tag.Name,
                     });
@@ -202,6 +204,71 @@ namespace scada_back.Services
 
             return result;
         }
+
+        public List<ReportTagItemDTO> GetTagsForGivenName(ReportRequestNameDTO dto)
+        {
+            string tagNameToSearch = dto.TagName;
+
+            var analogInputTags = Context.AnalogInputValues
+                .Where(aiv => aiv.Tag.Name == tagNameToSearch)
+                .Include(aiv => aiv.Tag)
+                .Select(aiv => new ReportTagItemDTO
+                {
+                    Timestamp = aiv.TimeStamp,
+                    Type = 0, // Analog input
+                    Value = aiv.Value,
+                    Name = aiv.Tag.Name,
+                })
+                .ToList();
+
+            var analogOutputTags = Context.AnalogOutputValues
+                .Where(aov => aov.Tag.Name == tagNameToSearch)
+                .Include(aov => aov.Tag)
+                .Select(aov => new ReportTagItemDTO
+                {
+                    Timestamp = aov.TimeStamp,
+                    Type = 2, // Analog output
+                    Value = aov.Value,
+                    Name = aov.Tag.Name,
+                })
+                .ToList();
+
+            var digitalInputTags = Context.DigitalInputValues
+                .Where(div => div.Tag.Name == tagNameToSearch)
+                .Include(div => div.Tag)
+                .Select(div => new ReportTagItemDTO
+                {
+                    Timestamp = div.TimeStamp,
+                    Type = 1, // Digital input
+                    Value = div.Value ? 1 : 0, 
+                    Name = div.Tag.Name,
+                })
+                .ToList();
+
+            var digitalOutputTags = Context.DigitalOutputValues
+                .Where(dov => dov.Tag.Name == tagNameToSearch)
+                .Include(dov => dov.Tag)
+                .Select(dov => new ReportTagItemDTO
+                {
+                    Timestamp = dov.TimeStamp,
+                    Type = 3,   // Digital output
+                    Value = dov.Value ? 1 : 0, 
+                    Name = dov.Tag.Name,
+                })
+                .ToList();
+
+            var allTags = analogInputTags
+                .Concat(analogOutputTags)
+                .Concat(digitalInputTags)
+                .Concat(digitalOutputTags)
+                .ToList();
+
+            return allTags;
+        }
+
+
+
+
 
 
 

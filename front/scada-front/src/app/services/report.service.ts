@@ -43,4 +43,11 @@ export class ReportService {
     );
   }
 
+  tagsId(tag_name:string):Observable<any> {
+    return this.http.post(`${environment.api}reports/tags/id`, 
+    {tagName:tag_name}, 
+    {headers: new HttpHeaders().set("content-type", "application/json")}
+    );
+  }
+
 }

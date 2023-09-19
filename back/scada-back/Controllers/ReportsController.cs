@@ -99,6 +99,22 @@ namespace scada_back.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("tags/id")]
+        public async Task<ActionResult<List<ReportTagItemDTO>>> getTagsById([FromBody] ReportRequestNameDTO dto)
+        {
+            try
+            {
+                List<ReportTagItemDTO> items = _reportsService.GetTagsForGivenName(dto);
+
+                return Ok(new { results = items });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
     }
 
 }
