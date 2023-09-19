@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using scada_back.Context;
 using scada_back.Models;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Reflection.Metadata;
 using System.Threading;
@@ -14,10 +15,13 @@ namespace scada_back.Services
     {
         void Start();
         void Stop();
+        void Restart();
     }
     public class StartService: IStartService
     {
         public object _lock = new object();
+        private ManualResetEvent allThreadsStopped = new ManualResetEvent(true);
+
         public ScadaDbContext Context { get; set; }
         public IServiceProvider _serviceProvider { get; set; }
         public GlobalVariables GlobalVariables { get; set; }
@@ -39,6 +43,7 @@ namespace scada_back.Services
             {
                 StartDigitalThread(digital);
             }
+            GlobalVariables.SimulationRunning = true;
         }
         private void DigitalReading(DigitalInput digital, CancellationToken cancellationToken)
         {
@@ -73,6 +78,7 @@ namespace scada_back.Services
                 }
                 Thread.Sleep(digital.ScanTime);
             }
+
             Console.WriteLine($"Stopped Digital {digital.Id}");
         }
         private void AddressReading(Address address, CancellationToken cancellationToken)
@@ -137,7 +143,7 @@ namespace scada_back.Services
                     
                 }
             }
-            
+
             Console.WriteLine($"Stopped Address {address.Id}");
             
         }
@@ -211,7 +217,8 @@ namespace scada_back.Services
                     }
                 }
                 Thread.Sleep(analog.ScanTime);
-            }            
+            }
+
             Console.WriteLine($"Stopped Analog {analog.Id}");
         }
         public void Stop()
@@ -228,6 +235,9 @@ namespace scada_back.Services
             {
                 StopDigitalThread(digital.Id);
             }
+            Console.WriteLine("stopped all threads!");
+            GlobalVariables.SimulationRunning = false;
+
         }
         public void StopAddressThread(int addressId)
         {
@@ -323,6 +333,12 @@ namespace scada_back.Services
                           .EnableSensitiveDataLogging(); ;
 
             return new ScadaDbContext(optionsBuilder.Options);
+        }
+        public void Restart()
+        {
+            Stop();
+            Thread.Sleep(1500);
+            Start();
         }
     }
 }

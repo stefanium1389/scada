@@ -11,6 +11,7 @@ namespace scada_back
         public static GlobalVariables Instance => lazyInstance.Value;
 
     private GlobalVariables() {
+            SimulationRunning = false;
             AddressValues = new Dictionary<int, double>();
             AddressRTU = new Dictionary<int, int>();
             AddressThread = new Dictionary<int, Thread>();
@@ -21,6 +22,7 @@ namespace scada_back
             DigitalCancellationToken = new Dictionary<int, CancellationTokenSource>();
             TagCurrentActivatedAlarm = new Dictionary<int, ActivatedAlarm?>();
         }
+        public bool SimulationRunning { get; set; }
         public Dictionary<int, double> AddressValues { get; }
         public Dictionary<int, int> AddressRTU { get; }
         public Dictionary<int, Thread> AddressThread {  get; }

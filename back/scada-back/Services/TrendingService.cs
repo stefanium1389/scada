@@ -33,14 +33,18 @@ namespace scada_back.Services
             }
             dto.Value = analogValue.Value;
             dto.TimeStamp = analogValue.TimeStamp;
-            var lastAlarm = GlobalVariables.TagCurrentActivatedAlarm[analog.Id];
-            if(lastAlarm != null)
+            ActivatedAlarm lastAlarm;
+            if (GlobalVariables.TagCurrentActivatedAlarm.ContainsKey(analog.Id))
             {
-                dto.Priority = lastAlarm.TargetAlarm.Priority.ToString();
-                dto.TriggeredAlarmLimit = lastAlarm.TargetAlarm.Limit;
-                dto.TriggeredAlarmType = lastAlarm.TargetAlarm.Type.ToString();
+                lastAlarm = GlobalVariables.TagCurrentActivatedAlarm[analog.Id];
+                if (lastAlarm != null)
+                {
+                    dto.Priority = lastAlarm.TargetAlarm.Priority.ToString();
+                    dto.TriggeredAlarmLimit = lastAlarm.TargetAlarm.Limit;
+                    dto.TriggeredAlarmType = lastAlarm.TargetAlarm.Type.ToString();
+                }
             }
-            return dto;            
+            return dto;
         }
 
         public TrendingDigitalDTO GetTrendingDigital(int id)

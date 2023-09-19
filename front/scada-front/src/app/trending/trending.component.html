@@ -5,7 +5,7 @@
             <div class="analog" [ngClass]="{'normal': x.priority === null, 'low': x.priority === 'LOW', 'high': x.priority === 'MEDIUM', 'critical': x.priority === 'HIGH'}">
                 <div class="column">
                     <h2>{{x.title}}</h2>
-                    <p>{{x.timeStamp}}</p>
+                    <p>{{x.timeStamp | date: 'yyyy. MM. dd. HH:mm.ss'}}</p>
                 </div>
                 <div class="row">
                     <h1>{{ x.value | number:'1.2-2' }}</h1>
@@ -25,7 +25,7 @@
             <div class="analog normal">
                 <div class="column">
                     <h2>{{x.title}}</h2>
-                    <p>{{x.timeStamp}}</p>
+                    <p>{{x.timeStamp | date: 'yyyy. MM. dd. HH:mm.ss'}}</p>
                 </div>
                 <div class="row end">
                     <h1>{{x.value}}</h1>
