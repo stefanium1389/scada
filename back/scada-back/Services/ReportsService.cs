@@ -36,40 +36,44 @@ namespace scada_back.Services
 
             var alarms = Context.ActivatedAlarms
                 .Where(aa => aa.TimeStamp >= startDate && aa.TimeStamp <= endDate)
-                .Include(aa => aa.Alarm) 
+                .Include(aa => aa.TargetAlarm)
                 .ThenInclude(a => a.Tag)
                 .Select(aa => new ReportAlarmItemDTO
                 {
-                    Priority = (int)aa.Alarm.Priority,
+                    Priority = (int)aa.TargetAlarm.Priority,
                     Timestamp = aa.TimeStamp,
-                    Type = (int)aa.Alarm.Type,
-                    Limit = aa.Alarm.Limit,
-                    TagName = aa.Alarm.Tag != null ? aa.Alarm.Tag.Name : null
+                    Type = (int)aa.TargetAlarm.Type,
+                    Limit = aa.TargetAlarm.Limit,
+                    TagName = aa.TargetAlarm.Tag != null ? aa.TargetAlarm.Tag.Name : null
                 })
                 .ToList();
 
             return alarms;
         }
 
+
+
         public List<ReportAlarmItemForPriorityDTO> GetAlarmsForGivenPriority(ReportRequestPriorityDTO dto)
         {
-            int priority = dto.Priority; 
+            int priority = dto.Priority;
 
             var alarms = Context.ActivatedAlarms
-                .Where(aa => aa.Alarm.Priority == (AlarmPriority)priority) 
-                .Include(aa => aa.Alarm)
+                .Where(aa => aa.TargetAlarm.Priority == (AlarmPriority)priority) 
+                .Include(aa => aa.TargetAlarm)
                 .ThenInclude(a => a.Tag)
                 .Select(aa => new ReportAlarmItemForPriorityDTO
                 {
-                    Type = (int)aa.Alarm.Type,
-                    Limit = aa.Alarm.Limit,
-                    TagName = aa.Alarm.Tag != null ? aa.Alarm.Tag.Name : null,
+                    Type = (int)aa.TargetAlarm.Type,
+                    Limit = aa.TargetAlarm.Limit,
+                    TagName = aa.TargetAlarm.Tag != null ? aa.TargetAlarm.Tag.Name : null,
                     Timestamp = aa.TimeStamp
                 })
                 .ToList();
 
             return alarms;
         }
+
+
 
         public List<ReportTagItemDTO> GetTagsForGivenInterval(ReportRequestStartEndTimeDTO dto)
         {
