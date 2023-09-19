@@ -39,3 +39,12 @@ button
     width: 50%;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+/* Custom styles for the snackbar's action button */
+mat-snack-bar-container button.mat-button {
+    color: inherit !important; /* Set text color to inherit (use the default color) */
+    text-decoration: none !important; /* Remove underline */
+    background-color: transparent !important; /* Remove background color */
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
+  

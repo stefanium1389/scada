@@ -41,6 +41,7 @@ import { AiLastComponent } from './reports/ai-last/ai-last.component';
 import { DiLastComponent } from './reports/di-last/di-last.component';
 import { TagIdComponent } from './reports/tag-id/tag-id.component';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatIconModule,
     MatTooltipModule,
     MatDialogModule,
-    MatSortModule
+    MatSortModule,
+    MatSnackBarModule,
     
   ],
   providers: [],

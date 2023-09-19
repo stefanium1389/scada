@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { PageEvent } from '@angular/material/paginator';
 import { ReportService } from 'src/app/services/report.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { AlarmReportItem } from '../alarms-time/alarms-time.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-tags-time',
@@ -31,13 +29,20 @@ export class TagsTimeComponent implements OnInit {
     3: 'Digital output'
   };
 
-  constructor(private reportService: ReportService) { }
+  constructor(private reportService: ReportService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void { }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  showNoResultsSnackBar() {
+    this.snackBar.open('No results found', 'Close', {
+      duration: 3000, 
+      verticalPosition: 'bottom',
+    });
   }
 
   processReport() {
@@ -70,6 +75,7 @@ export class TagsTimeComponent implements OnInit {
         if (Array.isArray(result.results)) {
           if (result.results.length === 0) {
             console.log('No tag records found.');
+            this.showNoResultsSnackBar();
           } else {
             const mappedData: TagReportItem[] = result.results.map((item: any) => {
               const mappedItem: TagReportItem = {
