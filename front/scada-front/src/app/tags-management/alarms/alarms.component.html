@@ -6,8 +6,8 @@
                 <p>Low priority alarms</p>
                 <div class="legend_item item-low" *ngFor='let item of selectedItemsLow'>
                     <div class="legend_content">
-                        <label *ngIf="item.Type == 'LOW'">&gt; {{item.Limit}} {{unit}}</label>
-                        <label *ngIf="item.Type == 'HIGH'">&lt; {{item.Limit}} {{unit}}</label>
+                        <label *ngIf="item.Type == 'LOW'">&lt; {{item.Limit}} {{unit}}</label>
+                        <label *ngIf="item.Type == 'HIGH'">&gt; {{item.Limit}} {{unit}}</label>
                     <span matTooltip="Delete alarm" (click)="delete_alarm(item)" class="material-symbols-outlined">delete</span>
                     </div>
                 </div>
@@ -17,8 +17,8 @@
                 <p>Medium priority alarms</p>
                 <div class="legend_item item-medium" *ngFor='let item of selectedItemsMedium'>
                 <div class="legend_content">
-                    <label *ngIf="item.Type == 'LOW'">&gt; {{item.Limit}} {{unit}}</label>
-                    <label *ngIf="item.Type == 'HIGH'">&lt; {{item.Limit}} {{unit}}</label>
+                    <label *ngIf="item.Type == 'LOW'">&lt; {{item.Limit}} {{unit}}</label>
+                    <label *ngIf="item.Type == 'HIGH'">&gt; {{item.Limit}} {{unit}}</label>
                     <span matTooltip="Delete alarm" (click)="delete_alarm(item)" class="material-symbols-outlined">delete</span>
                 </div>
                 </div>
@@ -28,8 +28,8 @@
                 <p>High priority alarms</p>
                 <div class="legend_item item-high" *ngFor='let item of selectedItemsHigh'>
                     <div class="legend_content">
-                        <label *ngIf="item.Type == 'LOW'">&gt; {{item.Limit}} {{unit}}</label>
-                        <label *ngIf="item.Type == 'HIGH'">&lt; {{item.Limit}} {{unit}}</label>
+                        <label *ngIf="item.Type == 'LOW'">&lt; {{item.Limit}} {{unit}}</label>
+                        <label *ngIf="item.Type == 'HIGH'">&gt; {{item.Limit}} {{unit}}</label>
                     <span matTooltip="Delete alarm" (click)="delete_alarm(item)" class="material-symbols-outlined">delete</span>
                     </div>
                 </div>

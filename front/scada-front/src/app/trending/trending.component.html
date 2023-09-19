@@ -2,15 +2,20 @@
     <div class="column half">
         <h1>Analog inputs</h1>
         <div *ngFor="let x of analog_input" class="row">
-            <div class="analog" [ngClass]="{'normal': x.priority === 'normal', 'low': x.priority === 'low', 'high': x.priority === 'high', 'critical': x.priority === 'critical'}">
+            <div class="analog" [ngClass]="{'normal': x.priority === null, 'low': x.priority === 'LOW', 'high': x.priority === 'MEDIUM', 'critical': x.priority === 'HIGH'}">
                 <div class="column">
                     <h2>{{x.title}}</h2>
-                    <p>{{x.timestamp}}</p>
+                    <p>{{x.timeStamp | date: 'yyyy. MM. dd. HH:mm.ss'}}</p>
                 </div>
                 <div class="row">
-                    <h1>{{x.value}}</h1>
-                    <h3 class="unit_label">{{x.unit}}</h3>
-                </div>
+                    <h1>{{ x.value | number:'1.2-2' }}</h1>
+                    <h3 class="unit_label">{{ x.unit }}</h3>
+                  </div>
+                  <div class="row" *ngIf="x.priority != null">
+                    <h2>Alarm!</h2>
+                    <h3 class="unit_label">{{x.triggeredAlarmType}}</h3>
+                    <h3 class="unit_label">{{ x.triggeredAlarmLimit }}</h3>
+                  </div>
             </div>
         </div>
     </div>
@@ -20,7 +25,7 @@
             <div class="analog normal">
                 <div class="column">
                     <h2>{{x.title}}</h2>
-                    <p>{{x.timestamp}}</p>
+                    <p>{{x.timeStamp | date: 'yyyy. MM. dd. HH:mm.ss'}}</p>
                 </div>
                 <div class="row end">
                     <h1>{{x.value}}</h1>

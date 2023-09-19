@@ -6,7 +6,7 @@ namespace scada_back.Controllers
 {
     [ApiController]
     [Route("api/system")]
-    public class CoreController
+    public class CoreController : Controller
     {
         public ISystemService _systemService { get; set; }
         public IStartService _startService { get; set; }
@@ -25,15 +25,25 @@ namespace scada_back.Controllers
         }
         [HttpGet]
         [Route("start")]
-        public async void Start()
+        public async Task<IActionResult> Start()
         {
             _startService.Start();
+            return Ok(); 
         }
+
         [HttpGet]
         [Route("stop")]
-        public async void Stop()
+        public async Task<IActionResult> Stop()
         {
             _startService.Stop();
+            return Ok(); 
+        }
+        [HttpGet]
+        [Route("restart")]
+        public async Task<IActionResult> Restart()
+        {
+            _startService.Restart();
+            return Ok();
         }
     }
 }

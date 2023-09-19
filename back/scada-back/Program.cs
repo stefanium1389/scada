@@ -20,6 +20,8 @@ builder.Services.AddTransient<IRTUService, RTUService>();
 builder.Services.AddTransient<ISystemService, SystemService>();
 builder.Services.AddTransient<IStartService, StartService>();
 builder.Services.AddTransient<IReportsService, ReportsService>();
+builder.Services.AddTransient<IServiceProvider, ServiceProvider>();
+builder.Services.AddTransient<ITrendingService, TrendingService>();
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
@@ -27,8 +29,9 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 var connectionString = builder.Configuration.GetConnectionString("Tim6ScadaConnection");
-builder.Services.AddDbContext<ScadaDbContext>(x => x.UseSqlServer(connectionString));
-builder.Services.AddDbContext<ScadaDbContext>(x => x.EnableSensitiveDataLogging());
+builder.Services.AddDbContext<ScadaDbContext>(x => x
+    .UseSqlServer(connectionString)
+    .EnableSensitiveDataLogging()); 
 builder.Services.AddCors(feature =>
     feature.AddPolicy(
         "CorsPolicy",
