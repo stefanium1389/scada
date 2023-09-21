@@ -1,1 +1,16 @@
-<p>login works!</p>
+<div class="div">
+    <h1>SCADA Tim 6</h1>
+    <form
+      method="POST"
+      [formGroup]="loginForm" 
+      (ngSubmit)="onLogin()"
+    >
+        <input class="element" type="text"  formControlName="username" placeholder="Enter Username" name="username" id="username" required>
+        <br>
+
+        <input class="element" type="password" name="password" formControlName="password" placeholder="Enter Password" id="password" required>
+        <br>
+
+        <button class="loginbtn" (keydown.enter)="onLogin()" type="submit">Login</button>
+    </form>
+</div>

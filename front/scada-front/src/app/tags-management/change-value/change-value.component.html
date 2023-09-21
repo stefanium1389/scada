@@ -1,0 +1,30 @@
+<!-- <p>change-value works!</p> -->
+<div *ngIf="type=='ao'" class="div">
+    <form
+        method="POST"
+        [formGroup]="changeAnalogValueForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <label for="current_value">Current Value:</label><br/><br>
+        <input class="element" type="number" formControlName="current_value" placeholder="Current Value" name="current_value" id="current_value" required>
+        <br/>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Changed tags's value</button>
+    </form>
+</div>
+
+<div *ngIf="type=='do'" class="div">
+    <form
+        method="POST"
+        [formGroup]="changeDigitalValueForm" 
+        (ngSubmit)="onSubmit()"
+        >
+        <label for="current_value">Current Value:</label><br/><br>
+        <select style="width: 55%;" #typeOption class="element" name="current_value" formControlName="current_value">
+            <option *ngFor="let current_value of current_values;let i = 'index';" [value]="current_value">{{current_value}}</option>
+        </select>
+        <br/>
+
+        <button (keydown.enter)="onSubmit()" type="submit">Changed tags's value</button>
+    </form>
+</div>

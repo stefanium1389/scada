@@ -1,0 +1,24 @@
+.analog-meta-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+}
+
+.rtu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
+.small {
+    width: 80%;
+}
+
+.div {
+    background-color: #6a6a6a;
+}
+
+label {
+    color: white;
+    text-align: right;
+}

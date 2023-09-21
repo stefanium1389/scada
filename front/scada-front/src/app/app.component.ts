@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,18 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'scada-front';
   showNavbar: boolean = true;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const navigationEndEvent = event as NavigationEnd;
+        const url = navigationEndEvent.url;
+        if (url.includes('trending') || url.includes('reports') || url.includes('tags') || url.includes('register')) {
+          this.showNavbar = true;
+        } else {
+          this.showNavbar = false;
+        }
+      }
+    });
+  }
 }

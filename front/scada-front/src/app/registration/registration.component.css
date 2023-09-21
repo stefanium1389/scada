@@ -1,0 +1,17 @@
+.div {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    position: center;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .element {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    background-color: #f5f5f5;
+  }

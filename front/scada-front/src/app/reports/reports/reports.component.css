@@ -1,0 +1,15 @@
+.report-selection{
+    margin: 20px;
+}
+
+.report-container{
+    margin: 50px 20px;
+}
+
+select {
+    min-height: 30px;
+}
+
+label{
+    margin-right: 10px;
+}

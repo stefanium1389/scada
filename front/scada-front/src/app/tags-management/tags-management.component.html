@@ -1,0 +1,28 @@
+<div class="tab-container">
+    <mat-tab-group animationDuration="0ms" class="upper-tabs">
+        <mat-tab label="Inputs"> 
+            <mat-tab-group animationDuration="0ms" class="lower-tabs">
+                <mat-tab label="Analog">
+                    <app-analog-input></app-analog-input>
+                </mat-tab>
+                <mat-tab label="Digital">
+                    <app-digital-input></app-digital-input>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-tab>
+        <mat-tab label="Outputs">
+            <mat-tab-group animationDuration="0ms" class="lower-tabs">
+                <mat-tab label="Analog">
+                    <app-analog-output></app-analog-output>
+                </mat-tab>
+                <mat-tab label="Digital">
+                    <app-digital-output></app-digital-output>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-tab>
+        <mat-tab class="third" label="RTUs">
+            <app-rtu></app-rtu>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+  

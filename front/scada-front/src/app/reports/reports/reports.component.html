@@ -1,0 +1,11 @@
+<div class="report-selection">
+    <label for="reportType">Select a Report:</label>
+    <select id="reportType" [(ngModel)]="selectedReport">
+      <option *ngFor="let report of reportTypes" [value]="report.name">{{ report.name }}</option>
+    </select>
+  </div>
+  
+  <div class="report-container" *ngIf="selectedReport">
+    <ng-container *ngComponentOutlet="getComponent(selectedReport)"></ng-container>
+  </div>
+  

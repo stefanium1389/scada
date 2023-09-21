@@ -1,0 +1,49 @@
+.legend {
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+    width: 100%;
+    max-height: 90vh;
+    height: fit-content;
+    overflow: auto;
+  }
+
+  #legend-high {
+    background-color: red;
+    color: white;
+  }
+
+  #legend-medium {
+    background-color: orange;
+    color: black;
+  }
+
+  #legend-low {
+    background-color: yellow;
+    color: black;
+  }
+  
+  .legend_item:hover {
+    /* background-color: rgb(239, 239, 73); */
+    cursor: pointer;
+    border: 2px solid black;
+  }
+  
+  .legend_item {
+    margin: 2px;
+    padding: 2px;
+  }
+  
+  .legend_content {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+  }
+
+  .legends {
+    display: flex;
+    justify-content: flex-start;
+    width: 150%;
+  }
+  
