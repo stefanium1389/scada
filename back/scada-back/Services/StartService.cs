@@ -348,11 +348,14 @@ namespace scada_back.Services
             string filePath = "alarmLog.txt"; // Change this to your desired file path
 
             string line = $"{aa.TimeStamp}|{aa.TargetAlarm.Tag.Name}|{aa.TargetAlarm.Type}{aa.TargetAlarm.Limit} PRIORITY: {aa.TargetAlarm.Priority}";
-            
 
-            using (StreamWriter writer = new StreamWriter(filePath, true))
+
+            lock (_lock)
             {
-               writer.WriteLine(line);
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    writer.WriteLine(line);
+                }
             }
         }
     }
