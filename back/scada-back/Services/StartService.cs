@@ -213,14 +213,14 @@ namespace scada_back.Services
                             lock (_lock)
                             {
                                 GlobalVariables.TagCurrentActivatedAlarm[analog.Id] = aa;
+                                LogActivatedAlarm(aa);
                             }
-                            LogActivatedAlarm(aa);
+                            
                         }                        
                     }
                 }
                 Thread.Sleep(analog.ScanTime);
             }
-
             Console.WriteLine($"Stopped Analog {analog.Id}");
         }
         public void Stop()
